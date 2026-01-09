@@ -1,0 +1,212 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Statistical Methos for Transport Planning - Workbook",
+    "section": "",
+    "text": "Preface",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "index.html#pre-requisites",
+    "href": "index.html#pre-requisites",
+    "title": "Statistical Methos for Transport Planning - Workbook",
+    "section": "Pre-requisites",
+    "text": "Pre-requisites\nThe activities assume you already have the R and RStudio installed in your machine.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "session-1.html",
+    "href": "session-1.html",
+    "title": "1  Session 1",
+    "section": "",
+    "text": "1.1 Setting the working environment\nA good practice is to have an RStudio for each different project you are working on. This creates a folder in which, ideally, you should include all the input and output data.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Session 1</span>"
+    ]
+  },
+  {
+    "objectID": "session-1.html#setting-the-working-environment",
+    "href": "session-1.html#setting-the-working-environment",
+    "title": "1  Session 1",
+    "section": "",
+    "text": "- Before moving any further, make sure you have your own `RStudio` project in your session.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Session 1</span>"
+    ]
+  },
+  {
+    "objectID": "session-1.html#lets-practice-using-some-transport-data",
+    "href": "session-1.html#lets-practice-using-some-transport-data",
+    "title": "1  Session 1",
+    "section": "1.2 Lets Practice using some transport data",
+    "text": "1.2 Lets Practice using some transport data\nIn this course, we will look into Puget Sound Regional Travel Survey. This workbook uses dataset version ‘2023.5’.\n\nDownload the dataset available from the course Moodle page under the ‘Lab Activities’ tile.\nUnzip the file. You can see that the following tables in CSV files:\n\nTrips\nPersons\nHouseholds\nVehicles\nDays\n\nMove the files into your RStudio project. It is a good practice to keep inputs, code, and outputs in separate folders. I suggest to crea a folder called data and paste all the files in it.\n\nThe codebook is available on Moodle, too. Additional information offered by the source are available at https://www.psrc.org/our-work/household-travel-survey-program.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Session 1</span>"
+    ]
+  },
+  {
+    "objectID": "session-1.html#hands-on",
+    "href": "session-1.html#hands-on",
+    "title": "1  Session 1",
+    "section": "1.3 Hands on",
+    "text": "1.3 Hands on\nThe objective of this first part is to reproduce the results shown below. For now, I encourage you to type the code, rather than copying, this can help you to actively think of what the code is doing.\nAs a first step, create an RMardown/Quarto file, and save it in your RStudio project (remove all the default contents, if included).\nFirst, load the packages required for the analysis (install if needed).\n\n# for data manipulation and visualization\nlibrary(tidyverse) \n\nThen, read the ‘Household’ table from the CSV file. Make sure to adjust the directory to match the location where you save the Survey files.\n\n# Reading the Household data\nhouseholds &lt;- read_csv(\"data/Households.csv\")\n\nA quick check. How many rows and columns are there in the dataset?\n\nnrow(households)\n\n[1] 12118\n\nncol(households)\n\n[1] 69\n\n\nThat’s many columns. Check the first first 20 variable names in the houshold table.\n\nhead(colnames(household), 20)\n\n[1] \"family\"      \"dob_child1\"  \"dob_child2\"  \"name_child1\" \"name_child2\"\n\n\nWhat do all these names mean?!\nDownload the dataset codebook from Moodle, and keep it in your project folder. Spend 5-10 minutes to explore the structure and get familiar with the contents of the dataset.\n\n1.3.1 Subsetting\nLets subset some variables of interest from the Household table. Also, keep the records for the year 2023 only.\n\n# Subset the data to select only the variables we need for the year 2023\nhousehold_subset &lt;- households %&gt;%\n  filter(survey_year == 2023) %&gt;%\n  select(\n    household_id, hhincome_broad, hhsize, \n    home_county, vehicle_count, hh_race_category, \n    numadults, numchildren, numworkers\n  )\n\nWe can glimpse the data to see the type of the variables are included.\n\nglimpse(household_subset)\n\nRows: 3,870\nColumns: 9\n$ household_id     &lt;dbl&gt; 23007083, 23007112, 23003118, 23007129, 23007152, 230…\n$ hhincome_broad   &lt;chr&gt; \"$75,000-$99,999\", \"$50,000-$74,999\", \"$25,000-$49,99…\n$ hhsize           &lt;chr&gt; \"3 people\", \"2 people\", \"1 person\", \"2 people\", \"3 pe…\n$ home_county      &lt;chr&gt; \"Kitsap County\", \"King County\", \"King County\", \"King …\n$ vehicle_count    &lt;chr&gt; \"4 vehicles\", \"1 vehicle\", \"1 vehicle\", \"1 vehicle\", …\n$ hh_race_category &lt;chr&gt; \"AANHPI non-Hispanic\", \"White non-Hispanic\", \"AANHPI …\n$ numadults        &lt;chr&gt; \"3 adults\", \"2 adults\", \"1 adult\", \"2 adults\", \"2 adu…\n$ numchildren      &lt;chr&gt; \"0 children\", \"0 children\", \"0 children\", \"0 children…\n$ numworkers       &lt;chr&gt; \"3 workers\", \"2 workers\", \"1 worker\", \"0 workers\", \"2…",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Session 1</span>"
+    ]
+  },
+  {
+    "objectID": "session-1.html#formating-variables",
+    "href": "session-1.html#formating-variables",
+    "title": "1  Session 1",
+    "section": "1.4 Formating variables",
+    "text": "1.4 Formating variables\nSome columns are not in it’s appropriate type, as they mix text with numbers. Thus, we will have to extract the numbers and set categorical variables to factors.\n\nhousehold_subset &lt;- household_subset %&gt;%\n  mutate(\n    hhsize = parse_number(hhsize),\n    vehicle_count = parse_number(vehicle_count),\n    numadults = parse_number(numadults),\n    numchildren = parse_number(numchildren),\n    numworkers = parse_number(numworkers)\n  )\n\nCategorical variables as factors.\n\n# Convert all required variables to factors\nhousehold_subset &lt;- household_subset %&gt;%\n  mutate(across(c(hhincome_broad, home_county, hh_race_category), factor))\n\nLet’s glimpse the formatted variables.\n\nglimpse(household_subset)\n\nRows: 3,870\nColumns: 9\n$ household_id     &lt;dbl&gt; 23007083, 23007112, 23003118, 23007129, 23007152, 230…\n$ hhincome_broad   &lt;fct&gt; \"$75,000-$99,999\", \"$50,000-$74,999\", \"$25,000-$49,99…\n$ hhsize           &lt;dbl&gt; 3, 2, 1, 2, 3, 2, 1, 2, 2, 1, 1, 1, 1, 1, 2, 2, 1, 2,…\n$ home_county      &lt;fct&gt; Kitsap County, King County, King County, King County,…\n$ vehicle_count    &lt;dbl&gt; 4, 1, 1, 1, 1, 2, 1, 1, 2, 0, 1, 2, 1, 2, 1, 3, 1, 2,…\n$ hh_race_category &lt;fct&gt; AANHPI non-Hispanic, White non-Hispanic, AANHPI non-H…\n$ numadults        &lt;dbl&gt; 3, 2, 1, 2, 2, 2, 1, 2, 2, 1, 1, 1, 1, 1, 2, 2, 1, 2,…\n$ numchildren      &lt;dbl&gt; 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…\n$ numworkers       &lt;dbl&gt; 3, 2, 1, 0, 2, 1, 1, 2, 1, 1, 1, 0, 1, 1, 2, 0, 1, 1,…\n\n\nThe income bands are ordered categories. However, they are unordered. Rearrenge them as following:\nFormat the order of household income labels\n\n# Type ordered income labs\nincome_labs &lt;- c(\n  \"Under $25,000\", \n  \"$25,000-$49,999\", \n  \"$50,000-$74,999\", \n  \"$75,000-$99,999\", \n  \"$100,000-$199,999\", \n  \"$200,000 or more\"\n)\n\nhousehold_subset &lt;- household_subset %&gt;% \n  mutate(hhincome_broad = factor(hhincome_broad, levels = income_labs))",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Session 1</span>"
+    ]
+  },
+  {
+    "objectID": "session-1.html#descriptive-statistics",
+    "href": "session-1.html#descriptive-statistics",
+    "title": "1  Session 1",
+    "section": "1.5 Descriptive statistics",
+    "text": "1.5 Descriptive statistics\nWe can have a quick and dirt descriptive statistics overview by producing a default summary.\n\nsummary(household_subset)\n\n  household_id                hhincome_broad     hhsize     \n Min.   :23000173   Under $25,000    : 402   Min.   :1.000  \n 1st Qu.:23073829   $25,000-$49,999  : 490   1st Qu.:1.000  \n Median :23154700   $50,000-$74,999  : 509   Median :2.000  \n Mean   :23173722   $75,000-$99,999  : 423   Mean   :1.954  \n 3rd Qu.:23265921   $100,000-$199,999:1065   3rd Qu.:2.000  \n Max.   :23423045   $200,000 or more : 605   Max.   :9.000  \n                    NA's             : 376                  \n           home_county   vehicle_count  \n King County     :2793   Min.   :0.000  \n Kitsap County   : 215   1st Qu.:1.000  \n Pierce County   : 416   Median :1.000  \n Snohomish County: 446   Mean   :1.389  \n                         3rd Qu.:2.000  \n                         Max.   :8.000  \n                                        \n                               hh_race_category   numadults    \n AANHPI non-Hispanic                   : 667    Min.   :1.000  \n Black or African American non-Hispanic: 121    1st Qu.:1.000  \n Hispanic                              : 260    Median :2.000  \n Missing/No response                   : 640    Mean   :1.683  \n Some Other Races non-Hispanic         : 132    3rd Qu.:2.000  \n White non-Hispanic                    :2050    Max.   :9.000  \n                                                               \n  numchildren       numworkers   \n Min.   :0.0000   Min.   :0.000  \n 1st Qu.:0.0000   1st Qu.:0.000  \n Median :0.0000   Median :1.000  \n Mean   :0.2716   Mean   :1.107  \n 3rd Qu.:0.0000   3rd Qu.:2.000  \n Max.   :5.0000   Max.   :6.000  \n                                 \n\n\nFor tailored descriptive statistic summarise, we can do the following:\n\nhousehold_subset %&gt;% \n  summarise(hhsize_mean = mean(hhsize), hhsize_sd = sd(hhsize))\n\n# A tibble: 1 × 2\n  hhsize_mean hhsize_sd\n        &lt;dbl&gt;     &lt;dbl&gt;\n1        1.95      1.11\n\n\nAn we can easily extend this breaking down the descriptive statistics by group a categorical characteristic of the household. In the example below, by the home County.\n\n household_subset %&gt;% \n  group_by(home_county) %&gt;% \n  summarise(mean = mean(hhsize), sd = sd(hhsize))\n\n# A tibble: 4 × 3\n  home_county       mean    sd\n  &lt;fct&gt;            &lt;dbl&gt; &lt;dbl&gt;\n1 King County       1.87  1.06\n2 Kitsap County     2.18  1.12\n3 Pierce County     2.09  1.17\n4 Snohomish County  2.25  1.26\n\n\nTry summarising by hh_race_category.\nThese examples provide useful and flexible summaries. However, it’d require some work to format it for a final output. Packages that can help you creating descriptive statistic tables are: gtsummary, modelsummary, summarytools.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Session 1</span>"
+    ]
+  },
+  {
+    "objectID": "session-1.html#missing-data",
+    "href": "session-1.html#missing-data",
+    "title": "1  Session 1",
+    "section": "1.6 Missing data",
+    "text": "1.6 Missing data\nExamine the variable hh_race_category. Are the missing values?\nFollowing the conventions in R, missing values should be treated as NA. Format these as appropriate using the fct_recode().\nThere are many reasons why some data might be missing.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Session 1</span>"
+    ]
+  },
+  {
+    "objectID": "session-1.html#wraping-up",
+    "href": "session-1.html#wraping-up",
+    "title": "1  Session 1",
+    "section": "1.7 Wraping up",
+    "text": "1.7 Wraping up\n\n1.7.1 Write the formated subset\nWe will finish this session here.\nWe will write the formatted household subset. So, you do not have to go over the same steps in the next session.\n\nwrite_rds(household_subset,file = 'data/household_subset.RDS')\n\n\n\n1.7.2 Final reflections\n\nWhat year are you including in the data?\nWhat level of unit is represented in the table you prepared?",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Session 1</span>"
+    ]
+  },
+  {
+    "objectID": "session-2.html",
+    "href": "session-2.html",
+    "title": "2  Session 2",
+    "section": "",
+    "text": "2.1 Preliminaries\nFirst, load the packages required for the analysis (install if needed).\nlibrary(tidyverse) # for data manipulation and visualization\nWe will pick it up where we left it last time, and read the household data in the RDS file you prepared. If you haven’t completed Session 1, go to it and complete it before continuing here.\nhousehold_subset &lt;- read_rds('data/household_subset.RDS')\nYou will also need the ‘Trips’ table for this session. As we will combine the information from households and trips reported by each household.\ntrips &lt;- read_csv(\"data/Trips.csv\")",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Session 2</span>"
+    ]
+  },
+  {
+    "objectID": "session-2.html#format-trips-table",
+    "href": "session-2.html#format-trips-table",
+    "title": "2  Session 2",
+    "section": "2.2 Format Trips table",
+    "text": "2.2 Format Trips table\nSubset trips for the year 2023 and keep only variables of interest.\n\ntrips_subset &lt;- trips %&gt;%\n  filter(survey_year == 2023) %&gt;%\n  select(\n    household_id, person_id, trip_id, \n    mode_class, depart_date, depart_time_hour, \n    arrival_time_hour, origin_county, dest_county, \n    origin_purpose_cat, dest_purpose_cat, distance_meters,\n    duration_minutes\n)\n\nALWAYS CHECK THE SUBSET!!! What would you check?\n\nnrow(trips_subset)\n\n[1] 56704\n\nncol(trips_subset)\n\n[1] 13\n\n\n\ncolnames(trips_subset)\n\n [1] \"household_id\"       \"person_id\"          \"trip_id\"           \n [4] \"mode_class\"         \"depart_date\"        \"depart_time_hour\"  \n [7] \"arrival_time_hour\"  \"origin_county\"      \"dest_county\"       \n[10] \"origin_purpose_cat\" \"dest_purpose_cat\"   \"distance_meters\"   \n[13] \"duration_minutes\"  \n\nhead(trips_subset)\n\n# A tibble: 6 × 13\n  household_id  person_id       trip_id mode_class  depart_date depart_time_hour\n         &lt;dbl&gt;      &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;       &lt;date&gt;                 &lt;dbl&gt;\n1     23000858 2300085801 2300085801002 Walk        2023-04-27                16\n2     23000466 2300046601 2300046601004 Walk        2023-04-20                14\n3     23001235 2300123501 2300123501011 Drive HOV3+ 2023-04-27                19\n4     23000466 2300046601 2300046601005 Walk        2023-04-20                14\n5     23000858 2300085801 2300085801003 Drive HOV2  2023-04-27                19\n6     23001235 2300123501 2300123501012 Drive HOV3+ 2023-04-27                19\n# ℹ 7 more variables: arrival_time_hour &lt;dbl&gt;, origin_county &lt;chr&gt;,\n#   dest_county &lt;chr&gt;, origin_purpose_cat &lt;chr&gt;, dest_purpose_cat &lt;chr&gt;,\n#   distance_meters &lt;dbl&gt;, duration_minutes &lt;dbl&gt;\n\n\nTransform the categorical variables as factor.\n\ntrips_subset &lt;- trips_subset %&gt;%\n  mutate(\n    across(\n      c(mode_class, origin_county, dest_county, origin_purpose_cat, dest_purpose_cat), \n      as.factor)\n  )",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Session 2</span>"
+    ]
+  },
+  {
+    "objectID": "session-2.html#trip-descriptive-statistics",
+    "href": "session-2.html#trip-descriptive-statistics",
+    "title": "2  Session 2",
+    "section": "2.3 Trip descriptive statistics",
+    "text": "2.3 Trip descriptive statistics\nCalculate a summary at the person-level. Include the number of trips, total travel distance and travel time for each person, within household.\n\nperson_summary &lt;- trips_subset %&gt;%\n  group_by(person_id, household_id) %&gt;%\n  summarise(\n    number_of_trips = n(),\n    # Distance in kilometres\n    total_travel_distance = sum(distance_meters / 1000),\n    total_travel_time = sum(duration_minutes)\n  ) %&gt;% \n  ungroup()\n\nNow, you need to normalise the total distance and travel time based on the number of trips by calculating the average values.\n\nperson_summary &lt;- person_summary %&gt;% \n  mutate(\n    avg_trip_distance = total_travel_distance / number_of_trips,\n    avg_trip_duration = total_travel_time / number_of_trips\n  )\n\nCreate a quick summary\n\nsummary(person_summary)\n\n   person_id          household_id      number_of_trips   total_travel_distance\n Min.   :2.300e+09   Min.   :23000173   Min.   :  2.000   Min.   :    0.066    \n 1st Qu.:2.307e+09   1st Qu.:23070124   1st Qu.:  2.000   1st Qu.:   11.425    \n Median :2.315e+09   Median :23153760   Median :  4.000   Median :   29.122    \n Mean   :2.317e+09   Mean   :23170889   Mean   :  9.509   Mean   :  124.803    \n 3rd Qu.:2.326e+09   3rd Qu.:23264171   3rd Qu.:  8.000   3rd Qu.:   79.841    \n Max.   :2.342e+09   Max.   :23423045   Max.   :307.000   Max.   :18795.769    \n                                                          NA's   :1            \n total_travel_time avg_trip_distance  avg_trip_duration\n Min.   :   2.0    Min.   :   0.033   Min.   :  1.00   \n 1st Qu.:  48.0    1st Qu.:   2.925   1st Qu.: 12.97   \n Median :  88.0    Median :   5.951   Median : 19.00   \n Mean   : 196.7    Mean   :  14.324   Mean   : 24.67   \n 3rd Qu.: 205.0    3rd Qu.:  12.080   3rd Qu.: 30.00   \n Max.   :2573.0    Max.   :2697.030   Max.   :270.50   \n NA's   :1         NA's   :1          NA's   :1        \n\n\nDo the values make sense?\nThere are some extreme values in the number of trips (more than 300?!) and average trip distance (more thank 2,000 KM?). We will remove them for this analysis. In practice, we should carefully make choices and justify them.\n\nperson_summary &lt;- person_summary %&gt;% \n  filter(number_of_trips &lt; 50 & avg_trip_distance &lt; 100)",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Session 2</span>"
+    ]
+  },
+  {
+    "objectID": "session-2.html#visualising-data",
+    "href": "session-2.html#visualising-data",
+    "title": "2  Session 2",
+    "section": "3.1 Visualising data",
+    "text": "3.1 Visualising data\nUnivariate distribution: Check number of trips.\n\nperson_summary %&gt;% \n  ggplot(aes(number_of_trips)) +\n  geom_histogram() +\n  labs(\n    x = \"Total number of trips\",\n    y = \"Count\"\n  )\n\n\n\n\n\n\n\n\nWhat is a suitable alternative to a histogram to visualise a variable distribution?\nBivariate plot: Visualise average number of trip and HH income.\n\nperson_summary %&gt;% \n  ggplot(aes(number_of_trips, hhincome_broad)) +\n  geom_boxplot() +\n  labs(\n    x = \"Total trips\",\n    y = \"Household income\"\n  )\n\n\n\n\n\n\n\n\nVisualise average trip distance and HH income.\n\nperson_summary %&gt;% \n  ggplot(aes(avg_trip_distance, hhincome_broad)) +\n  geom_boxplot() +\n  labs(\n    x = \"Average trip distance in kilometres\",\n    y = \"Household income\"\n  )",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Session 2</span>"
+    ]
+  },
+  {
+    "objectID": "session-3.html",
+    "href": "session-3.html",
+    "title": "3  Session 3: Linear regression",
+    "section": "",
+    "text": "3.1 Preliminaries\nFor today’s session we will need the following packages. Install them using the install.packages() function if you don’t have them available.\n# Packages \nlibrary(tidyverse)\n\n# Today we will also be using\n# This is helpful to check the assumptions of linear models\nlibrary(performance)\nNow, we will read the data in to the R session. I am using a folder to store the data called hh-travel-survey/, change the name to the appropriate directory if you are using something different.\n# Read data\ntrips &lt;- read_csv('data/Trips.csv')\npersons &lt;- read_csv('data/Persons.csv')\nhouseholds &lt;- read_csv('data/Households.csv')",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Session 3: Linear regression</span>"
+    ]
+  },
+  {
+    "objectID": "session-3.html#preliminaries",
+    "href": "session-3.html#preliminaries",
+    "title": "3  Session 3: Linear regression",
+    "section": "",
+    "text": "You should have created an Rstudio project in Week 1. If you have not do so yet, I encourage you to return to a previous chapter for detailed instructions on data availability and structure.\nGet familiar with the dataset. Take a few minutes to look at the introduction to it is available at: https://www.psrc.org/media/3248, and the data dictionary, which is avaiable on Moodle, too.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Session 3: Linear regression</span>"
+    ]
+  },
+  {
+    "objectID": "session-3.html#estimating-the-average-miles-driven-per-household-a-day",
+    "href": "session-3.html#estimating-the-average-miles-driven-per-household-a-day",
+    "title": "3  Session 3: Linear regression",
+    "section": "3.2 Estimating the average miles driven per household a day",
+    "text": "3.2 Estimating the average miles driven per household a day\nIn this first example, we are interested to know about car use behaviour. So, we will use the ‘trips’ table to summarise information, and supplement it with information from the ‘households’ table by joining these together.\nFirst, we will subset the trips which primary trip mode is ‘Drive’ only, for the year 2023.\n\ntrips_drive &lt;- trips %&gt;% \n  filter(grepl('Drive', mode_class) & survey_year == '2023')\n\nWhat is function grepl() doing in the previous chunk? How many observations were kept in for trips driving compared to all of the trips?\nThen, we summarise all driving trips at the household level. To do so, we sum the trip distance, and divide it by the number of days with trips recorded in the survey to obtain the average miles driven.\n\nmiles_driven_hh &lt;- trips_drive %&gt;% \n  group_by(household_id) %&gt;% \n  summarise(\n    total_miles_hh = sum(distance_miles, na.rm = TRUE),\n    num_days_trips = max(daynum),\n    avg_miles_driven = total_miles_hh / num_days_trips\n  )\n\nAs we now have a summary per household, we can join more information about the household using the ‘household_id’ unique identifier in the left_join() function.\n\n# Join household data\nmiles_driven_hh &lt;- miles_driven_hh %&gt;% \n  left_join(households, by = 'household_id')",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Session 3: Linear regression</span>"
+    ]
+  },
+  {
+    "objectID": "session-3.html#exploratory-analysis",
+    "href": "session-3.html#exploratory-analysis",
+    "title": "3  Session 3: Linear regression",
+    "section": "3.3 Exploratory analysis",
+    "text": "3.3 Exploratory analysis\nIn this analysis, we will focus on respondents having more than 0 miles driven.\n\n# Subset\nmiles_driven_hh &lt;- miles_driven_hh %&gt;% \n  filter(avg_miles_driven &gt; 0)\n\nVisualize distribution of miles driven\n\nmiles_driven_hh %&gt;% \n  ggplot(aes(avg_miles_driven)) +\n  geom_density() + \n  labs(x = 'Avg. miles driven per household', y = 'Density') +\n  theme_minimal()\n\n\n\n\n\n\n\n\nSomething strange?…\nLet’s limit the maximum average of vehicle miles driven. The threshold chosen should be justified, e.g. preliminary information in the context, literature, or empirical references.\n\nmiles_driven_hh &lt;- miles_driven_hh %&gt;% \n  filter(avg_miles_driven &lt;= 500)\n\n\n3.3.1 Bivariate analysis\nWe will transform the numchildren variables to factor, treating it as a categorical. Why? Are there options?\n\nmiles_driven_hh &lt;- miles_driven_hh %&gt;% \n  mutate(numchildren = factor(numchildren))\n\nPlot the distribution of the average vehicle miles driven by groups.\n\n# Plot distribution by groups\nmiles_driven_hh %&gt;% \n  ggplot(aes(numchildren, avg_miles_driven)) +\n  geom_boxplot() +\n  labs(x = 'Number of children', y = 'Avg. miles driven per household') +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n3.3.2 How does working from home relates to vehicle miles driven?\nFor this, we will need to get the information about individuals in the household. We can do this using the ‘persons’ table.\nFirst, look at the categories in the ‘workplace’ variable\n\ncount(persons, workplace)\n\n# A tibble: 7 × 2\n  workplace                                                      n\n  &lt;chr&gt;                                                      &lt;int&gt;\n1 At home (telecommute or self-employed with home office)     2118\n2 Drives for a living (e.g., bus driver, salesperson)          257\n3 Missing: Skip Logic                                         7652\n4 Telework some days and travel to a work location some days  1554\n5 Usually the same location (outside home)                    8184\n6 Workplace regularly varies (different offices or jobsites)  1519\n7 &lt;NA&gt;                                                        2366\n\n\nThen, we create a new binary variable which identifies people working from home.\n\n# If the variable workplace contains 'At home' or 'Telework', we assign 'Yes'.\n# Otherwise, we set it to 'No'.\npersons &lt;- persons %&gt;% \n  mutate(\n    work_from_home = \n      ifelse(\n        grepl('At home|Telework', workplace), \n        'Yes', \n        'No'\n))\n\nThen, we summarise the information at the household level summing the number of individuals at the household which work from home.\n\nwork_from_home &lt;- persons %&gt;% \n  group_by(household_id) %&gt;% \n  summarise(pers_work_home = sum(work_from_home == 'Yes', na.rm = TRUE))\n\nNow, we can join this new information to the data at the household level.\n\n# Join to subset\nmiles_driven_hh &lt;- miles_driven_hh %&gt;% \n  left_join(work_from_home, by = 'household_id')\n\nWe will also create a derived variable which indicates whether anyone at the household does some work from home.\n\n# New variable, any person working from home?\nmiles_driven_hh &lt;- miles_driven_hh %&gt;% \n  mutate(any_work_home = ifelse(pers_work_home &gt; 0, 'Yes', 'No'))\n\nIs there any visual difference at the household level?\n\n# Visualise\nmiles_driven_hh %&gt;% \n  ggplot(aes(any_work_home, avg_miles_driven)) +\n  geom_boxplot() + \n  labs(x = 'Any working from home', y = 'Avg. miles driven per household') +\n  theme_minimal()\n\n\n\n\n\n\n\n\nWhat about the descriptive statistics?\n\nmiles_driven_hh %&gt;% \n  group_by(any_work_home) %&gt;% \n  summarise(\n    miles_driven_mean = mean(avg_miles_driven),\n    miles_driven_sd = sd(avg_miles_driven)\n  )\n\n# A tibble: 2 × 3\n  any_work_home miles_driven_mean miles_driven_sd\n  &lt;chr&gt;                     &lt;dbl&gt;           &lt;dbl&gt;\n1 No                         37.2            48.1\n2 Yes                        37.4            42.3",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Session 3: Linear regression</span>"
+    ]
+  },
+  {
+    "objectID": "session-3.html#evaluate-the-difference-in-a-linear-regression-analysis",
+    "href": "session-3.html#evaluate-the-difference-in-a-linear-regression-analysis",
+    "title": "3  Session 3: Linear regression",
+    "section": "3.4 Evaluate the difference in a linear regression analysis",
+    "text": "3.4 Evaluate the difference in a linear regression analysis\nLet’ see what a simple linear model suggest\n\nmiles_driven_hh %&gt;% \n  lm(avg_miles_driven ~ any_work_home, .) %&gt;% \n  summary()\n\n\nCall:\nlm(formula = avg_miles_driven ~ any_work_home, data = .)\n\nResiduals:\n   Min     1Q Median     3Q    Max \n-37.27 -26.84 -13.48  10.05 448.62 \n\nCoefficients:\n                 Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)       37.1775     1.1546  32.200   &lt;2e-16 ***\nany_work_homeYes   0.1998     1.7202   0.116    0.908    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 45.6 on 2837 degrees of freedom\nMultiple R-squared:  4.755e-06, Adjusted R-squared:  -0.0003477 \nF-statistic: 0.01349 on 1 and 2837 DF,  p-value: 0.9075\n\n\nAre there potential problems with this model or results?\nWe will add socio-demographic variables as controls, e.g. size of the household should matter.\nFirst, we format the order of household income labels and convert size of household from character to numeric. This will ease interpretations.\n\n# Income labels\nincome_labs &lt;- c(\n  \"Under $25,000\", \n  \"$25,000-$49,999\", \n  \"$50,000-$74,999\", \n  \"$75,000-$99,999\", \n  \"$100,000-$199,000\", \n  \"$200,000 or more\"\n)\nmiles_driven_hh &lt;- miles_driven_hh %&gt;% \n  mutate(\n    # Income labels\n    hhincome_broad = factor(hhincome_broad, income_labs),\n    # Household size as integer\n    hhsize_int = as.numeric(str_extract(hhsize, \"\\\\d+\")),\n    # Children at household as binary\n    children_binary = ifelse(numchildren == '0 children', 'No', 'Yes')\n)\n\nWe run the multiple regression and print results.\n\nm1 &lt;- miles_driven_hh %&gt;% \n  lm(\n    avg_miles_driven ~ \n      any_work_home + hhsize_int + hhincome_broad + children_binary, .\n  )\nsummary(m1)\n\n\nCall:\nlm(formula = avg_miles_driven ~ any_work_home + hhsize_int + \n    hhincome_broad + children_binary, data = .)\n\nResiduals:\n   Min     1Q Median     3Q    Max \n-73.04 -20.99  -9.91   8.08 433.51 \n\nCoefficients:\n                               Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)                       8.252      3.517   2.346 0.019080 *  \nany_work_homeYes                 -5.755      2.319  -2.482 0.013161 *  \nhhsize_int                        8.500      1.218   6.978 4.26e-12 ***\nhhincome_broad$25,000-$49,999     5.504      3.805   1.447 0.148158    \nhhincome_broad$50,000-$74,999    13.446      3.723   3.612 0.000313 ***\nhhincome_broad$75,000-$99,999    10.506      3.855   2.725 0.006487 ** \nhhincome_broad$200,000 or more   14.104      3.914   3.603 0.000323 ***\nchildren_binaryYes                4.003      3.556   1.126 0.260496    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 41.54 on 1709 degrees of freedom\n  (1122 observations deleted due to missingness)\nMultiple R-squared:  0.08689,   Adjusted R-squared:  0.08315 \nF-statistic: 23.23 on 7 and 1709 DF,  p-value: &lt; 2.2e-16",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Session 3: Linear regression</span>"
+    ]
+  },
+  {
+    "objectID": "session-3.html#does-it-meet-the-model-assumptions-lets-check-the-model",
+    "href": "session-3.html#does-it-meet-the-model-assumptions-lets-check-the-model",
+    "title": "3  Session 3: Linear regression",
+    "section": "3.5 Does it meet the model assumptions? … Lets check the model",
+    "text": "3.5 Does it meet the model assumptions? … Lets check the model\nCheck model 1 assumptions. Type ‘y’ when you are asked about updating extensions.\n\ncheck_model(m1)",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Session 3: Linear regression</span>"
+    ]
+  },
+  {
+    "objectID": "session-3.html#a-log-linear-model",
+    "href": "session-3.html#a-log-linear-model",
+    "title": "3  Session 3: Linear regression",
+    "section": "3.6 A log-linear model",
+    "text": "3.6 A log-linear model\nLets try to fit the model in the log-linear form.\n\nm2 &lt;- miles_driven_hh %&gt;% \n  mutate(log_miles_driven = log(avg_miles_driven)) %&gt;% \n  lm(\n    log_miles_driven ~ \n      any_work_home + hhsize_int + hhincome_broad + children_binary, .\n)\n\nAnd check the model again\n\ncheck_model(m2)\n\n\n\n\n\n\n\n\nWhat are the interpretations of the log-linear model? Think of coefficients and overall performance.\n\nsummary(m2)\n\n\nCall:\nlm(formula = log_miles_driven ~ any_work_home + hhsize_int + \n    hhincome_broad + children_binary, data = .)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-4.8798 -0.6784  0.1468  0.7830  3.5528 \n\nCoefficients:\n                               Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)                     1.92366    0.09940  19.353  &lt; 2e-16 ***\nany_work_homeYes               -0.18482    0.06553  -2.820  0.00485 ** \nhhsize_int                      0.25768    0.03442   7.486 1.13e-13 ***\nhhincome_broad$25,000-$49,999   0.30127    0.10752   2.802  0.00514 ** \nhhincome_broad$50,000-$74,999   0.57983    0.10520   5.511 4.10e-08 ***\nhhincome_broad$75,000-$99,999   0.58761    0.10894   5.394 7.85e-08 ***\nhhincome_broad$200,000 or more  0.76777    0.11062   6.941 5.52e-12 ***\nchildren_binaryYes              0.07476    0.10050   0.744  0.45705    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 1.174 on 1709 degrees of freedom\n  (1122 observations deleted due to missingness)\nMultiple R-squared:  0.1209,    Adjusted R-squared:  0.1173 \nF-statistic: 33.57 on 7 and 1709 DF,  p-value: &lt; 2.2e-16\n\n\nWhich model would you choose? Are the any other potentially omitted variables?",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Session 3: Linear regression</span>"
+    ]
+  }
+]
