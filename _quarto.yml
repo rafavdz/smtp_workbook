@@ -1,0 +1,27 @@
+project:
+  type: book
+
+book:
+  title: "Statistical Methos for Transport Planning - Workbook"
+  author: "Rafael Verduzco-Torres"
+  chapters:
+    - index.qmd
+    - session-1.qmd
+    - session-2.qmd
+    - session-3.qmd
+execute:
+  message: false
+  warning: false
+
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+  pdf:
+    documentclass: scrreprt
+
+
+
