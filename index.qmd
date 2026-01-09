@@ -1,0 +1,5 @@
+# Preface {.unnumbered}
+
+## Pre-requisites
+
+The activities assume you already have the R and RStudio installed in your machine.

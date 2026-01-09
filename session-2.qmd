@@ -1,0 +1,175 @@
+# Session 2
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Preliminaries 
+
+First, load the packages required for the analysis (install if needed).
+
+```{r}
+library(tidyverse) # for data manipulation and visualization
+```
+
+We will pick it up where we left it last time, and read the household data in the `RDS` file you prepared. If you haven't completed Session 1, go to it and complete it before continuing here.
+
+```{r}
+household_subset <- read_rds('data/household_subset.RDS')
+```
+
+You will also need the 'Trips' table for this session. As we will combine the information from households and trips reported by each household.
+
+```{r}
+trips <- read_csv("data/Trips.csv")
+```
+
+## Format Trips table
+
+Subset trips for the year 2023 and keep only variables of interest.
+
+```{r}
+trips_subset <- trips %>%
+  filter(survey_year == 2023) %>%
+  select(
+    household_id, person_id, trip_id, 
+    mode_class, depart_date, depart_time_hour, 
+    arrival_time_hour, origin_county, dest_county, 
+    origin_purpose_cat, dest_purpose_cat, distance_meters,
+    duration_minutes
+)
+
+```
+
+ALWAYS CHECK THE SUBSET!!!   What would you check?
+
+```{r}
+nrow(trips_subset)
+ncol(trips_subset)
+```
+
+```{r}
+colnames(trips_subset)
+head(trips_subset)
+```
+
+
+Transform the categorical variables as factor.
+
+```{r}
+trips_subset <- trips_subset %>%
+  mutate(
+    across(
+      c(mode_class, origin_county, dest_county, origin_purpose_cat, dest_purpose_cat), 
+      as.factor)
+  )
+
+```
+
+
+## Trip descriptive statistics
+
+Calculate a summary at the person-level. Include the number of trips, total travel distance and travel time for each person, within household.
+
+```{r}
+person_summary <- trips_subset %>%
+  group_by(person_id, household_id) %>%
+  summarise(
+    number_of_trips = n(),
+    # Distance in kilometres
+    total_travel_distance = sum(distance_meters / 1000),
+    total_travel_time = sum(duration_minutes)
+  ) %>% 
+  ungroup()
+```
+
+Now, you need to normalise the total distance and travel time based on the number of trips by calculating the average values. 
+
+```{r}
+person_summary <- person_summary %>% 
+  mutate(
+    avg_trip_distance = total_travel_distance / number_of_trips,
+    avg_trip_duration = total_travel_time / number_of_trips
+  )
+```
+
+Create a quick summary
+```{r}
+summary(person_summary)
+```
+
+Do the values make sense?
+
+There are some extreme values in the number of trips (more than 300?!) and average trip distance (more thank 2,000 KM?). We will remove them for this analysis. In practice, we should carefully make choices and justify them.
+
+```{r}
+person_summary <- person_summary %>% 
+  filter(number_of_trips < 50 & avg_trip_distance < 100)
+```
+
+
+# Joining tables
+
+Join the household information to person summary.
+
+```{r}
+person_summary <- left_join(person_summary, household_subset, by = "household_id")
+```
+
+
+- Why do we join by 'household_id'?
+- Have a look to the result. What do you observe? What is the observation unit? Does it make sense?
+
+```{r}
+glimpse(person_summary)
+```
+
+## Visualising data
+
+Univariate distribution: Check number of trips.
+
+```{r}
+person_summary %>% 
+  ggplot(aes(number_of_trips)) +
+  geom_histogram() +
+  labs(
+    x = "Total number of trips",
+    y = "Count"
+  )
+```
+
+What is a suitable alternative to a histogram to visualise a variable distribution?
+
+Bivariate plot: Visualise average number of trip and HH income.
+
+```{r}
+person_summary %>% 
+  ggplot(aes(number_of_trips, hhincome_broad)) +
+  geom_boxplot() +
+  labs(
+    x = "Total trips",
+    y = "Household income"
+  )
+```
+
+Visualise average trip distance and HH income.
+
+```{r}
+person_summary %>% 
+  ggplot(aes(avg_trip_distance, hhincome_broad)) +
+  geom_boxplot() +
+  labs(
+    x = "Average trip distance in kilometres",
+    y = "Household income"
+  )
+```
+
+
+# Activities
+
+1. Read the Persons table 
+2. Filter out year 2021 and select some variables of interest, e.g. household_id, person_id, employment, education, age, commute_freq, mode of transport for work.
+3. Transform the selected columns to factors.
+4. Join the household subset data.
+5. Summarise and visualise the key variables of your choice.
+

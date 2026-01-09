@@ -1,0 +1,189 @@
+# Session 1
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Setting the working environment
+
+A good practice is to have an `RStudio` for each different project you are working on. This creates a folder in which, ideally, you should include all the input and output data.
+
+    - Before moving any further, make sure you have your own `RStudio` project in your session.
+
+## Lets Practice using some transport data
+
+In this course, we will look into Puget Sound Regional Travel Survey. This workbook uses dataset version '2023.5'. 
+
+1. Download the dataset available from the course Moodle page under the 'Lab Activities' tile.
+2. Unzip the file. You can see that the following tables in `CSV` files:
+    - Trips
+    - Persons
+    - Households
+    - Vehicles
+    - Days
+3. Move the files into your RStudio project. It is a good practice to keep inputs, code, and outputs in separate folders. I suggest to crea a folder called `data` and paste all the files in it.
+
+The codebook is available on Moodle, too. Additional information offered by the source are available at <https://www.psrc.org/our-work/household-travel-survey-program>.
+
+
+## Hands on
+
+The objective of this first part is to reproduce the results shown below. For now, I encourage you to type the code, rather than copying, this can help you to actively think of what the code is doing.
+
+As a first step, create an RMardown/Quarto file, and save it in your RStudio project (remove all the default contents, if included). 
+
+First, load the packages required for the analysis (install if needed).
+
+```{r}
+# for data manipulation and visualization
+library(tidyverse) 
+```
+
+Then, read the 'Household' table from the `CSV` file. Make sure to adjust the directory to match the location where you save the Survey files.
+
+```{r}
+# Reading the Household data
+households <- read_csv("data/Households.csv")
+```
+
+
+A quick check. How many rows and columns are there in the dataset?
+```{r}
+nrow(households)
+ncol(households)
+```
+
+That's many columns. Check the first first 20 variable names in the houshold table.
+```{r}
+head(colnames(household), 20)
+```
+
+What do all these names mean?!
+
+Download the dataset codebook from Moodle, and keep it in your project folder. Spend 5-10 minutes to explore the structure and get familiar with the contents of the dataset.
+
+### Subsetting
+
+Lets subset some variables of interest from the Household table. Also, keep the records for the year 2023 only.
+
+```{r}
+# Subset the data to select only the variables we need for the year 2023
+household_subset <- households %>%
+  filter(survey_year == 2023) %>%
+  select(
+    household_id, hhincome_broad, hhsize, 
+    home_county, vehicle_count, hh_race_category, 
+    numadults, numchildren, numworkers
+  )
+
+```
+
+
+We can glimpse the data to see the type of the variables are included.
+```{r}
+glimpse(household_subset)
+```
+
+## Formating variables
+
+Some columns are not in it's appropriate type, as they mix text with numbers. Thus, we will have to extract the numbers and set categorical variables to factors.
+
+```{r}
+household_subset <- household_subset %>%
+  mutate(
+    hhsize = parse_number(hhsize),
+    vehicle_count = parse_number(vehicle_count),
+    numadults = parse_number(numadults),
+    numchildren = parse_number(numchildren),
+    numworkers = parse_number(numworkers)
+  )
+```
+
+Categorical variables as factors.
+```{r}
+# Convert all required variables to factors
+household_subset <- household_subset %>%
+  mutate(across(c(hhincome_broad, home_county, hh_race_category), factor))
+
+```
+
+Let's glimpse the formatted variables.
+```{r}
+glimpse(household_subset)
+```
+
+
+The income bands are ordered categories. However, they are unordered. Rearrenge them as following:
+
+Format the order of household income labels
+
+```{r}
+# Type ordered income labs
+income_labs <- c(
+  "Under $25,000", 
+  "$25,000-$49,999", 
+  "$50,000-$74,999", 
+  "$75,000-$99,999", 
+  "$100,000-$199,999", 
+  "$200,000 or more"
+)
+
+household_subset <- household_subset %>% 
+  mutate(hhincome_broad = factor(hhincome_broad, levels = income_labs))
+```
+
+## Descriptive statistics
+
+We can have a quick and dirt descriptive statistics overview by producing a default summary.
+
+```{r}
+summary(household_subset)
+```
+
+For tailored descriptive statistic summarise, we can do the following:
+
+```{r}
+household_subset %>% 
+  summarise(hhsize_mean = mean(hhsize), hhsize_sd = sd(hhsize))
+```
+
+An we can easily extend this breaking down the descriptive statistics by group a categorical characteristic of the household. In the example below, by the home County.
+
+```{r}
+ household_subset %>% 
+  group_by(home_county) %>% 
+  summarise(mean = mean(hhsize), sd = sd(hhsize))
+```
+
+Try summarising by `hh_race_category`.
+
+These examples provide useful and flexible summaries. However, it'd require some work to format it for a final output. Packages that can help you creating descriptive statistic tables are: [gtsummary](https://www.danieldsjoberg.com/gtsummary/?utm_source=chatgpt.com), [modelsummary](https://modelsummary.com/?utm_source=chatgpt.com), [summarytools](https://cran.r-project.org/web/packages/summarytools/vignettes/introduction.html).
+
+
+## Missing data
+
+Examine the variable `hh_race_category`. Are the missing values?
+
+Following the conventions in `R`, missing values should be treated as NA. Format these as appropriate using the `fct_recode()`.
+
+There are many reasons why some data might be missing.
+
+
+## Wraping up
+
+### Write the formated subset
+
+We will finish this session here. 
+
+We will write the formatted household subset. So, you do not have to go over the same steps in the next session. 
+
+```{r}
+write_rds(household_subset,file = 'data/household_subset.RDS')
+```
+
+### Final reflections
+
+- What year are you including in the data?
+- What level of unit is represented in the table you prepared?
+
+

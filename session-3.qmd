@@ -1,0 +1,271 @@
+# Session 3: Linear regression
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+ 
+## Preliminaries
+
+1. You should have created an `Rstudio` project in Week 1. If you have not do so yet, I encourage you to return to a previous chapter for detailed instructions on data availability and structure.
+2. Get familiar with the dataset. Take a few minutes to look at the introduction to it is available at: <https://www.psrc.org/media/3248>, and the data dictionary, which is avaiable on Moodle, too.
+
+For today's session we will need the following packages. Install them using the `install.packages()` function if you don't have them available.
+
+```{r}
+# Packages 
+library(tidyverse)
+
+# Today we will also be using
+# This is helpful to check the assumptions of linear models
+library(performance)
+```
+
+Now, we will read the data in to the R session. I am using a folder to store the data called `hh-travel-survey/`, change the name to the appropriate directory if you are using something different.
+
+```{r}
+# Read data
+trips <- read_csv('data/Trips.csv')
+persons <- read_csv('data/Persons.csv')
+households <- read_csv('data/Households.csv')
+```
+
+## Estimating the average miles driven per household a day
+
+In this first example, we are interested to know about car use behaviour. So, we will use the 'trips' table to summarise information, and supplement it with information from the 'households' table by joining these together.
+
+First, we will subset the trips which primary trip mode is 'Drive' only, for the year 2023.
+
+```{r}
+trips_drive <- trips %>% 
+  filter(grepl('Drive', mode_class) & survey_year == '2023')
+```
+
+What is function `grepl()` doing in the previous chunk?
+How many observations were kept in for trips driving compared to all of the trips?
+
+Then, we summarise all driving trips at the household level. To do so, we sum the trip distance, and divide it by the number of days with trips recorded in the survey to obtain the average miles driven.
+
+```{r}
+miles_driven_hh <- trips_drive %>% 
+  group_by(household_id) %>% 
+  summarise(
+    total_miles_hh = sum(distance_miles, na.rm = TRUE),
+    num_days_trips = max(daynum),
+    avg_miles_driven = total_miles_hh / num_days_trips
+  )
+```
+
+As we now have a summary per household, we can join more information about the household using the 'household_id' unique identifier in the `left_join()` function.
+
+```{r}
+# Join household data
+miles_driven_hh <- miles_driven_hh %>% 
+  left_join(households, by = 'household_id')
+```
+
+## Exploratory analysis
+
+In this analysis, we will focus on respondents having more than 0 miles driven.
+
+```{r}
+# Subset
+miles_driven_hh <- miles_driven_hh %>% 
+  filter(avg_miles_driven > 0)
+```
+
+Visualize distribution of miles driven
+
+```{r}
+miles_driven_hh %>% 
+  ggplot(aes(avg_miles_driven)) +
+  geom_density() + 
+  labs(x = 'Avg. miles driven per household', y = 'Density') +
+  theme_minimal()
+```
+
+Something strange?...
+
+Let's limit the maximum average of vehicle miles driven. The threshold chosen should be justified, e.g. preliminary information in the context, literature, or empirical references.
+
+```{r}
+miles_driven_hh <- miles_driven_hh %>% 
+  filter(avg_miles_driven <= 500)
+```
+
+### Bivariate analysis
+
+We will transform the `numchildren` variables to factor, treating it as a categorical. Why? Are there options?
+
+```{r}
+miles_driven_hh <- miles_driven_hh %>% 
+  mutate(numchildren = factor(numchildren))
+```
+
+Plot the distribution of the average vehicle miles driven by groups.
+
+```{r}
+# Plot distribution by groups
+miles_driven_hh %>% 
+  ggplot(aes(numchildren, avg_miles_driven)) +
+  geom_boxplot() +
+  labs(x = 'Number of children', y = 'Avg. miles driven per household') +
+  theme_minimal()
+```
+
+### How does working from home relates to vehicle miles driven?
+
+For this, we will need to get the information about individuals in the household. We can do this using the 'persons' table.
+
+First, look at the categories in the 'workplace' variable
+
+```{r}
+count(persons, workplace)
+```
+
+Then, we create a new binary variable which identifies people working from home.
+
+```{r}
+# If the variable workplace contains 'At home' or 'Telework', we assign 'Yes'.
+# Otherwise, we set it to 'No'.
+persons <- persons %>% 
+  mutate(
+    work_from_home = 
+      ifelse(
+        grepl('At home|Telework', workplace), 
+        'Yes', 
+        'No'
+))
+```
+
+Then, we summarise the information at the household level summing the number of individuals at the household which work from home.
+
+```{r}
+work_from_home <- persons %>% 
+  group_by(household_id) %>% 
+  summarise(pers_work_home = sum(work_from_home == 'Yes', na.rm = TRUE))
+```
+
+Now, we can join this new information to the data at the household level.
+
+```{r}
+# Join to subset
+miles_driven_hh <- miles_driven_hh %>% 
+  left_join(work_from_home, by = 'household_id')
+```
+
+We will also create a derived variable which indicates whether anyone at the household does some work from home.
+
+```{r}
+# New variable, any person working from home?
+miles_driven_hh <- miles_driven_hh %>% 
+  mutate(any_work_home = ifelse(pers_work_home > 0, 'Yes', 'No'))
+```
+
+Is there any visual difference at the household level?
+
+```{r}
+# Visualise
+miles_driven_hh %>% 
+  ggplot(aes(any_work_home, avg_miles_driven)) +
+  geom_boxplot() + 
+  labs(x = 'Any working from home', y = 'Avg. miles driven per household') +
+  theme_minimal()
+```
+
+What about the descriptive statistics?
+
+```{r}
+miles_driven_hh %>% 
+  group_by(any_work_home) %>% 
+  summarise(
+    miles_driven_mean = mean(avg_miles_driven),
+    miles_driven_sd = sd(avg_miles_driven)
+  )
+```
+
+
+## Evaluate the difference in a linear regression analysis
+
+Let' see what a simple linear model suggest
+```{r}
+miles_driven_hh %>% 
+  lm(avg_miles_driven ~ any_work_home, .) %>% 
+  summary()
+```
+
+Are there potential problems with this model or results?
+
+We will add socio-demographic variables as controls, e.g. size of the household should matter.
+
+First, we format the order of household income labels and convert size of household from character to numeric. This will ease interpretations.
+
+```{r}
+# Income labels
+income_labs <- c(
+  "Under $25,000", 
+  "$25,000-$49,999", 
+  "$50,000-$74,999", 
+  "$75,000-$99,999", 
+  "$100,000-$199,000", 
+  "$200,000 or more"
+)
+miles_driven_hh <- miles_driven_hh %>% 
+  mutate(
+    # Income labels
+    hhincome_broad = factor(hhincome_broad, income_labs),
+    # Household size as integer
+    hhsize_int = as.numeric(str_extract(hhsize, "\\d+")),
+    # Children at household as binary
+    children_binary = ifelse(numchildren == '0 children', 'No', 'Yes')
+)
+```
+
+We run the multiple regression and print results.
+
+```{r}
+m1 <- miles_driven_hh %>% 
+  lm(
+    avg_miles_driven ~ 
+      any_work_home + hhsize_int + hhincome_broad + children_binary, .
+  )
+summary(m1)
+```
+
+## Does it meet the model assumptions? ... Lets check the model
+
+Check model 1 assumptions. Type 'y' when you are asked about updating extensions.
+```{r }
+check_model(m1)
+```
+
+## A log-linear model
+
+Lets try to fit the model in the log-linear form.
+```{r}
+m2 <- miles_driven_hh %>% 
+  mutate(log_miles_driven = log(avg_miles_driven)) %>% 
+  lm(
+    log_miles_driven ~ 
+      any_work_home + hhsize_int + hhincome_broad + children_binary, .
+)
+```
+
+And check the model again
+```{r }
+check_model(m2)
+```
+
+What are the interpretations of the log-linear model? Think of coefficients and overall performance.
+
+```{r fig.height = 6, fig.width = 7}
+summary(m2)
+```
+
+Which model would you choose? Are the any other potentially omitted variables?
+
+# Individual activities
+
+1. Estimate average miles walked at the household level.
+2. How does having children relates to walking behaviour? Include descriptive statistics, plots, and multiple linear regression analysis.
+3. To what extent are the assumptions of the linear model met?
+
