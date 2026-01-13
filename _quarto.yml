@@ -21,7 +21,7 @@ format:
     theme:
       light: cosmo
       dark: darkly
-    cover-image: cover.png
+    cover-image: images/cover.png
     toc: true
 
 
