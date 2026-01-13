@@ -1,4 +1,4 @@
-# Session 2
+# Session 2 Data structures and descriptive statistics
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
