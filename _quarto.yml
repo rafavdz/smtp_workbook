@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 book:
-  title: "Statistical Methos for Transport Planning - Workbook"
+  title: "Statistical Methods for Transport Planning - Workbook"
   author: "Rafael Verduzco-Torres"
   chapters:
     - index.qmd
@@ -19,10 +19,10 @@ bibliography: references.bib
 format:
   html:
     theme:
-      - cosmo
-      - brand
-  pdf:
-    documentclass: scrreprt
+      light: cosmo
+      dark: darkly
+    cover-image: cover.png
+    toc: true
 
 
 
