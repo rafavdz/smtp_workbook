@@ -1,5 +1,27 @@
+
 # Preface {.unnumbered}
+
+Welcome to the Statistical Methods for Transport Planning (SMTP) Workbook!
+
+This workbook is your hands-on companion to the main course. Inside, you’ll find a series of step-by-step activities designed to help you explore real-world transport data and put the concepts from the lectures into practice. Think of it as your space to experiment, apply what you’ve learned, and build confidence in using statistical methods for transport planning.
+
+### How to navigate this book
+
+This book is organized so that you can complete one chapter per lecture.
+
+**Left-hand panel**: This panel contains the full contents of the workbook. Use it to browse and navigate across chapters. You can also move to the next chapter by clicking the arrow button at the bottom left.
+
+**Right-hand panel**: This sliding panel shows the sections within the current chapter. Use it to quickly jump between different sections of the chapter you are working on.
+
+Extra tips: Use the search bar at the top to quickly find topics or keywords.
+Toggle dark mode for a more comfortable reading experience using the button in the top-right corner.
 
 ## Pre-requisites
 
-The activities assume you already have the R and RStudio installed in your machine.
+The activities assume you already have `R` and `RStudio` installed in your machine.
+
+Also, the activities assume prior knowledge `R` coding skills.
+
+## Contact
+
+JoseRafael.Verduzco-Torres@glasgow.ac.uk
