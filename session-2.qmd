@@ -165,11 +165,11 @@ person_summary %>%
 ```
 
 
-# Activities
+# Individual activities
 
 1. Read the Persons table 
 2. Filter out year 2021 and select some variables of interest, e.g. household_id, person_id, employment, education, age, commute_freq, mode of transport for work.
-3. Transform the selected columns to factors.
-4. Join the household subset data.
+3. Transform the selected columns to factors when appropriate.
+4. Join the household subset data. (Note: the household subset used in this and the previous lab does not contain records for 2021. So, you need to create a corresponding subset).
 5. Summarise and visualise the key variables of your choice.
 
