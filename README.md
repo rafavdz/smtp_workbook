@@ -1,0 +1,17 @@
+# SMPT Workbook
+
+
+### Statistical Methods for Transport Planning - Workbook
+
+This is a companion workbook for the [University of
+Glasgow](https://www.gla.ac.uk/) course [Statistical Methods for
+Transport Planning
+URBAN5103](https://www.gla.ac.uk/coursecatalogue/course/?code=URBAN5103).
+The workbook presents a series of interactive activities which are run
+during weekly hands-on activity sessions.
+
+The on-line workbook publicly available at:
+<https://rafavdz.github.io/smtp_workbook/>.
+
+Licence: [MIT Licence](https://opensource.org/license/mit). See more in
+Licence document.
