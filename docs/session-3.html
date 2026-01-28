@@ -64,6 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./session-4.html" rel="next">
 <link href="./session-2.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -168,6 +169,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Session 3: Linear regression</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./session-4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Session 4: Logistic regression Part 1</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./session-6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Session 6: Multinomial model</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./session-7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Session 7: Poisson regression</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -218,7 +237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="3.1" class="anchored" data-anchor-id="preliminaries"><span class="header-section-number">3.1</span> Preliminaries</h2>
 <ol type="1">
 <li>You should have created an <code>Rstudio</code> project in Week 1. If you have not do so yet, I encourage you to return to a previous chapter for detailed instructions on data availability and structure.</li>
-<li>Get familiar with the dataset. Take a few minutes to look at the introduction to it is available at: <a href="https://www.psrc.org/media/3248" class="uri">https://www.psrc.org/media/3248</a>, and the data dictionary, which is avaiable on Moodle, too.</li>
+<li>Get familiar with the dataset. If you haven’t do so, take a few minutes to look at the introduction to it is available at: <a href="https://www.psrc.org/media/3248" class="uri">https://www.psrc.org/media/3248</a>, and the data dictionary, which is avaiable on Moodle, too.</li>
 </ol>
 <p>For today’s session we will need the following packages. Install them using the <code>install.packages()</code> function if you don’t have them available.</p>
 <div class="cell">
@@ -229,7 +248,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># This is helpful to check the assumptions of linear models</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now, we will read the data in to the R session. I am using a folder to store the data called <code>hh-travel-survey/</code>, change the name to the appropriate directory if you are using something different.</p>
+<p>Now, we will read the data in to the R session. We will use three tables from the travel survey dataset.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read data</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>trips <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'data/Trips.csv'</span>)</span>
@@ -239,14 +258,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="estimating-the-average-miles-driven-per-household-a-day" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="estimating-the-average-miles-driven-per-household-a-day"><span class="header-section-number">3.2</span> Estimating the average miles driven per household a day</h2>
-<p>In this first example, we are interested to know about car use behaviour. So, we will use the ‘trips’ table to summarise information, and supplement it with information from the ‘households’ table by joining these together.</p>
+<p>In this first example, we are interested to know about driving behaviour. So, we will use the ‘trips’ table to summarise information, and supplement it with information from the ‘households’ table by joining these together.</p>
 <p>First, we will subset the trips which primary trip mode is ‘Drive’ only, for the year 2023.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>trips_drive <span class="ot">&lt;-</span> trips <span class="sc">%&gt;%</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">'Drive'</span>, mode_class) <span class="sc">&amp;</span> survey_year <span class="sc">==</span> <span class="st">'2023'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>What is function <code>grepl()</code> doing in the previous chunk? How many observations were kept in for trips driving compared to all of the trips?</p>
-<p>Then, we summarise all driving trips at the household level. To do so, we sum the trip distance, and divide it by the number of days with trips recorded in the survey to obtain the average miles driven.</p>
+<p>The we will create key variables relating to driving behaviour at the household level. We are crucially interested in the average miles driven a day per household. To do so, we summarise the information at the household level. Effectively, we sum the trip distance, and divide it by the number of days with trips recorded in the survey to obtain the average miles driven.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>miles_driven_hh <span class="ot">&lt;-</span> trips_drive <span class="sc">%&gt;%</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(household_id) <span class="sc">%&gt;%</span> </span>
@@ -265,13 +284,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="exploratory-analysis" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="exploratory-analysis"><span class="header-section-number">3.3</span> Exploratory analysis</h2>
-<p>In this analysis, we will focus on respondents having more than 0 miles driven.</p>
+<p>In this analysis, we will focus on respondents having more than 0 miles driven. In other words, only households who have reported to have droven in the survey.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>miles_driven_hh <span class="ot">&lt;-</span> miles_driven_hh <span class="sc">%&gt;%</span> </span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(avg_miles_driven <span class="sc">&gt;</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Visualize distribution of miles driven</p>
+<p>Lte’s visualize distribution of miles driven.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>miles_driven_hh <span class="sc">%&gt;%</span> </span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(avg_miles_driven)) <span class="sc">+</span></span>
@@ -287,7 +306,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Something strange?…</p>
-<p>Let’s limit the maximum average of vehicle miles driven. The threshold chosen should be justified, e.g.&nbsp;preliminary information in the context, literature, or empirical references.</p>
+<p>Let’s limit the maximum average of vehicle miles driven. The threshold chosen should be justified, e.g.&nbsp;preliminary information in the context, literature, or external empirical references.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>miles_driven_hh <span class="ot">&lt;-</span> miles_driven_hh <span class="sc">%&gt;%</span> </span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(avg_miles_driven <span class="sc">&lt;=</span> <span class="dv">500</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -318,7 +337,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="how-does-working-from-home-relates-to-vehicle-miles-driven" class="level3" data-number="3.3.2">
 <h3 data-number="3.3.2" class="anchored" data-anchor-id="how-does-working-from-home-relates-to-vehicle-miles-driven"><span class="header-section-number">3.3.2</span> How does working from home relates to vehicle miles driven?</h3>
-<p>For this, we will need to get the information about individuals in the household. We can do this using the ‘persons’ table.</p>
+<p>In this session, the aim is to explain wow working from home relates to vehicle miles driven. For this, we will need to get the information about individuals in the household. We can do this using the ‘persons’ table.</p>
 <p>First, look at the categories in the ‘workplace’ variable</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(persons, workplace)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -337,22 +356,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Then, we create a new binary variable which identifies people working from home.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If the variable workplace contains 'At home' or 'Telework', we assign 'Yes'.</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Otherwise, we set it to 'No'.</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>persons <span class="ot">&lt;-</span> persons <span class="sc">%&gt;%</span> </span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">work_from_home =</span> </span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ifelse</span>(</span>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a binary variable indicating if anyone in works from home or teleworks</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>persons <span class="ot">&lt;-</span> persons <span class="sc">%&gt;%</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">work_from_home =</span> </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ifelse</span>(</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># If the variable workplace contains 'At home' or 'Telework'</span></span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">grepl</span>(<span class="st">'At home|Telework'</span>, workplace), </span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Yes'</span>, </span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'No'</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># return 'Yes'.</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Yes'</span>,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Otherwise, we set it to 'No'</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">'No'</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Then, we summarise the information at the household level summing the number of individuals at the household which work from home.</p>
+<p>To help you going about the previous code, you can read for more information about the conditional function typing <code>?ifelse</code> in your R console.</p>
+<p>Then, we summarise the information at the household level summing the number of individuals at the household which work from home (‘pers_work_home’). Also, we will create another variable which checks if at leas one person works from home, i.e.&nbsp;‘work_from_home’.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>work_from_home <span class="ot">&lt;-</span> persons <span class="sc">%&gt;%</span> </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(household_id) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">pers_work_home =</span> <span class="fu">sum</span>(work_from_home <span class="sc">==</span> <span class="st">'Yes'</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">pers_work_home =</span> <span class="fu">sum</span>(work_from_home <span class="sc">==</span> <span class="st">'Yes'</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">any_work_home =</span> <span class="fu">ifelse</span>(pers_work_home <span class="sc">&gt;</span> <span class="dv">1</span>, <span class="st">'Yes'</span>, <span class="st">'No'</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, we can join this new information to the data at the household level.</p>
 <div class="cell">
@@ -360,53 +385,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>miles_driven_hh <span class="ot">&lt;-</span> miles_driven_hh <span class="sc">%&gt;%</span> </span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(work_from_home, <span class="at">by =</span> <span class="st">'household_id'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We will also create a derived variable which indicates whether anyone at the household does some work from home.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># New variable, any person working from home?</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>miles_driven_hh <span class="ot">&lt;-</span> miles_driven_hh <span class="sc">%&gt;%</span> </span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">any_work_home =</span> <span class="fu">ifelse</span>(pers_work_home <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">'Yes'</span>, <span class="st">'No'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <p>Is there any visual difference at the household level?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualise</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>miles_driven_hh <span class="sc">%&gt;%</span> </span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(any_work_home, avg_miles_driven)) <span class="sc">+</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Any working from home'</span>, <span class="at">y =</span> <span class="st">'Avg. miles driven per household'</span>) <span class="sc">+</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualise</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>miles_driven_hh <span class="sc">%&gt;%</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(any_work_home, avg_miles_driven)) <span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">'Any working from home'</span>, </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">'Avg. miles driven per household'</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="session-3_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="session-3_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>What about the descriptive statistics?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>miles_driven_hh <span class="sc">%&gt;%</span> </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(any_work_home) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">miles_driven_mean =</span> <span class="fu">mean</span>(avg_miles_driven),</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">miles_driven_sd =</span> <span class="fu">sd</span>(avg_miles_driven)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>miles_driven_hh <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(any_work_home) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">miles_driven_mean =</span> <span class="fu">mean</span>(avg_miles_driven),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">miles_driven_sd =</span> <span class="fu">sd</span>(avg_miles_driven)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 3
   any_work_home miles_driven_mean miles_driven_sd
   &lt;chr&gt;                     &lt;dbl&gt;           &lt;dbl&gt;
-1 No                         37.2            48.1
-2 Yes                        37.4            42.3</code></pre>
+1 No                         37.2            46.0
+2 Yes                        37.7            41.6</code></pre>
 </div>
 </div>
 </section>
 </section>
 <section id="evaluate-the-difference-in-a-linear-regression-analysis" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="evaluate-the-difference-in-a-linear-regression-analysis"><span class="header-section-number">3.4</span> Evaluate the difference in a linear regression analysis</h2>
-<p>Let’ see what a simple linear model suggest</p>
+<p>Let’ see what a simple linear model suggest.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>miles_driven_hh <span class="sc">%&gt;%</span> </span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(avg_miles_driven <span class="sc">~</span> any_work_home, .) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>miles_driven_hh <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(avg_miles_driven <span class="sc">~</span> any_work_home, .) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -414,51 +436,51 @@ lm(formula = avg_miles_driven ~ any_work_home, data = .)
 
 Residuals:
    Min     1Q Median     3Q    Max 
--37.27 -26.84 -13.48  10.05 448.62 
+-37.39 -26.82 -13.52   9.94 448.58 
 
 Coefficients:
                  Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)       37.1775     1.1546  32.200   &lt;2e-16 ***
-any_work_homeYes   0.1998     1.7202   0.116    0.908    
+(Intercept)       37.2208     0.9040  41.176   &lt;2e-16 ***
+any_work_homeYes   0.4514     2.8090   0.161    0.872    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 45.6 on 2837 degrees of freedom
-Multiple R-squared:  4.755e-06, Adjusted R-squared:  -0.0003477 
-F-statistic: 0.01349 on 1 and 2837 DF,  p-value: 0.9075</code></pre>
+Multiple R-squared:  9.102e-06, Adjusted R-squared:  -0.0003434 
+F-statistic: 0.02582 on 1 and 2837 DF,  p-value: 0.8723</code></pre>
 </div>
 </div>
 <p>Are there potential problems with this model or results?</p>
-<p>We will add socio-demographic variables as controls, e.g.&nbsp;size of the household should matter.</p>
+<p>We will add socio-demographic variables as controls, e.g.&nbsp;size of the household matters!</p>
 <p>First, we format the order of household income labels and convert size of household from character to numeric. This will ease interpretations.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Income labels</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>income_labs <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Under $25,000"</span>, </span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$25,000-$49,999"</span>, </span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$50,000-$74,999"</span>, </span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$75,000-$99,999"</span>, </span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$100,000-$199,000"</span>, </span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$200,000 or more"</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>miles_driven_hh <span class="ot">&lt;-</span> miles_driven_hh <span class="sc">%&gt;%</span> </span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Income labels</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">hhincome_broad =</span> <span class="fu">factor</span>(hhincome_broad, income_labs),</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Household size as integer</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">hhsize_int =</span> <span class="fu">as.numeric</span>(<span class="fu">str_extract</span>(hhsize, <span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>)),</span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Children at household as binary</span></span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">children_binary =</span> <span class="fu">ifelse</span>(numchildren <span class="sc">==</span> <span class="st">'0 children'</span>, <span class="st">'No'</span>, <span class="st">'Yes'</span>)</span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Income labels</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>income_labs <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Under $25,000"</span>, </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$25,000-$49,999"</span>, </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$50,000-$74,999"</span>, </span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$75,000-$99,999"</span>, </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$100,000-$199,000"</span>, </span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$200,000 or more"</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>miles_driven_hh <span class="ot">&lt;-</span> miles_driven_hh <span class="sc">%&gt;%</span> </span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Income labels</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">hhincome_broad =</span> <span class="fu">factor</span>(hhincome_broad, income_labs),</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Household size as integer</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">hhsize_int =</span> readr<span class="sc">::</span><span class="fu">parse_number</span>(hhsize, <span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>),</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Children at household as binary</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">children_binary =</span> <span class="fu">ifelse</span>(numchildren <span class="sc">==</span> <span class="st">'0 children'</span>, <span class="st">'No'</span>, <span class="st">'Yes'</span>)</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We run the multiple regression and print results.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> miles_driven_hh <span class="sc">%&gt;%</span> </span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    avg_miles_driven <span class="sc">~</span> </span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>      any_work_home <span class="sc">+</span> hhsize_int <span class="sc">+</span> hhincome_broad <span class="sc">+</span> children_binary, .</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> miles_driven_hh <span class="sc">%&gt;%</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    avg_miles_driven <span class="sc">~</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>      any_work_home <span class="sc">+</span> hhsize_int <span class="sc">+</span> hhincome_broad <span class="sc">+</span> children_binary, .</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -467,37 +489,38 @@ lm(formula = avg_miles_driven ~ any_work_home + hhsize_int +
 
 Residuals:
    Min     1Q Median     3Q    Max 
--73.04 -20.99  -9.91   8.08 433.51 
+-79.13 -20.90 -10.19   7.86 427.12 
 
 Coefficients:
                                Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)                       8.252      3.517   2.346 0.019080 *  
-any_work_homeYes                 -5.755      2.319  -2.482 0.013161 *  
-hhsize_int                        8.500      1.218   6.978 4.26e-12 ***
-hhincome_broad$25,000-$49,999     5.504      3.805   1.447 0.148158    
-hhincome_broad$50,000-$74,999    13.446      3.723   3.612 0.000313 ***
-hhincome_broad$75,000-$99,999    10.506      3.855   2.725 0.006487 ** 
-hhincome_broad$200,000 or more   14.104      3.914   3.603 0.000323 ***
-children_binaryYes                4.003      3.556   1.126 0.260496    
+(Intercept)                       7.221      3.492   2.068 0.038836 *  
+any_work_homeYes                -13.542      3.740  -3.621 0.000302 ***
+hhsize_int                        8.655      1.216   7.119  1.6e-12 ***
+hhincome_broad$25,000-$49,999     5.295      3.796   1.395 0.163292    
+hhincome_broad$50,000-$74,999    12.670      3.704   3.421 0.000639 ***
+hhincome_broad$75,000-$99,999     9.266      3.808   2.433 0.015057 *  
+hhincome_broad$200,000 or more   14.640      3.827   3.826 0.000135 ***
+children_binaryYes                4.671      3.558   1.313 0.189411    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 41.54 on 1709 degrees of freedom
+Residual standard error: 41.46 on 1709 degrees of freedom
   (1122 observations deleted due to missingness)
-Multiple R-squared:  0.08689,   Adjusted R-squared:  0.08315 
-F-statistic: 23.23 on 7 and 1709 DF,  p-value: &lt; 2.2e-16</code></pre>
+Multiple R-squared:  0.09058,   Adjusted R-squared:  0.08685 
+F-statistic: 24.32 on 7 and 1709 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
+<p>Discuss the model results with your tutor.</p>
 </section>
 <section id="does-it-meet-the-model-assumptions-lets-check-the-model" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="does-it-meet-the-model-assumptions-lets-check-the-model"><span class="header-section-number">3.5</span> Does it meet the model assumptions? … Lets check the model</h2>
 <p>Check model 1 assumptions. Type ‘y’ when you are asked about updating extensions.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="session-3_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="session-3_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -507,27 +530,27 @@ F-statistic: 23.23 on 7 and 1709 DF,  p-value: &lt; 2.2e-16</code></pre>
 <h2 data-number="3.6" class="anchored" data-anchor-id="a-log-linear-model"><span class="header-section-number">3.6</span> A log-linear model</h2>
 <p>Lets try to fit the model in the log-linear form.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> miles_driven_hh <span class="sc">%&gt;%</span> </span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log_miles_driven =</span> <span class="fu">log</span>(avg_miles_driven)) <span class="sc">%&gt;%</span> </span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    log_miles_driven <span class="sc">~</span> </span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>      any_work_home <span class="sc">+</span> hhsize_int <span class="sc">+</span> hhincome_broad <span class="sc">+</span> children_binary, .</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> miles_driven_hh <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log_miles_driven =</span> <span class="fu">log</span>(avg_miles_driven)) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    log_miles_driven <span class="sc">~</span> </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>      any_work_home <span class="sc">+</span> hhsize_int <span class="sc">+</span> hhincome_broad <span class="sc">+</span> children_binary, .</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And check the model again</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="session-3_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="session-3_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>What are the interpretations of the log-linear model? Think of coefficients and overall performance.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -536,25 +559,25 @@ lm(formula = log_miles_driven ~ any_work_home + hhsize_int +
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--4.8798 -0.6784  0.1468  0.7830  3.5528 
+-4.7196 -0.6662  0.1538  0.7842  3.5868 
 
 Coefficients:
                                Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)                     1.92366    0.09940  19.353  &lt; 2e-16 ***
-any_work_homeYes               -0.18482    0.06553  -2.820  0.00485 ** 
-hhsize_int                      0.25768    0.03442   7.486 1.13e-13 ***
-hhincome_broad$25,000-$49,999   0.30127    0.10752   2.802  0.00514 ** 
-hhincome_broad$50,000-$74,999   0.57983    0.10520   5.511 4.10e-08 ***
-hhincome_broad$75,000-$99,999   0.58761    0.10894   5.394 7.85e-08 ***
-hhincome_broad$200,000 or more  0.76777    0.11062   6.941 5.52e-12 ***
-children_binaryYes              0.07476    0.10050   0.744  0.45705    
+(Intercept)                     1.89172    0.09885  19.137  &lt; 2e-16 ***
+any_work_homeYes               -0.32932    0.10585  -3.111  0.00189 ** 
+hhsize_int                      0.26181    0.03441   7.608 4.57e-14 ***
+hhincome_broad$25,000-$49,999   0.29507    0.10746   2.746  0.00610 ** 
+hhincome_broad$50,000-$74,999   0.55532    0.10483   5.297 1.33e-07 ***
+hhincome_broad$75,000-$99,999   0.54681    0.10777   5.074 4.32e-07 ***
+hhincome_broad$200,000 or more  0.75548    0.10832   6.975 4.36e-12 ***
+children_binaryYes              0.08674    0.10071   0.861  0.38918    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 1.174 on 1709 degrees of freedom
+Residual standard error: 1.173 on 1709 degrees of freedom
   (1122 observations deleted due to missingness)
-Multiple R-squared:  0.1209,    Adjusted R-squared:  0.1173 
-F-statistic: 33.57 on 7 and 1709 DF,  p-value: &lt; 2.2e-16</code></pre>
+Multiple R-squared:  0.1218,    Adjusted R-squared:  0.1182 
+F-statistic: 33.85 on 7 and 1709 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <p>Which model would you choose? Are the any other potentially omitted variables?</p>
@@ -562,8 +585,9 @@ F-statistic: 33.57 on 7 and 1709 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="individual-activities" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Individual activities</h1>
 <ol type="1">
-<li>Estimate average miles walked at the household level.</li>
-<li>How does having children relates to walking behaviour? Include descriptive statistics, plots, and multiple linear regression analysis.</li>
+<li>Estimate average miles at the household level for a different mode, e.g.&nbsp;transit, bike, walk, etc.</li>
+<li>How does having children relates to the observed behaviour after controlling for important socio-demographic variables? Include descriptive statistics, plots, and multiple linear regression analysis.</li>
+<li>Try different functional forms.</li>
 <li>To what extent are the assumptions of the linear model met?</li>
 </ol>
 
@@ -1139,6 +1163,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./session-4.html" class="pagination-link" aria-label="Session 4: Logistic regression Part 1">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Session 4: Logistic regression Part 1</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
