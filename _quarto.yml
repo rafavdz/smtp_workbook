@@ -10,6 +10,9 @@ book:
     - session-1.qmd
     - session-2.qmd
     - session-3.qmd
+    - session-4.qmd
+    - session-6.qmd
+    - session-7.qmd
 execute:
   message: false
   warning: false

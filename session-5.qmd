@@ -1,0 +1,79 @@
+
+# Session 5: Logistic regression Part 2
+
+
+::: {.callout-warning}
+## 🚧 Work in Progress
+
+This chapter is a draft and may change significantly.  
+Content, examples, and conclusions are not final.
+:::
+
+```{r}
+# Packages 
+library(tidyverse) # For data manipulation
+library(gtsummary) # Descriptive statistics
+library(performance) # Model checks
+```
+
+
+## Model checks 
+
+
+The following function provides a the McFadden pseudo-r-squared measure.
+
+```{r}
+r2_mcfadden(logit_model1)
+```
+
+We can also check the percentage of correct predictions.
+
+```{r}
+performance_pcp(logit_model1)
+```
+
+There are generally three assumptions for the logit model: 1) independence of observations; 2) linearity; and 3) no perfect multicollinearity.
+
+We can check for collinearity using the variance of inflation factor (VIF).
+
+```{r}
+check_collinearity(logit_model1)
+```
+
+We can check linearity examining the relationship between each continuous predictor and log-odds of the predicted probabilities. In our model, we only have one continuous variable. We can check the linearity of our model as following:
+
+```{r out.width="95%"}
+
+# Harrys J.K. 2019, Statistics With R: Solving Problems Using Real-World Data
+# SAGE Publications. (p. 651)
+
+# Compute a variable of the log-odds of the predicted values
+logit_pred <- log(logit_model1$fitted.values / (1- logit_model1$fitted.values))
+
+# Create a small data frame with the log-odds and the distance predictor
+linearity_data1 <- 
+  data.frame(
+    logit_pred, 
+    avg_distance = logit_model1$model$avg_distance
+)
+
+# Plot
+linearity_data1 %>% 
+  ggplot(aes(avg_distance, logit_pred)) +
+  geom_point() +
+  geom_smooth(method = 'loess', aes(col = 'Loess curve'), se = FALSE) +
+  geom_smooth(method = 'lm', aes(col = 'Linear fit'), se = FALSE) +
+  labs(
+    x = "Avg. distance to work (in miles)",
+    y= "Log-odds of active travel \npredicted probability"
+  )
+
+```
+
+We should check whether the predictions are equally accurate along the range of values of the predictor.
+
+Independence is related to the structure and collection methods of data. To what extend does our model and data meet the independence assumption?
+
+# Individual activities
+
+Re-run a similar analysis, but focus on transit use. Specifically, the main dependent variable will be whether people used public transport to work in at least one of their trips. Here, the key predictor will be employers' subsidies for public transport, such as free passes or fares. Hint: this information is available in the 'commute_subsidy_1' variable of the 'persons' table. You can keep the same control variables and check how free parking is related to the use of public transport.
