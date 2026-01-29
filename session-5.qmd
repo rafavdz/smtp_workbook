@@ -19,6 +19,7 @@ library(performance) # Model checks
 
 ## Model checks 
 
+<!-- Outliers: include them from a modelling perspective. Potentially week 4 or 5.  -->
 
 The following function provides a the McFadden pseudo-r-squared measure.
 
