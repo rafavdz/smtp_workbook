@@ -148,7 +148,7 @@ work_from_home <- persons %>%
   group_by(household_id) %>% 
   summarise(
     pers_work_home = sum(work_from_home == 'Yes', na.rm = TRUE),
-    any_work_home = ifelse(pers_work_home > 1, 'Yes', 'No')
+    any_work_home = ifelse(pers_work_home > 0, 'Yes', 'No')
   )
 ```
 
