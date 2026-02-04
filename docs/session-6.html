@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>5&nbsp; Session 6: Multinomial model – Statistical Methods for Transport Planning - Workbook</title>
+<title>6&nbsp; Session 6: Multinomial model – Statistical Methods for Transport Planning - Workbook</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./session-7.html" rel="next">
-<link href="./session-4.html" rel="prev">
+<link href="./session-5.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -117,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./session-6.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Session 6: Multinomial model</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./session-6.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Session 6: Multinomial model</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -177,14 +177,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./session-5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Session 5: Logistic regression Part 2</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./session-6.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Session 6: Multinomial model</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Session 6: Multinomial model</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./session-7.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Session 7: Poisson regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Session 7: Poisson regression</span></span></a>
   </div>
 </li>
     </ul>
@@ -197,21 +203,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">6</span> Introduction</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">7</span> Introduction</a>
   <ul class="collapse">
-  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link" data-scroll-target="#preliminaries"><span class="header-section-number">6.1</span> Preliminaries</a></li>
-  <li><a href="#dependent-variable-main-mode-choice-to-work-per-person" id="toc-dependent-variable-main-mode-choice-to-work-per-person" class="nav-link" data-scroll-target="#dependent-variable-main-mode-choice-to-work-per-person"><span class="header-section-number">6.2</span> Dependent variable: Main mode choice to work per person</a></li>
-  <li><a href="#independent-variables" id="toc-independent-variables" class="nav-link" data-scroll-target="#independent-variables"><span class="header-section-number">6.3</span> Independent variables</a></li>
+  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link" data-scroll-target="#preliminaries"><span class="header-section-number">7.1</span> Preliminaries</a></li>
+  <li><a href="#dependent-variable-main-mode-choice-to-work-per-person" id="toc-dependent-variable-main-mode-choice-to-work-per-person" class="nav-link" data-scroll-target="#dependent-variable-main-mode-choice-to-work-per-person"><span class="header-section-number">7.2</span> Dependent variable: Main mode choice to work per person</a></li>
+  <li><a href="#independent-variables" id="toc-independent-variables" class="nav-link" data-scroll-target="#independent-variables"><span class="header-section-number">7.3</span> Independent variables</a></li>
   </ul></li>
-  <li><a href="#descriptive-statistics" id="toc-descriptive-statistics" class="nav-link" data-scroll-target="#descriptive-statistics"><span class="header-section-number">7</span> Descriptive statistics</a></li>
-  <li><a href="#models" id="toc-models" class="nav-link" data-scroll-target="#models"><span class="header-section-number">8</span> Models</a>
+  <li><a href="#descriptive-statistics" id="toc-descriptive-statistics" class="nav-link" data-scroll-target="#descriptive-statistics"><span class="header-section-number">8</span> Descriptive statistics</a></li>
+  <li><a href="#models" id="toc-models" class="nav-link" data-scroll-target="#models"><span class="header-section-number">9</span> Models</a>
   <ul class="collapse">
-  <li><a href="#exponentied-coefficients-odds-ratio" id="toc-exponentied-coefficients-odds-ratio" class="nav-link" data-scroll-target="#exponentied-coefficients-odds-ratio"><span class="header-section-number">8.0.1</span> Exponentied coefficients: Odds ratio</a></li>
-  <li><a href="#measures-of-fit" id="toc-measures-of-fit" class="nav-link" data-scroll-target="#measures-of-fit"><span class="header-section-number">8.1</span> Measures of fit</a></li>
+  <li><a href="#exponentied-coefficients-odds-ratio" id="toc-exponentied-coefficients-odds-ratio" class="nav-link" data-scroll-target="#exponentied-coefficients-odds-ratio"><span class="header-section-number">9.0.1</span> Exponentied coefficients: Odds ratio</a></li>
+  <li><a href="#measures-of-fit" id="toc-measures-of-fit" class="nav-link" data-scroll-target="#measures-of-fit"><span class="header-section-number">9.1</span> Measures of fit</a></li>
   </ul></li>
-  <li><a href="#individual-activities" id="toc-individual-activities" class="nav-link" data-scroll-target="#individual-activities"><span class="header-section-number">9</span> Individual activities</a></li>
-  <li><a href="#bonus-multinomial-model-assumption-checks" id="toc-bonus-multinomial-model-assumption-checks" class="nav-link" data-scroll-target="#bonus-multinomial-model-assumption-checks"><span class="header-section-number">10</span> Bonus: Multinomial model assumption checks</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">11</span> References:</a></li>
+  <li><a href="#individual-activities" id="toc-individual-activities" class="nav-link" data-scroll-target="#individual-activities"><span class="header-section-number">10</span> Individual activities</a></li>
+  <li><a href="#bonus-multinomial-model-assumption-checks" id="toc-bonus-multinomial-model-assumption-checks" class="nav-link" data-scroll-target="#bonus-multinomial-model-assumption-checks"><span class="header-section-number">11</span> Bonus: Multinomial model assumption checks</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">12</span> References:</a></li>
   </ul>
 </nav>
     </div>
@@ -220,7 +226,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Session 6: Multinomial model</span></h1>
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Session 6: Multinomial model</span></h1>
 </div>
 
 
@@ -251,12 +257,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 Content, examples, and conclusions are not final.</p>
 </div>
 </div>
-<section id="introduction" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Introduction</h1>
+<section id="introduction" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Introduction</h1>
 <p>We will continue to work with the <a href="https://www.psrc.org/our-work/household-travel-survey-program">Puget Sound Household Travel Survey</a> <code>Version 2023.4</code>. If you do not have the data or project set for this, please check the preliminary instructions for Week 3.</p>
 <p>Multinomial regression is useful when the dependent variable is categorical and has more than two categories. This week, we’ll build on the logistic regression example from last week, where we explored mode choice for work trips and how free parking influences that decision. This time, we’ll break down mode choice at the person level, with three possible outcomes: driving, active travel, or transit.</p>
-<section id="preliminaries" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="preliminaries"><span class="header-section-number">6.1</span> Preliminaries</h2>
+<section id="preliminaries" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="preliminaries"><span class="header-section-number">7.1</span> Preliminaries</h2>
 <p>For today’s session we will need the following packages.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Packages </span></span>
@@ -281,8 +287,8 @@ Content, examples, and conclusions are not final.</p>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>persons <span class="ot">&lt;-</span> persons <span class="sc">%&gt;%</span> <span class="fu">filter</span>(survey_year <span class="sc">==</span> <span class="dv">2023</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="dependent-variable-main-mode-choice-to-work-per-person" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="dependent-variable-main-mode-choice-to-work-per-person"><span class="header-section-number">6.2</span> Dependent variable: Main mode choice to work per person</h2>
+<section id="dependent-variable-main-mode-choice-to-work-per-person" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="dependent-variable-main-mode-choice-to-work-per-person"><span class="header-section-number">7.2</span> Dependent variable: Main mode choice to work per person</h2>
 <p>Here, we focus on trips to work. So, we keep trips which its destination is ‘Work’ only.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>trips_work <span class="ot">&lt;-</span> trips <span class="sc">%&gt;%</span> </span>
@@ -362,8 +368,8 @@ Content, examples, and conclusions are not final.</p>
 </div>
 </div>
 </section>
-<section id="independent-variables" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="independent-variables"><span class="header-section-number">6.3</span> Independent variables</h2>
+<section id="independent-variables" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="independent-variables"><span class="header-section-number">7.3</span> Independent variables</h2>
 <p>In addition to the dependent variable (mode choice in three categories), we need to define the independent variables that we think are related to mode choice to work. For this, we include information from trips, individual, and households.</p>
 <p>We summarise trip information to work at the person level.</p>
 <div class="cell">
@@ -425,8 +431,8 @@ Content, examples, and conclusions are not final.</p>
 </div>
 </section>
 </section>
-<section id="descriptive-statistics" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Descriptive statistics</h1>
+<section id="descriptive-statistics" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Descriptive statistics</h1>
 <p>Before moving into the modelling stage, we check the main descriptive statistics.</p>
 <p>We split the data according to the main dependent variable, whether respondents used active mode to travel to work.</p>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>persons_main <span class="sc">%&gt;%</span> </span>
@@ -435,23 +441,23 @@ Content, examples, and conclusions are not final.</p>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">statistic =</span> <span class="fu">all_continuous</span>() <span class="sc">~</span> <span class="st">"{mean} ± {sd}"</span></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_overall</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="mnvwkbqcel" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#mnvwkbqcel table {
+<div id="dssgpvqpyv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#dssgpvqpyv table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#mnvwkbqcel thead, #mnvwkbqcel tbody, #mnvwkbqcel tfoot, #mnvwkbqcel tr, #mnvwkbqcel td, #mnvwkbqcel th {
+#dssgpvqpyv thead, #dssgpvqpyv tbody, #dssgpvqpyv tfoot, #dssgpvqpyv tr, #dssgpvqpyv td, #dssgpvqpyv th {
   border-style: none;
 }
 
-#mnvwkbqcel p {
+#dssgpvqpyv p {
   margin: 0;
   padding: 0;
 }
 
-#mnvwkbqcel .gt_table {
+#dssgpvqpyv .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -477,12 +483,12 @@ Content, examples, and conclusions are not final.</p>
   border-left-color: #D3D3D3;
 }
 
-#mnvwkbqcel .gt_caption {
+#dssgpvqpyv .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#mnvwkbqcel .gt_title {
+#dssgpvqpyv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -494,7 +500,7 @@ Content, examples, and conclusions are not final.</p>
   border-bottom-width: 0;
 }
 
-#mnvwkbqcel .gt_subtitle {
+#dssgpvqpyv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -506,7 +512,7 @@ Content, examples, and conclusions are not final.</p>
   border-top-width: 0;
 }
 
-#mnvwkbqcel .gt_heading {
+#dssgpvqpyv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -518,13 +524,13 @@ Content, examples, and conclusions are not final.</p>
   border-right-color: #D3D3D3;
 }
 
-#mnvwkbqcel .gt_bottom_border {
+#dssgpvqpyv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mnvwkbqcel .gt_col_headings {
+#dssgpvqpyv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -539,7 +545,7 @@ Content, examples, and conclusions are not final.</p>
   border-right-color: #D3D3D3;
 }
 
-#mnvwkbqcel .gt_col_heading {
+#dssgpvqpyv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -559,7 +565,7 @@ Content, examples, and conclusions are not final.</p>
   overflow-x: hidden;
 }
 
-#mnvwkbqcel .gt_column_spanner_outer {
+#dssgpvqpyv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -571,15 +577,15 @@ Content, examples, and conclusions are not final.</p>
   padding-right: 4px;
 }
 
-#mnvwkbqcel .gt_column_spanner_outer:first-child {
+#dssgpvqpyv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mnvwkbqcel .gt_column_spanner_outer:last-child {
+#dssgpvqpyv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mnvwkbqcel .gt_column_spanner {
+#dssgpvqpyv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -591,11 +597,11 @@ Content, examples, and conclusions are not final.</p>
   width: 100%;
 }
 
-#mnvwkbqcel .gt_spanner_row {
+#dssgpvqpyv .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#mnvwkbqcel .gt_group_heading {
+#dssgpvqpyv .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -621,7 +627,7 @@ Content, examples, and conclusions are not final.</p>
   text-align: left;
 }
 
-#mnvwkbqcel .gt_empty_group_heading {
+#dssgpvqpyv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -636,15 +642,15 @@ Content, examples, and conclusions are not final.</p>
   vertical-align: middle;
 }
 
-#mnvwkbqcel .gt_from_md > :first-child {
+#dssgpvqpyv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mnvwkbqcel .gt_from_md > :last-child {
+#dssgpvqpyv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mnvwkbqcel .gt_row {
+#dssgpvqpyv .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -663,7 +669,7 @@ Content, examples, and conclusions are not final.</p>
   overflow-x: hidden;
 }
 
-#mnvwkbqcel .gt_stub {
+#dssgpvqpyv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -676,7 +682,7 @@ Content, examples, and conclusions are not final.</p>
   padding-right: 5px;
 }
 
-#mnvwkbqcel .gt_stub_row_group {
+#dssgpvqpyv .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -690,15 +696,15 @@ Content, examples, and conclusions are not final.</p>
   vertical-align: top;
 }
 
-#mnvwkbqcel .gt_row_group_first td {
+#dssgpvqpyv .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#mnvwkbqcel .gt_row_group_first th {
+#dssgpvqpyv .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#mnvwkbqcel .gt_summary_row {
+#dssgpvqpyv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -708,16 +714,16 @@ Content, examples, and conclusions are not final.</p>
   padding-right: 5px;
 }
 
-#mnvwkbqcel .gt_first_summary_row {
+#dssgpvqpyv .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#mnvwkbqcel .gt_first_summary_row.thick {
+#dssgpvqpyv .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#mnvwkbqcel .gt_last_summary_row {
+#dssgpvqpyv .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -727,7 +733,7 @@ Content, examples, and conclusions are not final.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#mnvwkbqcel .gt_grand_summary_row {
+#dssgpvqpyv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -737,7 +743,7 @@ Content, examples, and conclusions are not final.</p>
   padding-right: 5px;
 }
 
-#mnvwkbqcel .gt_first_grand_summary_row {
+#dssgpvqpyv .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -747,7 +753,7 @@ Content, examples, and conclusions are not final.</p>
   border-top-color: #D3D3D3;
 }
 
-#mnvwkbqcel .gt_last_grand_summary_row_top {
+#dssgpvqpyv .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -757,11 +763,11 @@ Content, examples, and conclusions are not final.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#mnvwkbqcel .gt_striped {
+#dssgpvqpyv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mnvwkbqcel .gt_table_body {
+#dssgpvqpyv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -770,7 +776,7 @@ Content, examples, and conclusions are not final.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#mnvwkbqcel .gt_footnotes {
+#dssgpvqpyv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -784,7 +790,7 @@ Content, examples, and conclusions are not final.</p>
   border-right-color: #D3D3D3;
 }
 
-#mnvwkbqcel .gt_footnote {
+#dssgpvqpyv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -793,7 +799,7 @@ Content, examples, and conclusions are not final.</p>
   padding-right: 5px;
 }
 
-#mnvwkbqcel .gt_sourcenotes {
+#dssgpvqpyv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -807,7 +813,7 @@ Content, examples, and conclusions are not final.</p>
   border-right-color: #D3D3D3;
 }
 
-#mnvwkbqcel .gt_sourcenote {
+#dssgpvqpyv .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -815,72 +821,72 @@ Content, examples, and conclusions are not final.</p>
   padding-right: 5px;
 }
 
-#mnvwkbqcel .gt_left {
+#dssgpvqpyv .gt_left {
   text-align: left;
 }
 
-#mnvwkbqcel .gt_center {
+#dssgpvqpyv .gt_center {
   text-align: center;
 }
 
-#mnvwkbqcel .gt_right {
+#dssgpvqpyv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mnvwkbqcel .gt_font_normal {
+#dssgpvqpyv .gt_font_normal {
   font-weight: normal;
 }
 
-#mnvwkbqcel .gt_font_bold {
+#dssgpvqpyv .gt_font_bold {
   font-weight: bold;
 }
 
-#mnvwkbqcel .gt_font_italic {
+#dssgpvqpyv .gt_font_italic {
   font-style: italic;
 }
 
-#mnvwkbqcel .gt_super {
+#dssgpvqpyv .gt_super {
   font-size: 65%;
 }
 
-#mnvwkbqcel .gt_footnote_marks {
+#dssgpvqpyv .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#mnvwkbqcel .gt_asterisk {
+#dssgpvqpyv .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#mnvwkbqcel .gt_indent_1 {
+#dssgpvqpyv .gt_indent_1 {
   text-indent: 5px;
 }
 
-#mnvwkbqcel .gt_indent_2 {
+#dssgpvqpyv .gt_indent_2 {
   text-indent: 10px;
 }
 
-#mnvwkbqcel .gt_indent_3 {
+#dssgpvqpyv .gt_indent_3 {
   text-indent: 15px;
 }
 
-#mnvwkbqcel .gt_indent_4 {
+#dssgpvqpyv .gt_indent_4 {
   text-indent: 20px;
 }
 
-#mnvwkbqcel .gt_indent_5 {
+#dssgpvqpyv .gt_indent_5 {
   text-indent: 25px;
 }
 
-#mnvwkbqcel .katex-display {
+#dssgpvqpyv .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#mnvwkbqcel div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#dssgpvqpyv div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1034,8 +1040,8 @@ Content, examples, and conclusions are not final.</p>
 </div>
 <p>Are there noticeable differences between respondent groups?</p>
 </section>
-<section id="models" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> Models</h1>
+<section id="models" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Models</h1>
 <p>We will need a category of reference for outcome variable in multinomial models. For this case, we will use ‘Drive’.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>persons_main <span class="ot">&lt;-</span> persons_main <span class="sc">%&gt;%</span> </span>
@@ -1064,23 +1070,23 @@ converged</code></pre>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_regression</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_glance_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="svjqegrzug" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#svjqegrzug table {
+<div id="yoylepofln" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yoylepofln table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#svjqegrzug thead, #svjqegrzug tbody, #svjqegrzug tfoot, #svjqegrzug tr, #svjqegrzug td, #svjqegrzug th {
+#yoylepofln thead, #yoylepofln tbody, #yoylepofln tfoot, #yoylepofln tr, #yoylepofln td, #yoylepofln th {
   border-style: none;
 }
 
-#svjqegrzug p {
+#yoylepofln p {
   margin: 0;
   padding: 0;
 }
 
-#svjqegrzug .gt_table {
+#yoylepofln .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1106,12 +1112,12 @@ converged</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#svjqegrzug .gt_caption {
+#yoylepofln .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#svjqegrzug .gt_title {
+#yoylepofln .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1123,7 +1129,7 @@ converged</code></pre>
   border-bottom-width: 0;
 }
 
-#svjqegrzug .gt_subtitle {
+#yoylepofln .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1135,7 +1141,7 @@ converged</code></pre>
   border-top-width: 0;
 }
 
-#svjqegrzug .gt_heading {
+#yoylepofln .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1147,13 +1153,13 @@ converged</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#svjqegrzug .gt_bottom_border {
+#yoylepofln .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#svjqegrzug .gt_col_headings {
+#yoylepofln .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1168,7 +1174,7 @@ converged</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#svjqegrzug .gt_col_heading {
+#yoylepofln .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1188,7 +1194,7 @@ converged</code></pre>
   overflow-x: hidden;
 }
 
-#svjqegrzug .gt_column_spanner_outer {
+#yoylepofln .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1200,15 +1206,15 @@ converged</code></pre>
   padding-right: 4px;
 }
 
-#svjqegrzug .gt_column_spanner_outer:first-child {
+#yoylepofln .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#svjqegrzug .gt_column_spanner_outer:last-child {
+#yoylepofln .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#svjqegrzug .gt_column_spanner {
+#yoylepofln .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1220,11 +1226,11 @@ converged</code></pre>
   width: 100%;
 }
 
-#svjqegrzug .gt_spanner_row {
+#yoylepofln .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#svjqegrzug .gt_group_heading {
+#yoylepofln .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1250,7 +1256,7 @@ converged</code></pre>
   text-align: left;
 }
 
-#svjqegrzug .gt_empty_group_heading {
+#yoylepofln .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1265,15 +1271,15 @@ converged</code></pre>
   vertical-align: middle;
 }
 
-#svjqegrzug .gt_from_md > :first-child {
+#yoylepofln .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#svjqegrzug .gt_from_md > :last-child {
+#yoylepofln .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#svjqegrzug .gt_row {
+#yoylepofln .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1292,7 +1298,7 @@ converged</code></pre>
   overflow-x: hidden;
 }
 
-#svjqegrzug .gt_stub {
+#yoylepofln .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1305,7 +1311,7 @@ converged</code></pre>
   padding-right: 5px;
 }
 
-#svjqegrzug .gt_stub_row_group {
+#yoylepofln .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1319,15 +1325,15 @@ converged</code></pre>
   vertical-align: top;
 }
 
-#svjqegrzug .gt_row_group_first td {
+#yoylepofln .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#svjqegrzug .gt_row_group_first th {
+#yoylepofln .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#svjqegrzug .gt_summary_row {
+#yoylepofln .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1337,16 +1343,16 @@ converged</code></pre>
   padding-right: 5px;
 }
 
-#svjqegrzug .gt_first_summary_row {
+#yoylepofln .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#svjqegrzug .gt_first_summary_row.thick {
+#yoylepofln .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#svjqegrzug .gt_last_summary_row {
+#yoylepofln .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1356,7 +1362,7 @@ converged</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#svjqegrzug .gt_grand_summary_row {
+#yoylepofln .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1366,7 +1372,7 @@ converged</code></pre>
   padding-right: 5px;
 }
 
-#svjqegrzug .gt_first_grand_summary_row {
+#yoylepofln .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1376,7 +1382,7 @@ converged</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#svjqegrzug .gt_last_grand_summary_row_top {
+#yoylepofln .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1386,11 +1392,11 @@ converged</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#svjqegrzug .gt_striped {
+#yoylepofln .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#svjqegrzug .gt_table_body {
+#yoylepofln .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1399,7 +1405,7 @@ converged</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#svjqegrzug .gt_footnotes {
+#yoylepofln .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1413,7 +1419,7 @@ converged</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#svjqegrzug .gt_footnote {
+#yoylepofln .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1422,7 +1428,7 @@ converged</code></pre>
   padding-right: 5px;
 }
 
-#svjqegrzug .gt_sourcenotes {
+#yoylepofln .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1436,7 +1442,7 @@ converged</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#svjqegrzug .gt_sourcenote {
+#yoylepofln .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1444,72 +1450,72 @@ converged</code></pre>
   padding-right: 5px;
 }
 
-#svjqegrzug .gt_left {
+#yoylepofln .gt_left {
   text-align: left;
 }
 
-#svjqegrzug .gt_center {
+#yoylepofln .gt_center {
   text-align: center;
 }
 
-#svjqegrzug .gt_right {
+#yoylepofln .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#svjqegrzug .gt_font_normal {
+#yoylepofln .gt_font_normal {
   font-weight: normal;
 }
 
-#svjqegrzug .gt_font_bold {
+#yoylepofln .gt_font_bold {
   font-weight: bold;
 }
 
-#svjqegrzug .gt_font_italic {
+#yoylepofln .gt_font_italic {
   font-style: italic;
 }
 
-#svjqegrzug .gt_super {
+#yoylepofln .gt_super {
   font-size: 65%;
 }
 
-#svjqegrzug .gt_footnote_marks {
+#yoylepofln .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#svjqegrzug .gt_asterisk {
+#yoylepofln .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#svjqegrzug .gt_indent_1 {
+#yoylepofln .gt_indent_1 {
   text-indent: 5px;
 }
 
-#svjqegrzug .gt_indent_2 {
+#yoylepofln .gt_indent_2 {
   text-indent: 10px;
 }
 
-#svjqegrzug .gt_indent_3 {
+#yoylepofln .gt_indent_3 {
   text-indent: 15px;
 }
 
-#svjqegrzug .gt_indent_4 {
+#yoylepofln .gt_indent_4 {
   text-indent: 20px;
 }
 
-#svjqegrzug .gt_indent_5 {
+#yoylepofln .gt_indent_5 {
   text-indent: 25px;
 }
 
-#svjqegrzug .katex-display {
+#yoylepofln .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#svjqegrzug div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#yoylepofln div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1804,31 +1810,31 @@ converged</code></pre>
 <p>the log-odds of using transit are 1.5 lower than driving for individuals who have free parking compared to those who do not have free parking.</p>
 </blockquote>
 <p>Can you provide the interpretation for rest of the coefficients?</p>
-<section id="exponentied-coefficients-odds-ratio" class="level3" data-number="8.0.1">
-<h3 data-number="8.0.1" class="anchored" data-anchor-id="exponentied-coefficients-odds-ratio"><span class="header-section-number">8.0.1</span> Exponentied coefficients: Odds ratio</h3>
+<section id="exponentied-coefficients-odds-ratio" class="level3" data-number="9.0.1">
+<h3 data-number="9.0.1" class="anchored" data-anchor-id="exponentied-coefficients-odds-ratio"><span class="header-section-number">9.0.1</span> Exponentied coefficients: Odds ratio</h3>
 <p>As we know, the log-odds scale is not very intuitive. Similar to what we did with logistic regression, we can exponentiate the coefficients to obtain the odds ratios, which allows us to interpret the coefficients in terms of percentage changes.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>multinomial_model1 <span class="sc">%&gt;%</span> </span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_regression</span>(<span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_glance_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="bsbkwlfhiw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#bsbkwlfhiw table {
+<div id="jqofjdubmd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jqofjdubmd table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#bsbkwlfhiw thead, #bsbkwlfhiw tbody, #bsbkwlfhiw tfoot, #bsbkwlfhiw tr, #bsbkwlfhiw td, #bsbkwlfhiw th {
+#jqofjdubmd thead, #jqofjdubmd tbody, #jqofjdubmd tfoot, #jqofjdubmd tr, #jqofjdubmd td, #jqofjdubmd th {
   border-style: none;
 }
 
-#bsbkwlfhiw p {
+#jqofjdubmd p {
   margin: 0;
   padding: 0;
 }
 
-#bsbkwlfhiw .gt_table {
+#jqofjdubmd .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1854,12 +1860,12 @@ converged</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#bsbkwlfhiw .gt_caption {
+#jqofjdubmd .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#bsbkwlfhiw .gt_title {
+#jqofjdubmd .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1871,7 +1877,7 @@ converged</code></pre>
   border-bottom-width: 0;
 }
 
-#bsbkwlfhiw .gt_subtitle {
+#jqofjdubmd .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1883,7 +1889,7 @@ converged</code></pre>
   border-top-width: 0;
 }
 
-#bsbkwlfhiw .gt_heading {
+#jqofjdubmd .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1895,13 +1901,13 @@ converged</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#bsbkwlfhiw .gt_bottom_border {
+#jqofjdubmd .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#bsbkwlfhiw .gt_col_headings {
+#jqofjdubmd .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1916,7 +1922,7 @@ converged</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#bsbkwlfhiw .gt_col_heading {
+#jqofjdubmd .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1936,7 +1942,7 @@ converged</code></pre>
   overflow-x: hidden;
 }
 
-#bsbkwlfhiw .gt_column_spanner_outer {
+#jqofjdubmd .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1948,15 +1954,15 @@ converged</code></pre>
   padding-right: 4px;
 }
 
-#bsbkwlfhiw .gt_column_spanner_outer:first-child {
+#jqofjdubmd .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#bsbkwlfhiw .gt_column_spanner_outer:last-child {
+#jqofjdubmd .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#bsbkwlfhiw .gt_column_spanner {
+#jqofjdubmd .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1968,11 +1974,11 @@ converged</code></pre>
   width: 100%;
 }
 
-#bsbkwlfhiw .gt_spanner_row {
+#jqofjdubmd .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#bsbkwlfhiw .gt_group_heading {
+#jqofjdubmd .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1998,7 +2004,7 @@ converged</code></pre>
   text-align: left;
 }
 
-#bsbkwlfhiw .gt_empty_group_heading {
+#jqofjdubmd .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2013,15 +2019,15 @@ converged</code></pre>
   vertical-align: middle;
 }
 
-#bsbkwlfhiw .gt_from_md > :first-child {
+#jqofjdubmd .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#bsbkwlfhiw .gt_from_md > :last-child {
+#jqofjdubmd .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#bsbkwlfhiw .gt_row {
+#jqofjdubmd .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2040,7 +2046,7 @@ converged</code></pre>
   overflow-x: hidden;
 }
 
-#bsbkwlfhiw .gt_stub {
+#jqofjdubmd .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2053,7 +2059,7 @@ converged</code></pre>
   padding-right: 5px;
 }
 
-#bsbkwlfhiw .gt_stub_row_group {
+#jqofjdubmd .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2067,15 +2073,15 @@ converged</code></pre>
   vertical-align: top;
 }
 
-#bsbkwlfhiw .gt_row_group_first td {
+#jqofjdubmd .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#bsbkwlfhiw .gt_row_group_first th {
+#jqofjdubmd .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#bsbkwlfhiw .gt_summary_row {
+#jqofjdubmd .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2085,16 +2091,16 @@ converged</code></pre>
   padding-right: 5px;
 }
 
-#bsbkwlfhiw .gt_first_summary_row {
+#jqofjdubmd .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#bsbkwlfhiw .gt_first_summary_row.thick {
+#jqofjdubmd .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#bsbkwlfhiw .gt_last_summary_row {
+#jqofjdubmd .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2104,7 +2110,7 @@ converged</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#bsbkwlfhiw .gt_grand_summary_row {
+#jqofjdubmd .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2114,7 +2120,7 @@ converged</code></pre>
   padding-right: 5px;
 }
 
-#bsbkwlfhiw .gt_first_grand_summary_row {
+#jqofjdubmd .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2124,7 +2130,7 @@ converged</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#bsbkwlfhiw .gt_last_grand_summary_row_top {
+#jqofjdubmd .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2134,11 +2140,11 @@ converged</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#bsbkwlfhiw .gt_striped {
+#jqofjdubmd .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#bsbkwlfhiw .gt_table_body {
+#jqofjdubmd .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2147,7 +2153,7 @@ converged</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#bsbkwlfhiw .gt_footnotes {
+#jqofjdubmd .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2161,7 +2167,7 @@ converged</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#bsbkwlfhiw .gt_footnote {
+#jqofjdubmd .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2170,7 +2176,7 @@ converged</code></pre>
   padding-right: 5px;
 }
 
-#bsbkwlfhiw .gt_sourcenotes {
+#jqofjdubmd .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2184,7 +2190,7 @@ converged</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#bsbkwlfhiw .gt_sourcenote {
+#jqofjdubmd .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2192,72 +2198,72 @@ converged</code></pre>
   padding-right: 5px;
 }
 
-#bsbkwlfhiw .gt_left {
+#jqofjdubmd .gt_left {
   text-align: left;
 }
 
-#bsbkwlfhiw .gt_center {
+#jqofjdubmd .gt_center {
   text-align: center;
 }
 
-#bsbkwlfhiw .gt_right {
+#jqofjdubmd .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#bsbkwlfhiw .gt_font_normal {
+#jqofjdubmd .gt_font_normal {
   font-weight: normal;
 }
 
-#bsbkwlfhiw .gt_font_bold {
+#jqofjdubmd .gt_font_bold {
   font-weight: bold;
 }
 
-#bsbkwlfhiw .gt_font_italic {
+#jqofjdubmd .gt_font_italic {
   font-style: italic;
 }
 
-#bsbkwlfhiw .gt_super {
+#jqofjdubmd .gt_super {
   font-size: 65%;
 }
 
-#bsbkwlfhiw .gt_footnote_marks {
+#jqofjdubmd .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#bsbkwlfhiw .gt_asterisk {
+#jqofjdubmd .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#bsbkwlfhiw .gt_indent_1 {
+#jqofjdubmd .gt_indent_1 {
   text-indent: 5px;
 }
 
-#bsbkwlfhiw .gt_indent_2 {
+#jqofjdubmd .gt_indent_2 {
   text-indent: 10px;
 }
 
-#bsbkwlfhiw .gt_indent_3 {
+#jqofjdubmd .gt_indent_3 {
   text-indent: 15px;
 }
 
-#bsbkwlfhiw .gt_indent_4 {
+#jqofjdubmd .gt_indent_4 {
   text-indent: 20px;
 }
 
-#bsbkwlfhiw .gt_indent_5 {
+#jqofjdubmd .gt_indent_5 {
   text-indent: 25px;
 }
 
-#bsbkwlfhiw .katex-display {
+#jqofjdubmd .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#bsbkwlfhiw div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#jqofjdubmd div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2559,8 +2565,8 @@ converged</code></pre>
 <p>Generally speaking, the likelihood of both engaging in active travel and using transit, relative to driving, decreases as the distance to work increases. However, this effect is more pronounced for active travel. Is this difference in line with your expectation?</p>
 <p>Can you provide the interpretation for rest of the coefficients?</p>
 </section>
-<section id="measures-of-fit" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="measures-of-fit"><span class="header-section-number">8.1</span> Measures of fit</h2>
+<section id="measures-of-fit" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="measures-of-fit"><span class="header-section-number">9.1</span> Measures of fit</h2>
 <p>We can compute a pseudo-r-squared value and other measures too:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Measures of fit</span></span>
@@ -2639,13 +2645,13 @@ Balanced Accuracy          0.6719        0.7507      0.5020747</code></pre>
 <p><br> <br> <br></p>
 </section>
 </section>
-<section id="individual-activities" class="level1" data-number="9">
-<h1 data-number="9"><span class="header-section-number">9</span> Individual activities</h1>
+<section id="individual-activities" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> Individual activities</h1>
 <p>Run a similar analysis, but this time focus on sustainable modes. Specifically, disaggregate active travel into ‘Walk’ and ‘Bike’, and include ‘Transit’. Exclude all other modes from the model. Additionally, include employer subsidies for public transport in the model, such as free passes or fares. This information can be found in the ‘commute_subsidy_1’ variable of the ‘persons’ table. Interpret the result of the model.</p>
 <p><br> <br> <br></p>
 </section>
-<section id="bonus-multinomial-model-assumption-checks" class="level1" data-number="10">
-<h1 data-number="10"><span class="header-section-number">10</span> Bonus: Multinomial model assumption checks</h1>
+<section id="bonus-multinomial-model-assumption-checks" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> Bonus: Multinomial model assumption checks</h1>
 <p>Generally, there are two main assumptions for the multinomial model (Harris, 2020): 1) independence of errors, and independence of irrelevant alternatives (IIA). Independence of errors relates to the structure of the data or the way it has been collected. In this case, individuals might have dependencies at the household level.</p>
 <p>The IIA assumption states that the odds of choosing between any two alternatives are unaffected by the presence of other alternatives. For example, the odds of choosing active travel over driving are assumed to be unaffected by the presence of transit. In other words, if transit were removed from the model, the relative odds between drive and active would remain the same.</p>
 <p>The Hausman-McFadden test is helpful to check if the IIA assumption holds. For our example, we can run the check as demonstrated below. However, we require another package, <code>mlogit</code>, and the structure of the data needs to be transformed.</p>
@@ -2685,8 +2691,8 @@ alternative hypothesis: IIA is rejected</code></pre>
 </div>
 <p>The null hypothesis assumes that IIA holds. Since it’s rejected in our results, this suggests that the IIA assumption does NOT hold in this model. The implication is that the multinomial logit model might not be appropriate because the choice probabilities are affected by irrelevant alternatives. In such a case, a nested logit model can be an alternative. However, this is out of the scope of this course.</p>
 </section>
-<section id="references" class="level1" data-number="11">
-<h1 data-number="11"><span class="header-section-number">11</span> References:</h1>
+<section id="references" class="level1" data-number="12">
+<h1 data-number="12"><span class="header-section-number">12</span> References:</h1>
 <p>Harrys J.K. 2020, Statistics With R: Solving Problems Using Real-World Data. Sage Publishing.</p>
 
 
@@ -3256,13 +3262,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./session-4.html" class="pagination-link" aria-label="Session 4: Logistic regression Part 1">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Session 4: Logistic regression Part 1</span></span>
+      <a href="./session-5.html" class="pagination-link" aria-label="Session 5: Logistic regression Part 2">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Session 5: Logistic regression Part 2</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./session-7.html" class="pagination-link" aria-label="Session 7: Poisson regression">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Session 7: Poisson regression</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Session 7: Poisson regression</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

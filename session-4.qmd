@@ -1,18 +1,11 @@
 # Session 4: Logistic regression Part 1
 
 
-::: {.callout-warning}
-## 🚧 Work in Progress
-
-This chapter is a draft and may change significantly.  
-Content, examples, and conclusions are not final.
-:::
-
-# Preliminaries
+## Preliminaries
 
 We will continue to work with the [Puget Sound Household Travel Survey](https://www.psrc.org/our-work/household-travel-survey-program). If you do not have the data or project set for this, please check the preliminary instructions for Week 1.
 
-## Data manipulation
+### Data manipulation
 
 For today's session we will need the following packages.
 
@@ -25,18 +18,16 @@ library(performance) # Model checks
 
 You will also need to install a helper package: `install.packages("broom.helpers")`.
 
-Now, we will read the data in to the R session. We will need information from trips, persons, and households tables.
+Now, we will read the data in to the R session. You will need information from trips, persons, and households tables.
+
 ```{r}
 # Load data
-households <- 
-  read_csv('data/Households.csv')
-persons <- 
-  read_csv('data/Persons.csv')
-trips <- 
-  read_csv('data/Trips.csv')
+households <- read_csv('data/Households.csv')
+persons <- read_csv('data/Persons.csv')
+trips <- read_csv('data/Trips.csv')
 ```
 
-We will work with data for the year 2023 only. 
+Let's work with data for the year 2023 only. 
 
 ```{r}
 # Filter data for the year 2023 only
@@ -46,27 +37,50 @@ persons <- persons %>% filter(survey_year == 2023)
 ```
 
 
-## Summarising data at the appropriate level
+### Summarising data at the appropriate level
 
-The dependent variable we are interested in is whether the travellers used an active transport mode or not to travel to work. This is a binary variable, so we will use logistic regression to identify the relationships with other variables.
+::: {.callout-tip title="What is the unit of observation?"}
 
-Here, we focus on trips to work only.
+Many transport datasets have a **relational (hierarchical) structure**. For example, repeated measurements may be nested within individuals, individuals within household, or households within places.  
+
+Before analysing the data, you will need to **summarise the relevant information at the appropriate level of this hierarchy**—that is, for the **unit of observation** that matches your research question.
+
+Ask yourself:
+
+* What does one row of data represent at this stage of the analysis?
+* Are there multiple observations per unit?
+* Do I need to aggregate, average, or otherwise summarise the data to move to a higher-level unit?
+
+Take a moment to identify the unit of observation you are working with as you go through the following sections.
+
+:::
+
+In this activity, we focus on trips to work only.
 
 ```{r}
 trips_work <- trips %>% 
   filter('Work' == dest_purpose_cat)
 ```
 
-The criteria for constructing this variable is that the person has made at least one trip to work during the reported week. We obtain this information at the trip level and summarise it at the person level, as shown below:
+The dependent variable we are interested in is *whether the travellers used an active transport mode or not to travel to work*. This is a binary variable. So, we will use logistic regression to identify the relationships with other variables.
+
+The criterion for constructing this variable is that the person has made at least one trip to work during the reported period. This information is obtained at the trip level and then summarised at the person level, as shown below.
 
 ```{r}
 # Summarise trip data at the person level
 trips_summary <- trips_work %>% 
   group_by(person_id) %>% 
   summarise(
-    active = ifelse(any(grepl('Walk|Bike', mode_class)), 1, 0), 
+    # Count the number of work trips made using an active mode, e.g. bike or walk
+    n_active_trips = sum(grepl("Walk|Bike", mode_class)),
+    # Create a binary variable, ie whether they made any active trips
+    active_binary = ifelse(n_active_trips > 0, 1, 0),
+    
+    # Total distance travelled across all work trips
     total_miles = sum(distance_miles, na.rm = TRUE),
-    num_days_trips = max(daynum),
+    # Number of days with observed trips
+    num_days_trips = max(daynum, na.rm = TRUE),
+    # Average distance travelled per day
     avg_distance = total_miles / num_days_trips
 )
 ```
@@ -81,12 +95,13 @@ trips_summary <- trips_summary %>%
   filter(num_days_trips > 0 & avg_distance < 50)
 ```
 
-How many respondents use an active travel mode to go to work?
-
+::: {.callout-note title="Reflection"}
+What share of respondents use an active travel mode when travelling to work?
+:::
 
 ### Independent variables
 
-Now, in addition to the travel behaviour information for people, we want to know more about the demographics and characteristics of the household. Thus, we join the trip summary and household data at the person level.
+In addition to the travel behaviour information, we want to know more about the demographics and characteristics of the household. Thus, we join the trip summary and household data at the person level.
 
 ```{r}
 persons_main <- persons %>% 
@@ -96,14 +111,18 @@ persons_main <- persons %>%
 
 Next, we format the independent variables and simplify some of these.
 
-Note that we will also create the key independent variable, namely: having free parking at work. We wish to examine if and how this is related to the use of active transport modes. We are also including further demographic control variables at the person and household level.
+We will also create the key independent variable, namely: having free parking at work. We wish to examine if and how this is related to the use of active transport modes. We are also including further demographic control variables at the person and household level.
 
 
 ```{r}
 # Write the name and appropriate order of the levels for hhincome_broad
 income_labs <- c(
-  'Under $25,000', '$25,000-$49,999', '$50,000-$74,999', 
-  '$75,000-$99,999', '$100,000-$199,999', '$200,000 or more'
+  "Under $25,000", 
+  "$25,000-$49,999", 
+  "$50,000-$74,999", 
+  "$75,000-$99,999", 
+  "$100,000-$199,999", 
+  "$200,000 or more"
 )
 
 # Format and create appropriate variables
@@ -111,7 +130,7 @@ persons_main <- persons_main %>%
   mutate(
     # Whether person has free parking at work
     free_parking = ifelse(commute_subsidy_3 == 'Selected', 'Yes', 'No'),
-    # Simplify educaton, e.g. graduate and bachelor vs all other
+    # Simplify education, e.g. graduate and bachelor vs all other
     higher_education = ifelse(
       grepl('Graduate|Bachelor', education, ignore.case = TRUE), 'Yes', 'No'
     ),
@@ -120,16 +139,24 @@ persons_main <- persons_main %>%
 )
 ```
 
-Before moving to the analysis, we will keep only complete observations for the variables of interest.
+Before moving to the analysis, we will keep only complete observations for the variables of interest. We will remove incomplete cases—that is, persons with missing values in any of the selected columns.
 
-We will also remove incomplete cases, meaning persons who have missing data in any of the relevant columns. It's important to be cautious with this step, especially when dealing with supplementary variables where missing values are expected. For example, the 'age of children' variable may have missing data for persons without children, which should be handled appropriately. Otherwise, you might end up removing valuable information.
+::: {.callout-caution title="Be careful: removing incomplete cases"}
+
+This step requires caution, especially when working with **supplementary variables** where missing values may be expected.
+
+For example, the variable *age of children* will naturally be missing for persons without children. Treating these cases as incomplete would incorrectly remove valid observations and result in the loss of valuable information.
+
+Before dropping cases, always consider **why** values are missing and whether they are meaningful for the unit of observation and research question.
+
+:::
 
 
 ```{r}
 # First, select variables of interest
 persons_main <- persons_main %>% 
   select(
-    active, 
+    active_binary, 
     free_parking,
     avg_distance,
     gender,
@@ -144,51 +171,68 @@ persons_main <- persons_main %>%
 ```
 
 
-# Descriptive statistics
+## Descriptive statistics
 
-Before moving into the modelling stage, we check the main descriptive statistics. 
-
-\FloatBarrier
-Firstly, we print a simple summary of our sample including all variables selected.
-
-```{r results='asis'}
-# A quick descriptive summary 
-persons_main %>% 
-  tbl_summary() 
-```
-\FloatBarrier
-
-Can you make interpretations of it?
+Before moving on to the modelling stage, always check that the descriptive statistics are plausible and consistent, i.e. do values make sense?!. This step helps you catch data issues, unexpected patterns, or coding errors early—before they affect your models. Let’s do that now.
 
 \FloatBarrier
-Then, we split the data according to the main dependent variable, whether respondents used active mode to travel to work.
+Print a simple summary of the sample including all variables selected. We split the data according to the main dependent variable, whether respondents used active mode to travel to work.
 
 ```{r results='asis'}
 persons_main %>% 
   tbl_summary(
-    by = active,
+    by = active_binary,
     statistic = all_continuous() ~ "{mean} ± {sd}"
   ) %>% 
   add_overall()
 ```
 
-Are there noticeable differences between respondent groups?
+::: {.callout-note title="Reflection"}
+
+* Are there noticeable differences between respondent groups? 
+* Can you make conclusions from this?
+:::
+
+
+### Write the data
+
+Before moving ahead, save the data subset with the variables that you have formatted and created. This will also be helpful for the next session.
+
+```{r}
+write_rds(persons_main,'data/persons_main.rds')
+```
+
+
+## Logistic regression
 
 \FloatBarrier
-
-# Models 
-
-\FloatBarrier
-We fit a logistic regression model to identify the relationships between the dependent variable and key independent variables, including control variables.
+We fit a logistic regression model to identify the relationships between the dependent variable (active travel) and key independent variable (having free parking at the workplace), including control variables, such as average trip distance, gender, higher education, presence of children at household, and household income.
 
 ```{r}
 logit_model1 <- glm(
-  active ~ free_parking + avg_distance + gender + higher_education + children + hhincome_broad,
+  active_binary ~ free_parking + avg_distance + gender + higher_education + children + hhincome_broad,
   family = "binomial", 
   data = persons_main
 )
 
 ```
+
+<!-- The equation for this model is thus: -->
+
+<!-- $$ -->
+<!-- \log\left(\frac{p}{1-p}\right) = -->
+<!-- \beta_0  -->
+<!-- + \beta_1 \cdot \text{FreeParking}  -->
+<!-- + \beta_2 \cdot \text{AvgDistance}  -->
+<!-- + \beta_3 \cdot \text{Gender}  -->
+<!-- + \beta_4 \cdot \text{HigherEducation}  -->
+<!-- + \beta_5 \cdot \text{Children}  -->
+<!-- + \beta_6 \cdot \text{HHIncome\_Broad} -->
+<!-- $$ -->
+
+<!-- Where: -->
+<!-- * $p$ is the probability that a person uses an active transport mode -->
+<!-- * $\beta_0$ is the intercept. -->
 
 Print the results of the model in the log odds ratio scale.
 
@@ -198,99 +242,23 @@ logit_model1 %>%
   add_glance_table()
 ```
 
-The interpretation of the coefficients is in the log-odds scale. For example, the coefficient for free parking at work is -0.75 and it is significant. This means that the log-odds of using active transport modes are about 0.75 lower for people with free parking at work compared to those without free parking.
 
-For continuous variables: we expect the log-odds of using active transport modes to decrease by 0.24 for every additional mile to work. This is also a significant predictor.
+For now, the interpretation of the coefficients is on the **log-odds scale**. For example, the coefficient for *free parking at work* is -0.75 and statistically significant. This means that having free parking is associated with a decrease in the **log-odds** of using active transport modes compared to people without free parking:
 
+$$
+\log\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1 \cdot \text{FreeParking} + \dots
+$$
+
+where $p$ is the probability of using an active mode, and $\beta_1 = -0.75$.
+
+For continuous variables: We expect the log-odds of using active transport modes to decrease by 0.24 for every additional mile to work. This is also a significant predictor.
+
+
+::: {.callout-note title="Reflection"}
 Can you provide the interpretation for other coefficients?
-
-\FloatBarrier
-
-### Exponentied coefficients: Odds ratio
-
-However, the log of the odds scale is not very intuitive. We can exponentiate the coefficients to obtain the odds ratio.
-
-```{r}
-logit_model1 %>% 
-  tbl_regression(exponentiate = TRUE) %>% 
-  add_glance_table()
-```
-
-Here, the interpretations changes. For example, the odds ratio of using active transport modes are about 50% lower for people with free parking at work compared to those without free parking. Note that we make interpretations in relation to 1. Specifically, a value lower than one implies a decrease in the odds of using active transport modes. Generally we use the following formula to express the changes in percent terms `(1 - coefficient) * 100`.
-
-For continuous variables the interpretation is as follows: every additional mile to work is associated with a 20% decrease in the odds ratio of using active transport modes.
-
-Note that we are talking either about the log of the odds or the odds ratio, not the probability.
-
-
-# Session 5: Logistic regression Part 2
-
-
-::: {.callout-warning}
-## 🚧 Work in Progress
-
-This chapter is a draft and may change significantly.  
-Content, examples, and conclusions are not final.
 :::
 
 
-## Model checks 
+### Final thoughts
 
-
-The following function provides a the McFadden pseudo-r-squared measure.
-
-```{r}
-r2_mcfadden(logit_model1)
-```
-
-We can also check the percentage of correct predictions.
-
-```{r}
-performance_pcp(logit_model1)
-```
-
-There are generally three assumptions for the logit model: 1) independence of observations; 2) linearity; and 3) no perfect multicollinearity.
-
-We can check for collinearity using the variance of inflation factor (VIF).
-
-```{r}
-check_collinearity(logit_model1)
-```
-
-We can check linearity examining the relationship between each continuous predictor and log-odds of the predicted probabilities. In our model, we only have one continuous variable. We can check the linearity of our model as following:
-
-```{r out.width="95%"}
-
-# Harrys J.K. 2019, Statistics With R: Solving Problems Using Real-World Data
-# SAGE Publications. (p. 651)
-
-# Compute a variable of the log-odds of the predicted values
-logit_pred <- log(logit_model1$fitted.values / (1- logit_model1$fitted.values))
-
-# Create a small data frame with the log-odds and the distance predictor
-linearity_data1 <- 
-  data.frame(
-    logit_pred, 
-    avg_distance = logit_model1$model$avg_distance
-)
-
-# Plot
-linearity_data1 %>% 
-  ggplot(aes(avg_distance, logit_pred)) +
-  geom_point() +
-  geom_smooth(method = 'loess', aes(col = 'Loess curve'), se = FALSE) +
-  geom_smooth(method = 'lm', aes(col = 'Linear fit'), se = FALSE) +
-  labs(
-    x = "Avg. distance to work (in miles)",
-    y= "Log-odds of active travel \npredicted probability"
-  )
-
-```
-
-We should check whether the predictions are equally accurate along the range of values of the predictor.
-
-Independence is related to the structure and collection methods of data. To what extend does our model and data meet the independence assumption?
-
-# Individual activities
-
-Re-run a similar analysis, but focus on transit use. Specifically, the main dependent variable will be whether people used public transport to work in at least one of their trips. Here, the key predictor will be employers' subsidies for public transport, such as free passes or fares. Hint: this information is available in the 'commute_subsidy_1' variable of the 'persons' table. You can keep the same control variables and check how free parking is related to the use of public transport.
+So far, the results of the logistic regression are interpreted in terms of the log of the odds. We can exponentiate the coefficient to interpret it as an **odds ratio**, which is often more intuitive. This is what we will do in the next hands-on session, including the discussion of model fit measures and model assumption checks.
