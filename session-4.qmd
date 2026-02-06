@@ -125,15 +125,20 @@ income_labs <- c(
   "$200,000 or more"
 )
 
+# Categories for higher education (explicit definition)
+he_levs <- c(
+  "Bachelor degree",
+  "Graduate/post-graduate degree",
+  "Associates degree"
+)
+
 # Format and create appropriate variables
 persons_main <- persons_main %>% 
   mutate(
     # Whether person has free parking at work
     free_parking = ifelse(commute_subsidy_3 == 'Selected', 'Yes', 'No'),
     # Simplify education, e.g. graduate and bachelor vs all other
-    higher_education = ifelse(
-      grepl('Graduate|Bachelor', education, ignore.case = TRUE), 'Yes', 'No'
-    ),
+    higher_education = ifelse(education %in% he_levs, 'Yes', 'No'),
     children = ifelse(numchildren == '0 children', 'No', 'Yes'),
     hhincome_broad = factor(hhincome_broad, levels = income_labs)
 )
@@ -214,7 +219,6 @@ logit_model1 <- glm(
   family = "binomial", 
   data = persons_main
 )
-
 ```
 
 <!-- The equation for this model is thus: -->
