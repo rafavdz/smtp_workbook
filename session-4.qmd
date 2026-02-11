@@ -7,7 +7,7 @@ We will continue to work with the [Puget Sound Household Travel Survey](https://
 
 ### Data manipulation
 
-For today's session we will need the following packages.
+For today's session we will need the following packages (Make sure that you have these packages installed in your machine, if not install them using the `install.packages()` function).
 
 ```{r}
 # Packages 
@@ -213,6 +213,8 @@ write_rds(persons_main,'data/persons_main.rds')
 \FloatBarrier
 We fit a logistic regression model to identify the relationships between the dependent variable (active travel) and key independent variable (having free parking at the workplace), including control variables, such as average trip distance, gender, higher education, presence of children at household, and household income.
 
+To fit the logistic regression we use the `glm()` function and specify the family 'binomial'. This uses the first category as the reference group (the group without the outcome) and treats the second category as the outcome group. In this case, ‘0’ = *no active travel* (the reference group), and ‘1’ = *active travel*. This is critical to make correct coefficient interpretations.
+
 ```{r}
 logit_model1 <- glm(
   active_binary ~ free_parking + avg_distance + gender + higher_education + children + hhincome_broad,
@@ -243,6 +245,7 @@ Print the results of the model in the log odds ratio scale.
 ```{r}
 logit_model1 %>% 
   tbl_regression() %>% 
+  add_significance_stars(hide_ci = FALSE, hide_p = FALSE) %>% 
   add_glance_table()
 ```
 

@@ -1,19 +1,18 @@
 # Session 5: Logistic regression Part 2
 
 
-::: {.callout-warning}
-## 🚧 Work in Progress
-
-This chapter is a draft and may change significantly.  
-Content, examples, and conclusions are not final.
-:::
-
-
+<!-- NOTES FOR FUTURE ACTIVITIES -->
 <!-- Outliers: include them from a modelling perspective. Potentially week 4 or 5.  -->
+<!-- - Next to the ORs in the table you have the CIs.  We will talk a little about how to interpret this in class, so you could ask a question about that below the table, perhaps? -->
+<!-- - In the lecture we will be emphasising the Chi Sq test as a way of assessing the quality of the model, so it might be worth emphasising that in the output of the performance_pcp function? -->
+<!--  talk briefly about comparing nested or non-nested model formulations using the LL test or by comparing BICs/AICs.  Might be worth suggesting they try a model with fewer IVs and assess which is ‘better’ (as extra homework for those who are willing)? -->
+
+In today's session we will continue learning about logistic regression. Last time, we learned more about suitable outcome variables for this type of model, i.e. binary ones (which only have two mutually exclusive categories). Also, we fitted a logistic regression model and were introduced to coefficient interpretation. We made interpretations in the log of the odds. Today, we will learn about coefficient interpretations in the odds ratio scale. Also, we will learn more about model goodness-of-fit and checking model assumptions.
+
 
 ## Preliminaries
 
-For today's session we will need the following packages.
+For today's session we will need the following packages. You needed them for the previous lab.
 
 ```{r}
 # Packages 
@@ -34,9 +33,11 @@ Let’s take a quick look to refresh our understanding of the data’s contents 
 glimpse(persons_main)
 ```
 
-# Logistic regression models
+## Estimating a logistic regression model
 
-We start by fitting the same logistic regression model that we discussed in Session 4 to identify the relationships between the dependent variable (engaging in active travel to work) and key independent variable (having free parking),  including control variables, such as average trip distance, gender, higher education, presence of children at household, and household income.
+We start by estimating the same logistic regression model that we discussed in Session 4. Here, we aim to identify the relationships between having free parking at work (key independent variable) and persons engaging in active travel to work (dependent variable),  including control variables, such as average trip distance, gender, higher education, presence of children at household, and household income. 
+
+To estimate the logistic regression we use the `glm()` function and specify the family 'binomial'. The glm() function uses the first category as the reference group (the group without the outcome) and treats the second category as the outcome group. In this case, ‘1’ = *active travel*, and ‘0’ = *no active travel* (the reference group). This is critical to make correct coefficient interpretations.
 
 ```{r}
 logit_model1 <- glm(
@@ -48,9 +49,7 @@ logit_model1 <- glm(
 ```
 
 
-### Exponentied coefficients: Odds ratio
-
-In the previous session we fitted the logistic regression model, and we made interpretation in the log of the odds scale. However, the log of the odds is not very intuitive or it is hard to communicate for wider audiences. We can exponentiate the coefficients to obtain the odds ratio.
+## Interpreting exponentied coefficients: Odds ratio
 
 In the previous session, we fitted a logistic regression model and interpreted the coefficients on the **log-odds scale**. However, the log of the odds is not very intuitive or it is hard to communicate for wider audiences. We can exponentiate the coefficients to obtain the odds ratio. If the logit model is:
 
@@ -58,14 +57,13 @@ $$
 \log\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1 X
 $$
 
-then exponentiating both sides gives:
+then, exponentiating both sides gives:
 
 $$
 \frac{p}{1-p} = e^{\beta_0 + \beta_1 X} = e^{\beta_0} \cdot e^{\beta_1 X}
 $$
 
-
-The exponentiation reverses the logarithm, transforming coefficients from the log-odds scale back to the odds scale. Specifically, $e^{\beta_1}$ represents the **odds ratio (OR)**:
+The exponentiation reverses the logarithm, transforming coefficients from the log-odds scale back to the odds ratio scale. Specifically, $e^{\beta_1}$ represents the **odds ratio (OR)**:
 
 $$
 \text{OR} = e^{\beta_1}
@@ -79,42 +77,61 @@ Thus, for a one-unit increase in $X$, the odds of the outcome are multiplied by 
 
 For example, if $\beta_1 = 0.5$, then $e^{0.5} \approx 1.65$, meaning the odds increase by 65% for each one-unit increase in $X$.
 
-#### Odds ratio in our example
+### Odds ratio in our example
 
 Let's exponentiate the results of our logistic regression model!
 
 ```{r}
 logit_model1 %>% 
   tbl_regression(exponentiate = TRUE) %>% 
+  add_significance_stars(hide_ci = FALSE, hide_p = FALSE) %>% 
   add_glance_table()
 ```
 
-Here, the interpretations changes compare to the log of the odds. For example, the odds ratio of using active transport modes are about 50% lower for people with free parking at work compared to those without free parking. Note that we make interpretations in relation to 1. Specifically, a value lower than one implies a decrease in the odds of using active transport modes. Generally we use the following formula to express the changes in percent terms `(1 - coefficient) * 100`.
+Before anything, scan and determine which variables are significant. The confidence interval for an odds ratio reflects the range of plausible values for the true population effect. This is found in the 'CI' in the results table. If it the CI includes 1, it indicates that the estimated association is unlikely, connecting to statistical significance, e.g. p-value. Is there anything unexpected or looking unusual?
 
-For continuous variables the interpretation is as follows: Every additional mile to work is associated with a 20% decrease in the odds ratio of using active transport modes.
+When it comes to the the size of coefficients, the interpretations change compared to the log of the odds. For example,
+
+> the odds ratio of using active transport modes are about 50% lower for people with free parking at work compared to those without free parking.
+
+Note that we make interpretations in relation to 1. Specifically, a value lower than one implies a decrease in the odds of using active transport modes. Generally we use the following formula to express the changes in percent terms `(1 - coefficient) * 100`.
+
+For continuous variables the interpretation is as follows:
+
+> Every additional mile to work is associated with a 20% decrease in the odds ratio for using active transport modes.
 
 Note that we are talking either about the log of the odds or the odds ratio, not the probability.
 
-::: {.callout-question title="Reflection"}
-Can you provide the interpretation for other coefficients?
+::: {.callout-note title="Reflection"}
+Can you provide the interpretation for rest of the coefficients, including significance and size?
 :::
 
 ## Model checks 
 
+### Goodness-of-fit
 
-The following function provides a the McFadden pseudo-r-squared measure.
-
-```{r}
-r2_mcfadden(logit_model1)
-```
-
-We can also check the percentage of correct predictions.
+In logistic regression, the Chi-square test is used to determine whether the model with predictors fits significantly better than a model with no predictors (the null model).
 
 ```{r}
 performance_pcp(logit_model1)
 ```
 
-There are generally three assumptions for the logit model: 
+If the p-value is lower than 0.05, the null hypothesis is therefore rejected in favour of the alternate hypothesis that the model is better than the baseline (or null) at active travel. What does the result tell?
+
+From the output, you can also check the percentage of correct predictions, which shows how often the model’s predicted outcomes match the actual outcomes.
+
+We can go further. The following function provides a the McFadden pseudo-R-squared measure.
+
+```{r}
+r2_mcfadden(logit_model1)
+```
+
+This has an analogous interpretation to adjusted R-squared in linear regression (from 0 to 1). It gives a sense of model improvement or predictive power, but it does not represent the proportion of variance explained like the R-squared in linear regression. It should be taken with care, as it is just a relative improvement (in log-likelihood) compared to the null model.
+
+### Assumption checks
+
+There are generally three assumptions for the logit model:
+
 1. independence of observations; 
 2. linearity; and 
 3. no perfect multicollinearity.
@@ -144,9 +161,9 @@ linearity_data1 <-
 # Plot
 linearity_data1 %>% 
   ggplot(aes(avg_distance, logit_pred)) +
-  geom_point() +
+  geom_point(alpha = 0.5) +
   geom_smooth(method = 'loess', aes(col = 'Loess curve'), se = FALSE) +
-  geom_smooth(method = 'lm', aes(col = 'Linear fit'), se = FALSE) +
+  geom_smooth(method = 'lm', aes(col = 'Linear fit \n(Ref.)'), se = FALSE) +
   labs(
     x = "Avg. distance to work (in miles)",
     y= "Log-odds of active travel \npredicted probability"
@@ -154,16 +171,16 @@ linearity_data1 %>%
 
 ```
 
-We should check whether the predictions are equally accurate along the range of values of the predictor.
+You should check whether the predictions are equally accurate along the range of values of the predictor.
 
-Independence is related to the structure and collection methods of data. To what extend does our model and data meet the independence assumption?
+Independence is related to the structure and collection methods of data. To what extent do your model and data meet the independence assumption?
 
-# Individual activities
+## Individual activities
 
 Re-run a similar analysis, but focus on public transport use (labelled as 'transit' in the data). Specifically, the dependent variable will be whether people used public transport in at least one of their trips for a purpose of your choice other than work.
 
 In this analysis, the key predictor will be employers' subsidies for public transport, such as free passes or fares. Hint: this information is available in the 'commute_subsidy_1' variable of the 'persons' table. You can keep similar control variables and optionally check how parking regulations or policies are related to the use of public transport.
 
-## Reference
+## References and further reading
 
-Harrys J.K. 2019, Statistics With R: Solving Problems Using Real-World Data. SAGE Publications. (p. 651)
+Harrys J.K. 2019, Statistics With R: Solving Problems Using Real-World Data. SAGE Publications (p. 651).

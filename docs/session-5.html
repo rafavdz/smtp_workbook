@@ -233,15 +233,18 @@ window.Quarto = {
    
   <ul>
   <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link active" data-scroll-target="#preliminaries"><span class="header-section-number">5.1</span> Preliminaries</a></li>
-  <li><a href="#logistic-regression-models" id="toc-logistic-regression-models" class="nav-link" data-scroll-target="#logistic-regression-models"><span class="header-section-number">6</span> Logistic regression models</a>
+  <li><a href="#estimating-a-logistic-regression-model" id="toc-estimating-a-logistic-regression-model" class="nav-link" data-scroll-target="#estimating-a-logistic-regression-model"><span class="header-section-number">5.2</span> Estimating a logistic regression model</a></li>
+  <li><a href="#interpreting-exponentied-coefficients-odds-ratio" id="toc-interpreting-exponentied-coefficients-odds-ratio" class="nav-link" data-scroll-target="#interpreting-exponentied-coefficients-odds-ratio"><span class="header-section-number">5.3</span> Interpreting exponentied coefficients: Odds ratio</a>
   <ul class="collapse">
-  <li><a href="#exponentied-coefficients-odds-ratio" id="toc-exponentied-coefficients-odds-ratio" class="nav-link" data-scroll-target="#exponentied-coefficients-odds-ratio"><span class="header-section-number">6.0.1</span> Exponentied coefficients: Odds ratio</a></li>
-  <li><a href="#model-checks" id="toc-model-checks" class="nav-link" data-scroll-target="#model-checks"><span class="header-section-number">6.1</span> Model checks</a></li>
+  <li><a href="#odds-ratio-in-our-example" id="toc-odds-ratio-in-our-example" class="nav-link" data-scroll-target="#odds-ratio-in-our-example"><span class="header-section-number">5.3.1</span> Odds ratio in our example</a></li>
   </ul></li>
-  <li><a href="#individual-activities" id="toc-individual-activities" class="nav-link" data-scroll-target="#individual-activities"><span class="header-section-number">7</span> Individual activities</a>
+  <li><a href="#model-checks" id="toc-model-checks" class="nav-link" data-scroll-target="#model-checks"><span class="header-section-number">5.4</span> Model checks</a>
   <ul class="collapse">
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference"><span class="header-section-number">7.1</span> Reference</a></li>
+  <li><a href="#goodness-of-fit" id="toc-goodness-of-fit" class="nav-link" data-scroll-target="#goodness-of-fit"><span class="header-section-number">5.4.1</span> Goodness-of-fit</a></li>
+  <li><a href="#assumption-checks" id="toc-assumption-checks" class="nav-link" data-scroll-target="#assumption-checks"><span class="header-section-number">5.4.2</span> Assumption checks</a></li>
   </ul></li>
+  <li><a href="#individual-activities" id="toc-individual-activities" class="nav-link" data-scroll-target="#individual-activities"><span class="header-section-number">5.5</span> Individual activities</a></li>
+  <li><a href="#references-and-further-reading" id="toc-references-and-further-reading" class="nav-link" data-scroll-target="#references-and-further-reading"><span class="header-section-number">5.6</span> References and further reading</a></li>
   </ul>
 </nav>
     </div>
@@ -267,24 +270,15 @@ window.Quarto = {
 </header>
 
 
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-🚧 Work in Progress
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This chapter is a draft and may change significantly.<br>
-Content, examples, and conclusions are not final.</p>
-</div>
-</div>
+<!-- NOTES FOR FUTURE ACTIVITIES -->
 <!-- Outliers: include them from a modelling perspective. Potentially week 4 or 5.  -->
+<!-- - Next to the ORs in the table you have the CIs.  We will talk a little about how to interpret this in class, so you could ask a question about that below the table, perhaps? -->
+<!-- - In the lecture we will be emphasising the Chi Sq test as a way of assessing the quality of the model, so it might be worth emphasising that in the output of the performance_pcp function? -->
+<!--  talk briefly about comparing nested or non-nested model formulations using the LL test or by comparing BICs/AICs.  Might be worth suggesting they try a model with fewer IVs and assess which is ‘better’ (as extra homework for those who are willing)? -->
+<p>In today’s session we will continue learning about logistic regression. Last time, we learned more about suitable outcome variables for this type of model, i.e.&nbsp;binary ones (which only have two mutually exclusive categories). Also, we fitted a logistic regression model and were introduced to coefficient interpretation. We made interpretations in the log of the odds. Today, we will learn about coefficient interpretations in the odds ratio scale. Also, we will learn more about model goodness-of-fit and checking model assumptions.</p>
 <section id="preliminaries" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="preliminaries"><span class="header-section-number">5.1</span> Preliminaries</h2>
-<p>For today’s session we will need the following packages.</p>
+<p>For today’s session we will need the following packages. You needed them for the previous lab.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Packages </span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># For data manipulation</span></span>
@@ -305,15 +299,16 @@ $ active_binary    &lt;dbl&gt; 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0
 $ free_parking     &lt;chr&gt; "No", "No", "No", "No", "No", "Yes", "No", "No", "No"…
 $ avg_distance     &lt;dbl&gt; 2.313454, 1.360803, 4.188145, 2.065438, 2.835317, 3.9…
 $ gender           &lt;chr&gt; "Girl/Woman (cisgender or transgender)", "Boy/Man (ci…
-$ higher_education &lt;chr&gt; "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "Yes"…
+$ higher_education &lt;chr&gt; "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes…
 $ children         &lt;chr&gt; "Yes", "No", "No", "No", "No", "No", "Yes", "Yes", "N…
 $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000 or …</code></pre>
 </div>
 </div>
 </section>
-<section id="logistic-regression-models" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Logistic regression models</h1>
-<p>We start by fitting the same logistic regression model that we discussed in Session 4 to identify the relationships between the dependent variable (engaging in active travel to work) and key independent variable (having free parking), including control variables, such as average trip distance, gender, higher education, presence of children at household, and household income.</p>
+<section id="estimating-a-logistic-regression-model" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="estimating-a-logistic-regression-model"><span class="header-section-number">5.2</span> Estimating a logistic regression model</h2>
+<p>We start by estimating the same logistic regression model that we discussed in Session 4. Here, we aim to identify the relationships between having free parking at work (key independent variable) and persons engaging in active travel to work (dependent variable), including control variables, such as average trip distance, gender, higher education, presence of children at household, and household income.</p>
+<p>To estimate the logistic regression we use the <code>glm()</code> function and specify the family ‘binomial’. The glm() function uses the first category as the reference group (the group without the outcome) and treats the second category as the outcome group. In this case, ‘1’ = <em>active travel</em>, and ‘0’ = <em>no active travel</em> (the reference group). This is critical to make correct coefficient interpretations.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>logit_model1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  active_binary <span class="sc">~</span> free_parking <span class="sc">+</span> avg_distance <span class="sc">+</span> gender <span class="sc">+</span> higher_education <span class="sc">+</span> children <span class="sc">+</span> hhincome_broad,</span>
@@ -321,18 +316,18 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> persons_main</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="exponentied-coefficients-odds-ratio" class="level3" data-number="6.0.1">
-<h3 data-number="6.0.1" class="anchored" data-anchor-id="exponentied-coefficients-odds-ratio"><span class="header-section-number">6.0.1</span> Exponentied coefficients: Odds ratio</h3>
-<p>In the previous session we fitted the logistic regression model, and we made interpretation in the log of the odds scale. However, the log of the odds is not very intuitive or it is hard to communicate for wider audiences. We can exponentiate the coefficients to obtain the odds ratio.</p>
+</section>
+<section id="interpreting-exponentied-coefficients-odds-ratio" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="interpreting-exponentied-coefficients-odds-ratio"><span class="header-section-number">5.3</span> Interpreting exponentied coefficients: Odds ratio</h2>
 <p>In the previous session, we fitted a logistic regression model and interpreted the coefficients on the <strong>log-odds scale</strong>. However, the log of the odds is not very intuitive or it is hard to communicate for wider audiences. We can exponentiate the coefficients to obtain the odds ratio. If the logit model is:</p>
 <p><span class="math display">\[
 \log\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1 X
 \]</span></p>
-<p>then exponentiating both sides gives:</p>
+<p>then, exponentiating both sides gives:</p>
 <p><span class="math display">\[
 \frac{p}{1-p} = e^{\beta_0 + \beta_1 X} = e^{\beta_0} \cdot e^{\beta_1 X}
 \]</span></p>
-<p>The exponentiation reverses the logarithm, transforming coefficients from the log-odds scale back to the odds scale. Specifically, <span class="math inline">\(e^{\beta_1}\)</span> represents the <strong>odds ratio (OR)</strong>:</p>
+<p>The exponentiation reverses the logarithm, transforming coefficients from the log-odds scale back to the odds ratio scale. Specifically, <span class="math inline">\(e^{\beta_1}\)</span> represents the <strong>odds ratio (OR)</strong>:</p>
 <p><span class="math display">\[
 \text{OR} = e^{\beta_1}
 \]</span></p>
@@ -343,31 +338,32 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
 <li>If <span class="math inline">\(\beta_1 = 0\)</span>, then <span class="math inline">\(e^{\beta_1} = 1\)</span>, meaning the odds remain <strong>unchanged</strong></li>
 </ul>
 <p>For example, if <span class="math inline">\(\beta_1 = 0.5\)</span>, then <span class="math inline">\(e^{0.5} \approx 1.65\)</span>, meaning the odds increase by 65% for each one-unit increase in <span class="math inline">\(X\)</span>.</p>
-<section id="odds-ratio-in-our-example" class="level4" data-number="6.0.1.1">
-<h4 data-number="6.0.1.1" class="anchored" data-anchor-id="odds-ratio-in-our-example"><span class="header-section-number">6.0.1.1</span> Odds ratio in our example</h4>
+<section id="odds-ratio-in-our-example" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="odds-ratio-in-our-example"><span class="header-section-number">5.3.1</span> Odds ratio in our example</h3>
 <p>Let’s exponentiate the results of our logistic regression model!</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>logit_model1 <span class="sc">%&gt;%</span> </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_regression</span>(<span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_glance_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_significance_stars</span>(<span class="at">hide_ci =</span> <span class="cn">FALSE</span>, <span class="at">hide_p =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_glance_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="rzimnnlzzu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#rzimnnlzzu table {
+<div id="tqvlhixlie" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#tqvlhixlie table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#rzimnnlzzu thead, #rzimnnlzzu tbody, #rzimnnlzzu tfoot, #rzimnnlzzu tr, #rzimnnlzzu td, #rzimnnlzzu th {
+#tqvlhixlie thead, #tqvlhixlie tbody, #tqvlhixlie tfoot, #tqvlhixlie tr, #tqvlhixlie td, #tqvlhixlie th {
   border-style: none;
 }
 
-#rzimnnlzzu p {
+#tqvlhixlie p {
   margin: 0;
   padding: 0;
 }
 
-#rzimnnlzzu .gt_table {
+#tqvlhixlie .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -393,12 +389,12 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-left-color: #D3D3D3;
 }
 
-#rzimnnlzzu .gt_caption {
+#tqvlhixlie .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#rzimnnlzzu .gt_title {
+#tqvlhixlie .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -410,7 +406,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-bottom-width: 0;
 }
 
-#rzimnnlzzu .gt_subtitle {
+#tqvlhixlie .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -422,7 +418,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-top-width: 0;
 }
 
-#rzimnnlzzu .gt_heading {
+#tqvlhixlie .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -434,13 +430,13 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-right-color: #D3D3D3;
 }
 
-#rzimnnlzzu .gt_bottom_border {
+#tqvlhixlie .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#rzimnnlzzu .gt_col_headings {
+#tqvlhixlie .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -455,7 +451,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-right-color: #D3D3D3;
 }
 
-#rzimnnlzzu .gt_col_heading {
+#tqvlhixlie .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -475,7 +471,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   overflow-x: hidden;
 }
 
-#rzimnnlzzu .gt_column_spanner_outer {
+#tqvlhixlie .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -487,15 +483,15 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   padding-right: 4px;
 }
 
-#rzimnnlzzu .gt_column_spanner_outer:first-child {
+#tqvlhixlie .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rzimnnlzzu .gt_column_spanner_outer:last-child {
+#tqvlhixlie .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rzimnnlzzu .gt_column_spanner {
+#tqvlhixlie .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -507,11 +503,11 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   width: 100%;
 }
 
-#rzimnnlzzu .gt_spanner_row {
+#tqvlhixlie .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#rzimnnlzzu .gt_group_heading {
+#tqvlhixlie .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -537,7 +533,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   text-align: left;
 }
 
-#rzimnnlzzu .gt_empty_group_heading {
+#tqvlhixlie .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -552,15 +548,15 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   vertical-align: middle;
 }
 
-#rzimnnlzzu .gt_from_md > :first-child {
+#tqvlhixlie .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rzimnnlzzu .gt_from_md > :last-child {
+#tqvlhixlie .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rzimnnlzzu .gt_row {
+#tqvlhixlie .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -579,7 +575,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   overflow-x: hidden;
 }
 
-#rzimnnlzzu .gt_stub {
+#tqvlhixlie .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -592,7 +588,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   padding-right: 5px;
 }
 
-#rzimnnlzzu .gt_stub_row_group {
+#tqvlhixlie .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -606,15 +602,15 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   vertical-align: top;
 }
 
-#rzimnnlzzu .gt_row_group_first td {
+#tqvlhixlie .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#rzimnnlzzu .gt_row_group_first th {
+#tqvlhixlie .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#rzimnnlzzu .gt_summary_row {
+#tqvlhixlie .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -624,16 +620,16 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   padding-right: 5px;
 }
 
-#rzimnnlzzu .gt_first_summary_row {
+#tqvlhixlie .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#rzimnnlzzu .gt_first_summary_row.thick {
+#tqvlhixlie .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#rzimnnlzzu .gt_last_summary_row {
+#tqvlhixlie .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -643,7 +639,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-bottom-color: #D3D3D3;
 }
 
-#rzimnnlzzu .gt_grand_summary_row {
+#tqvlhixlie .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -653,7 +649,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   padding-right: 5px;
 }
 
-#rzimnnlzzu .gt_first_grand_summary_row {
+#tqvlhixlie .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -663,7 +659,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-top-color: #D3D3D3;
 }
 
-#rzimnnlzzu .gt_last_grand_summary_row_top {
+#tqvlhixlie .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -673,11 +669,11 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-bottom-color: #D3D3D3;
 }
 
-#rzimnnlzzu .gt_striped {
+#tqvlhixlie .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rzimnnlzzu .gt_table_body {
+#tqvlhixlie .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -686,7 +682,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-bottom-color: #D3D3D3;
 }
 
-#rzimnnlzzu .gt_footnotes {
+#tqvlhixlie .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -700,7 +696,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-right-color: #D3D3D3;
 }
 
-#rzimnnlzzu .gt_footnote {
+#tqvlhixlie .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -709,7 +705,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   padding-right: 5px;
 }
 
-#rzimnnlzzu .gt_sourcenotes {
+#tqvlhixlie .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -723,7 +719,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-right-color: #D3D3D3;
 }
 
-#rzimnnlzzu .gt_sourcenote {
+#tqvlhixlie .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -731,355 +727,318 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   padding-right: 5px;
 }
 
-#rzimnnlzzu .gt_left {
+#tqvlhixlie .gt_left {
   text-align: left;
 }
 
-#rzimnnlzzu .gt_center {
+#tqvlhixlie .gt_center {
   text-align: center;
 }
 
-#rzimnnlzzu .gt_right {
+#tqvlhixlie .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rzimnnlzzu .gt_font_normal {
+#tqvlhixlie .gt_font_normal {
   font-weight: normal;
 }
 
-#rzimnnlzzu .gt_font_bold {
+#tqvlhixlie .gt_font_bold {
   font-weight: bold;
 }
 
-#rzimnnlzzu .gt_font_italic {
+#tqvlhixlie .gt_font_italic {
   font-style: italic;
 }
 
-#rzimnnlzzu .gt_super {
+#tqvlhixlie .gt_super {
   font-size: 65%;
 }
 
-#rzimnnlzzu .gt_footnote_marks {
+#tqvlhixlie .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#rzimnnlzzu .gt_asterisk {
+#tqvlhixlie .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#rzimnnlzzu .gt_indent_1 {
+#tqvlhixlie .gt_indent_1 {
   text-indent: 5px;
 }
 
-#rzimnnlzzu .gt_indent_2 {
+#tqvlhixlie .gt_indent_2 {
   text-indent: 10px;
 }
 
-#rzimnnlzzu .gt_indent_3 {
+#tqvlhixlie .gt_indent_3 {
   text-indent: 15px;
 }
 
-#rzimnnlzzu .gt_indent_4 {
+#tqvlhixlie .gt_indent_4 {
   text-indent: 20px;
 }
 
-#rzimnnlzzu .gt_indent_5 {
+#tqvlhixlie .gt_indent_5 {
   text-indent: 25px;
 }
 
-#rzimnnlzzu .katex-display {
+#tqvlhixlie .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#rzimnnlzzu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#tqvlhixlie div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
-
-<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="gt_col_headings header">
-<th id="label" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Characteristic</strong></th>
-<th id="estimate" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>OR</strong></th>
-<th id="conf.low" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>95% CI</strong></th>
-<th id="p.value" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>p-value</strong></th>
-</tr>
-</thead>
-<tbody class="gt_table_body">
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">free_parking</td>
-<td class="gt_row gt_center" headers="estimate"><br>
-</td>
-<td class="gt_row gt_center" headers="conf.low"><br>
-</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;No</td>
-<td class="gt_row gt_center" headers="estimate">—</td>
-<td class="gt_row gt_center" headers="conf.low">—</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Yes</td>
-<td class="gt_row gt_center" headers="estimate">0.47</td>
-<td class="gt_row gt_center" headers="conf.low">0.35, 0.63</td>
-<td class="gt_row gt_center" headers="p.value">&lt;0.001</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">avg_distance</td>
-<td class="gt_row gt_center" headers="estimate">0.79</td>
-<td class="gt_row gt_center" headers="conf.low">0.76, 0.82</td>
-<td class="gt_row gt_center" headers="p.value">&lt;0.001</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">gender</td>
-<td class="gt_row gt_center" headers="estimate"><br>
-</td>
-<td class="gt_row gt_center" headers="conf.low"><br>
-</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Boy/Man (cisgender or transgender)</td>
-<td class="gt_row gt_center" headers="estimate">—</td>
-<td class="gt_row gt_center" headers="conf.low">—</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Girl/Woman (cisgender or transgender)</td>
-<td class="gt_row gt_center" headers="estimate">0.61</td>
-<td class="gt_row gt_center" headers="conf.low">0.47, 0.79</td>
-<td class="gt_row gt_center" headers="p.value">&lt;0.001</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Non-binary/Something else fits better</td>
-<td class="gt_row gt_center" headers="estimate">0.79</td>
-<td class="gt_row gt_center" headers="conf.low">0.36, 1.70</td>
-<td class="gt_row gt_center" headers="p.value">0.6</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Prefer not to answer</td>
-<td class="gt_row gt_center" headers="estimate">0.53</td>
-<td class="gt_row gt_center" headers="conf.low">0.27, 1.01</td>
-<td class="gt_row gt_center" headers="p.value">0.060</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">higher_education</td>
-<td class="gt_row gt_center" headers="estimate"><br>
-</td>
-<td class="gt_row gt_center" headers="conf.low"><br>
-</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;No</td>
-<td class="gt_row gt_center" headers="estimate">—</td>
-<td class="gt_row gt_center" headers="conf.low">—</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Yes</td>
-<td class="gt_row gt_center" headers="estimate">1.90</td>
-<td class="gt_row gt_center" headers="conf.low">1.37, 2.66</td>
-<td class="gt_row gt_center" headers="p.value">&lt;0.001</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">children</td>
-<td class="gt_row gt_center" headers="estimate"><br>
-</td>
-<td class="gt_row gt_center" headers="conf.low"><br>
-</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;No</td>
-<td class="gt_row gt_center" headers="estimate">—</td>
-<td class="gt_row gt_center" headers="conf.low">—</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Yes</td>
-<td class="gt_row gt_center" headers="estimate">0.51</td>
-<td class="gt_row gt_center" headers="conf.low">0.36, 0.71</td>
-<td class="gt_row gt_center" headers="p.value">&lt;0.001</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">hhincome_broad</td>
-<td class="gt_row gt_center" headers="estimate"><br>
-</td>
-<td class="gt_row gt_center" headers="conf.low"><br>
-</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Under $25,000</td>
-<td class="gt_row gt_center" headers="estimate">—</td>
-<td class="gt_row gt_center" headers="conf.low">—</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;$25,000-$49,999</td>
-<td class="gt_row gt_center" headers="estimate">0.54</td>
-<td class="gt_row gt_center" headers="conf.low">0.27, 1.07</td>
-<td class="gt_row gt_center" headers="p.value">0.076</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;$50,000-$74,999</td>
-<td class="gt_row gt_center" headers="estimate">0.51</td>
-<td class="gt_row gt_center" headers="conf.low">0.26, 1.01</td>
-<td class="gt_row gt_center" headers="p.value">0.054</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;$75,000-$99,999</td>
-<td class="gt_row gt_center" headers="estimate">0.51</td>
-<td class="gt_row gt_center" headers="conf.low">0.25, 1.01</td>
-<td class="gt_row gt_center" headers="p.value">0.052</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;$100,000-$199,999</td>
-<td class="gt_row gt_center" headers="estimate">0.45</td>
-<td class="gt_row gt_center" headers="conf.low">0.23, 0.85</td>
-<td class="gt_row gt_center" headers="p.value">0.015</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;$200,000 or more</td>
-<td class="gt_row gt_center" headers="estimate">0.58</td>
-<td class="gt_row gt_center" headers="conf.low">0.30, 1.13</td>
-<td class="gt_row gt_center" headers="p.value">0.11</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label" style="border-top-width: 2px; border-top-style: solid; border-top-color: #D3D3D3">Null deviance</td>
-<td class="gt_row gt_center" headers="estimate" style="border-top-width: 2px; border-top-style: solid; border-top-color: #D3D3D3">1,939</td>
-<td class="gt_row gt_center" headers="conf.low" style="border-top-width: 2px; border-top-style: solid; border-top-color: #D3D3D3"><br>
-</td>
-<td class="gt_row gt_center" headers="p.value" style="border-top-width: 2px; border-top-style: solid; border-top-color: #D3D3D3"><br>
-</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">Null df</td>
-<td class="gt_row gt_center" headers="estimate">1,680</td>
-<td class="gt_row gt_center" headers="conf.low"><br>
-</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">Log-likelihood</td>
-<td class="gt_row gt_center" headers="estimate">-760</td>
-<td class="gt_row gt_center" headers="conf.low"><br>
-</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">AIC</td>
-<td class="gt_row gt_center" headers="estimate">1,547</td>
-<td class="gt_row gt_center" headers="conf.low"><br>
-</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">BIC</td>
-<td class="gt_row gt_center" headers="estimate">1,617</td>
-<td class="gt_row gt_center" headers="conf.low"><br>
-</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">Deviance</td>
-<td class="gt_row gt_center" headers="estimate">1,521</td>
-<td class="gt_row gt_center" headers="conf.low"><br>
-</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">Residual df</td>
-<td class="gt_row gt_center" headers="estimate">1,668</td>
-<td class="gt_row gt_center" headers="conf.low"><br>
-</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">No. Obs.</td>
-<td class="gt_row gt_center" headers="estimate">1,681</td>
-<td class="gt_row gt_center" headers="conf.low"><br>
-</td>
-<td class="gt_row gt_center" headers="p.value"><br>
-</td>
-</tr>
-</tbody><tfoot class="gt_sourcenotes">
-<tr class="odd">
-<td colspan="4" class="gt_sourcenote">Abbreviations: CI = Confidence Interval, OR = Odds Ratio</td>
-</tr>
-</tfoot>
-
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="label"><span data-qmd-base64="PHN0cm9uZz5DaGFyYWN0ZXJpc3RpYzwvc3Ryb25nPg=="><span class="gt_from_md"><strong>Characteristic</strong></span></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="estimate"><span data-qmd-base64="PHN0cm9uZz5PUjwvc3Ryb25nPg=="><span class="gt_from_md"><strong>OR</strong></span></span><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="std.error"><span data-qmd-base64="PHN0cm9uZz5TRTwvc3Ryb25nPg=="><span class="gt_from_md"><strong>SE</strong></span></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="conf.low"><span data-qmd-base64="PHN0cm9uZz45NSUgQ0k8L3N0cm9uZz4="><span class="gt_from_md"><strong>95% CI</strong></span></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="p.value"><span data-qmd-base64="PHN0cm9uZz5wLXZhbHVlPC9zdHJvbmc+"><span class="gt_from_md"><strong>p-value</strong></span></span></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="label" class="gt_row gt_left">free_parking</td>
+<td headers="estimate" class="gt_row gt_center"><br></td>
+<td headers="std.error" class="gt_row gt_center"><br></td>
+<td headers="conf.low" class="gt_row gt_center"><br></td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;No</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="std.error" class="gt_row gt_center">—</td>
+<td headers="conf.low" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Yes</td>
+<td headers="estimate" class="gt_row gt_center">0.47***</td>
+<td headers="std.error" class="gt_row gt_center">0.148</td>
+<td headers="conf.low" class="gt_row gt_center">0.35, 0.63</td>
+<td headers="p.value" class="gt_row gt_center">&lt;0.001</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">avg_distance</td>
+<td headers="estimate" class="gt_row gt_center">0.79***</td>
+<td headers="std.error" class="gt_row gt_center">0.019</td>
+<td headers="conf.low" class="gt_row gt_center">0.76, 0.82</td>
+<td headers="p.value" class="gt_row gt_center">&lt;0.001</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">gender</td>
+<td headers="estimate" class="gt_row gt_center"><br></td>
+<td headers="std.error" class="gt_row gt_center"><br></td>
+<td headers="conf.low" class="gt_row gt_center"><br></td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Boy/Man (cisgender or transgender)</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="std.error" class="gt_row gt_center">—</td>
+<td headers="conf.low" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Girl/Woman (cisgender or transgender)</td>
+<td headers="estimate" class="gt_row gt_center">0.60***</td>
+<td headers="std.error" class="gt_row gt_center">0.132</td>
+<td headers="conf.low" class="gt_row gt_center">0.46, 0.77</td>
+<td headers="p.value" class="gt_row gt_center">&lt;0.001</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Non-binary/Something else fits better</td>
+<td headers="estimate" class="gt_row gt_center">0.75</td>
+<td headers="std.error" class="gt_row gt_center">0.393</td>
+<td headers="conf.low" class="gt_row gt_center">0.34, 1.60</td>
+<td headers="p.value" class="gt_row gt_center">0.5</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Prefer not to answer</td>
+<td headers="estimate" class="gt_row gt_center">0.54</td>
+<td headers="std.error" class="gt_row gt_center">0.335</td>
+<td headers="conf.low" class="gt_row gt_center">0.27, 1.02</td>
+<td headers="p.value" class="gt_row gt_center">0.064</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">higher_education</td>
+<td headers="estimate" class="gt_row gt_center"><br></td>
+<td headers="std.error" class="gt_row gt_center"><br></td>
+<td headers="conf.low" class="gt_row gt_center"><br></td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;No</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="std.error" class="gt_row gt_center">—</td>
+<td headers="conf.low" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Yes</td>
+<td headers="estimate" class="gt_row gt_center">1.88***</td>
+<td headers="std.error" class="gt_row gt_center">0.175</td>
+<td headers="conf.low" class="gt_row gt_center">1.34, 2.67</td>
+<td headers="p.value" class="gt_row gt_center">&lt;0.001</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">children</td>
+<td headers="estimate" class="gt_row gt_center"><br></td>
+<td headers="std.error" class="gt_row gt_center"><br></td>
+<td headers="conf.low" class="gt_row gt_center"><br></td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;No</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="std.error" class="gt_row gt_center">—</td>
+<td headers="conf.low" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Yes</td>
+<td headers="estimate" class="gt_row gt_center">0.52***</td>
+<td headers="std.error" class="gt_row gt_center">0.175</td>
+<td headers="conf.low" class="gt_row gt_center">0.36, 0.72</td>
+<td headers="p.value" class="gt_row gt_center">&lt;0.001</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">hhincome_broad</td>
+<td headers="estimate" class="gt_row gt_center"><br></td>
+<td headers="std.error" class="gt_row gt_center"><br></td>
+<td headers="conf.low" class="gt_row gt_center"><br></td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Under $25,000</td>
+<td headers="estimate" class="gt_row gt_center">—</td>
+<td headers="std.error" class="gt_row gt_center">—</td>
+<td headers="conf.low" class="gt_row gt_center">—</td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;$25,000-$49,999</td>
+<td headers="estimate" class="gt_row gt_center">0.53</td>
+<td headers="std.error" class="gt_row gt_center">0.349</td>
+<td headers="conf.low" class="gt_row gt_center">0.27, 1.06</td>
+<td headers="p.value" class="gt_row gt_center">0.072</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;$50,000-$74,999</td>
+<td headers="estimate" class="gt_row gt_center">0.48*</td>
+<td headers="std.error" class="gt_row gt_center">0.353</td>
+<td headers="conf.low" class="gt_row gt_center">0.24, 0.95</td>
+<td headers="p.value" class="gt_row gt_center">0.036</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;$75,000-$99,999</td>
+<td headers="estimate" class="gt_row gt_center">0.49*</td>
+<td headers="std.error" class="gt_row gt_center">0.354</td>
+<td headers="conf.low" class="gt_row gt_center">0.24, 0.98</td>
+<td headers="p.value" class="gt_row gt_center">0.045</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;$100,000-$199,999</td>
+<td headers="estimate" class="gt_row gt_center">0.43*</td>
+<td headers="std.error" class="gt_row gt_center">0.332</td>
+<td headers="conf.low" class="gt_row gt_center">0.22, 0.83</td>
+<td headers="p.value" class="gt_row gt_center">0.012</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;$200,000 or more</td>
+<td headers="estimate" class="gt_row gt_center">0.55</td>
+<td headers="std.error" class="gt_row gt_center">0.345</td>
+<td headers="conf.low" class="gt_row gt_center">0.28, 1.09</td>
+<td headers="p.value" class="gt_row gt_center">0.087</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="border-top-width: 2px; border-top-style: solid; border-top-color: #D3D3D3;">Null deviance</td>
+<td headers="estimate" class="gt_row gt_center" style="border-top-width: 2px; border-top-style: solid; border-top-color: #D3D3D3;">1,939</td>
+<td headers="std.error" class="gt_row gt_center" style="border-top-width: 2px; border-top-style: solid; border-top-color: #D3D3D3;"><br></td>
+<td headers="conf.low" class="gt_row gt_center" style="border-top-width: 2px; border-top-style: solid; border-top-color: #D3D3D3;"><br></td>
+<td headers="p.value" class="gt_row gt_center" style="border-top-width: 2px; border-top-style: solid; border-top-color: #D3D3D3;"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Null df</td>
+<td headers="estimate" class="gt_row gt_center">1,680</td>
+<td headers="std.error" class="gt_row gt_center"><br></td>
+<td headers="conf.low" class="gt_row gt_center"><br></td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Log-likelihood</td>
+<td headers="estimate" class="gt_row gt_center">-761</td>
+<td headers="std.error" class="gt_row gt_center"><br></td>
+<td headers="conf.low" class="gt_row gt_center"><br></td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">AIC</td>
+<td headers="estimate" class="gt_row gt_center">1,548</td>
+<td headers="std.error" class="gt_row gt_center"><br></td>
+<td headers="conf.low" class="gt_row gt_center"><br></td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">BIC</td>
+<td headers="estimate" class="gt_row gt_center">1,619</td>
+<td headers="std.error" class="gt_row gt_center"><br></td>
+<td headers="conf.low" class="gt_row gt_center"><br></td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Deviance</td>
+<td headers="estimate" class="gt_row gt_center">1,522</td>
+<td headers="std.error" class="gt_row gt_center"><br></td>
+<td headers="conf.low" class="gt_row gt_center"><br></td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Residual df</td>
+<td headers="estimate" class="gt_row gt_center">1,668</td>
+<td headers="std.error" class="gt_row gt_center"><br></td>
+<td headers="conf.low" class="gt_row gt_center"><br></td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">No. Obs.</td>
+<td headers="estimate" class="gt_row gt_center">1,681</td>
+<td headers="std.error" class="gt_row gt_center"><br></td>
+<td headers="conf.low" class="gt_row gt_center"><br></td>
+<td headers="p.value" class="gt_row gt_center"><br></td></tr>
+  </tbody>
+  <tfoot class="gt_sourcenotes">
+    <tr>
+      <td class="gt_sourcenote" colspan="5"><span data-qmd-base64="QWJicmV2aWF0aW9uczogQ0kgPSBDb25maWRlbmNlIEludGVydmFsLCBPUiA9IE9kZHMgUmF0aW8sIFNFID0gU3RhbmRhcmQgRXJyb3I="><span class="gt_from_md">Abbreviations: CI = Confidence Interval, OR = Odds Ratio, SE = Standard Error</span></span></td>
+    </tr>
+  </tfoot>
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="5"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span> <span data-qmd-base64="KnAmbHQ7MC4wNTsgKipwJmx0OzAuMDE7ICoqKnAmbHQ7MC4wMDE="><span class="gt_from_md">*p&lt;0.05; **p&lt;0.01; ***p&lt;0.001</span></span></td>
+    </tr>
+  </tfoot>
 </table>
-
 </div>
 </div>
 </div>
-<p>Here, the interpretations changes compare to the log of the odds. For example, the odds ratio of using active transport modes are about 50% lower for people with free parking at work compared to those without free parking. Note that we make interpretations in relation to 1. Specifically, a value lower than one implies a decrease in the odds of using active transport modes. Generally we use the following formula to express the changes in percent terms <code>(1 - coefficient) * 100</code>.</p>
-<p>For continuous variables the interpretation is as follows: Every additional mile to work is associated with a 20% decrease in the odds ratio of using active transport modes.</p>
+<p>Before anything, scan and determine which variables are significant. The confidence interval for an odds ratio reflects the range of plausible values for the true population effect. This is found in the ‘CI’ in the results table. If it the CI includes 1, it indicates that the estimated association is unlikely, connecting to statistical significance, e.g.&nbsp;p-value. Is there anything unexpected or looking unusual?</p>
+<p>When it comes to the the size of coefficients, the interpretations change compared to the log of the odds. For example,</p>
+<blockquote class="blockquote">
+<p>the odds ratio of using active transport modes are about 50% lower for people with free parking at work compared to those without free parking.</p>
+</blockquote>
+<p>Note that we make interpretations in relation to 1. Specifically, a value lower than one implies a decrease in the odds of using active transport modes. Generally we use the following formula to express the changes in percent terms <code>(1 - coefficient) * 100</code>.</p>
+<p>For continuous variables the interpretation is as follows:</p>
+<blockquote class="blockquote">
+<p>Every additional mile to work is associated with a 20% decrease in the odds ratio for using active transport modes.</p>
+</blockquote>
 <p>Note that we are talking either about the log of the odds or the odds ratio, not the probability.</p>
-<div class="callout-question" title="Reflection">
-<p>Can you provide the interpretation for other coefficients?</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Reflection">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Reflection
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Can you provide the interpretation for rest of the coefficients, including significance and size?</p>
+</div>
 </div>
 </section>
 </section>
-<section id="model-checks" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="model-checks"><span class="header-section-number">6.1</span> Model checks</h2>
-<p>The following function provides a the McFadden pseudo-r-squared measure.</p>
+<section id="model-checks" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="model-checks"><span class="header-section-number">5.4</span> Model checks</h2>
+<section id="goodness-of-fit" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="goodness-of-fit"><span class="header-section-number">5.4.1</span> Goodness-of-fit</h3>
+<p>In logistic regression, the Chi-square test is used to determine whether the model with predictors fits significantly better than a model with no predictors (the null model).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">r2_mcfadden</span>(logit_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># R2 for Generalized Linear Regression
-       R2: 0.216
-  adj. R2: 0.215</code></pre>
-</div>
-</div>
-<p>We can also check the percentage of correct predictions.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">performance_pcp</span>(logit_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">performance_pcp</span>(logit_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Percentage of Correct Predictions from Logistic Regression Model
 
-  Full model: 70.54% [68.36% - 72.72%]
+  Full model: 70.52% [68.34% - 72.70%]
   Null model: 61.18% [58.85% - 63.51%]
 
 # Likelihood-Ratio-Test
 
-  Chi-squared: 418.031
+  Chi-squared: 416.763
   df:  12.000
   p-value:   0.000</code></pre>
 </div>
 </div>
-<p>There are generally three assumptions for the logit model: 1. independence of observations; 2. linearity; and 3. no perfect multicollinearity.</p>
+<p>If the p-value is lower than 0.05, the null hypothesis is therefore rejected in favour of the alternate hypothesis that the model is better than the baseline (or null) at active travel. What does the result tell?</p>
+<p>From the output, you can also check the percentage of correct predictions, which shows how often the model’s predicted outcomes match the actual outcomes.</p>
+<p>We can go further. The following function provides a the McFadden pseudo-R-squared measure.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">r2_mcfadden</span>(logit_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># R2 for Generalized Linear Regression
+       R2: 0.215
+  adj. R2: 0.214</code></pre>
+</div>
+</div>
+<p>This has an analogous interpretation to adjusted R-squared in linear regression (from 0 to 1). It gives a sense of model improvement or predictive power, but it does not represent the proportion of variance explained like the R-squared in linear regression. It should be taken with care, as it is just a relative improvement (in log-likelihood) compared to the null model.</p>
+</section>
+<section id="assumption-checks" class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="assumption-checks"><span class="header-section-number">5.4.2</span> Assumption checks</h3>
+<p>There are generally three assumptions for the logit model:</p>
+<ol type="1">
+<li>independence of observations;</li>
+<li>linearity; and</li>
+<li>no perfect multicollinearity.</li>
+</ol>
 <p>We can check for collinearity using the variance of inflation factor (VIF).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_collinearity</span>(logit_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1089,12 +1048,12 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
 Low Correlation
 
              Term  VIF   VIF 95% CI Increased SE Tolerance Tolerance 95% CI
-     free_parking 1.02 [1.00, 1.38]         1.01      0.99     [0.73, 1.00]
+     free_parking 1.02 [1.00, 1.32]         1.01      0.98     [0.76, 1.00]
      avg_distance 1.03 [1.00, 1.17]         1.01      0.97     [0.85, 1.00]
-           gender 1.07 [1.03, 1.15]         1.03      0.94     [0.87, 0.97]
- higher_education 1.07 [1.03, 1.15]         1.04      0.93     [0.87, 0.97]
-         children 1.06 [1.03, 1.15]         1.03      0.94     [0.87, 0.97]
-   hhincome_broad 1.21 [1.15, 1.29]         1.10      0.83     [0.78, 0.87]</code></pre>
+           gender 1.07 [1.03, 1.15]         1.03      0.93     [0.87, 0.97]
+ higher_education 1.10 [1.06, 1.18]         1.05      0.91     [0.85, 0.94]
+         children 1.07 [1.03, 1.15]         1.03      0.94     [0.87, 0.97]
+   hhincome_broad 1.24 [1.18, 1.32]         1.11      0.81     [0.76, 0.85]</code></pre>
 </div>
 </div>
 <p>We can check linearity examining the relationship between each continuous predictor and log-odds of the predicted probabilities. In our model, we only have one continuous variable. We can check the linearity of our model as following:</p>
@@ -1114,9 +1073,9 @@ Low Correlation
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
 <span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>linearity_data1 <span class="sc">%&gt;%</span> </span>
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(avg_distance, logit_pred)) <span class="sc">+</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'loess'</span>, <span class="fu">aes</span>(<span class="at">col =</span> <span class="st">'Loess curve'</span>), <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>, <span class="fu">aes</span>(<span class="at">col =</span> <span class="st">'Linear fit'</span>), <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>, <span class="fu">aes</span>(<span class="at">col =</span> <span class="st">'Linear fit </span><span class="sc">\n</span><span class="st">(Ref.)'</span>), <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
 <span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Avg. distance to work (in miles)"</span>,</span>
 <span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span> <span class="st">"Log-odds of active travel </span><span class="sc">\n</span><span class="st">predicted probability"</span></span>
@@ -1129,20 +1088,20 @@ Low Correlation
 </div>
 </div>
 </div>
-<p>We should check whether the predictions are equally accurate along the range of values of the predictor.</p>
-<p>Independence is related to the structure and collection methods of data. To what extend does our model and data meet the independence assumption?</p>
+<p>You should check whether the predictions are equally accurate along the range of values of the predictor.</p>
+<p>Independence is related to the structure and collection methods of data. To what extent do your model and data meet the independence assumption?</p>
 </section>
 </section>
-<section id="individual-activities" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Individual activities</h1>
+<section id="individual-activities" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="individual-activities"><span class="header-section-number">5.5</span> Individual activities</h2>
 <p>Re-run a similar analysis, but focus on public transport use (labelled as ‘transit’ in the data). Specifically, the dependent variable will be whether people used public transport in at least one of their trips for a purpose of your choice other than work.</p>
 <p>In this analysis, the key predictor will be employers’ subsidies for public transport, such as free passes or fares. Hint: this information is available in the ‘commute_subsidy_1’ variable of the ‘persons’ table. You can keep similar control variables and optionally check how parking regulations or policies are related to the use of public transport.</p>
-<section id="reference" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="reference"><span class="header-section-number">7.1</span> Reference</h2>
-<p>Harrys J.K. 2019, Statistics With R: Solving Problems Using Real-World Data. SAGE Publications. (p.&nbsp;651)</p>
-
-
 </section>
+<section id="references-and-further-reading" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="references-and-further-reading"><span class="header-section-number">5.6</span> References and further reading</h2>
+<p>Harrys J.K. 2019, Statistics With R: Solving Problems Using Real-World Data. SAGE Publications (p.&nbsp;651).</p>
+
+
 </section>
 
 </main> <!-- /main -->
