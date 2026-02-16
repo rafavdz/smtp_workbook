@@ -1,24 +1,16 @@
 # Session 6: Multinomial model
 
 
-::: {.callout-warning}
-## 🚧 Work in Progress
-
-This chapter is a draft and may change significantly.  
-Content, examples, and conclusions are not final.
-:::
-
-
-# Introduction
-
-We will continue to work with the [Puget Sound Household Travel Survey](https://www.psrc.org/our-work/household-travel-survey-program) `Version 2023.4`. If you do not have the data or project set for this, please check the preliminary instructions for Week 3.
+## Introduction
 
 Multinomial regression is useful when the dependent variable is categorical and has more than two categories. This week, we’ll build on the logistic regression example from last week, where we explored mode choice for work trips and how free parking influences that decision. This time, we’ll break down mode choice at the person level, with three possible outcomes: driving, active travel, or transit.
+
+We will continue to work with the [Puget Sound Household Travel Survey](https://www.psrc.org/our-work/household-travel-survey-program).
 
 
 ## Preliminaries
 
-For today's session we will need the following packages.
+For today's session we will need the following packages. Make sure that you have these packages installed in your machine.
 
 ```{r}
 # Packages 
@@ -30,7 +22,8 @@ library(performance) # For model fit measures
 ```
 
 
-As before, we read the data in to the R session. Again, we will obtian information from trips, persons, and households tables.
+As before, we read the data in to the R session. Again, we will obtain information from trips, persons, and households tables.
+
 ```{r}
 # Load data
 trips <- read_csv('data/Trips.csv')
@@ -50,16 +43,16 @@ persons <- persons %>% filter(survey_year == 2023)
 
 ## Dependent variable: Main mode choice to work per person
 
-Here, we focus on trips to work. So, we keep trips which its destination is 'Work' only.
+In this example, we focus on trips to work only. So, we keep trips which its destination is 'Work' only.
 
 ```{r}
 trips_work <- trips %>% 
   filter('Work' == dest_purpose_cat)
 ```
 
-Note that in the outcomes must be mutually exclusive. This means we need to identify only one 'main' mode of transport for each person when travelling to work.
+Note that in the outcomes in a multinomial model must be mutually exclusive, which means that each individual can only belong to one outcome category at a time. In this example, we identify only one 'main' mode of transport for each person when travelling to work.
 
-For this exercise, we'll define the main mode as the one that is used most frequently. If a person reported using more than one mode the same number of times, we’ll select the one that covered the greatest distance. To start, we’ll summarise the frequency and distance reported for each person and each mode.
+Here, the main mode is defined as the one used most frequently. If a person reported using more than one mode the same number of times, we'll select the one that covered the greatest distance. To start, we’ll summarise the frequency and distance reported for each person and each mode.
 
 ```{r}
 mode_summary <- trips_work %>% 
@@ -75,7 +68,14 @@ And, we have a quick look to the result:
 mode_summary
 ```
 
-Now, we’ll select the most frequently used mode for each individual. If there’s a tie, we’ll choose the mode that covered the most miles.
+::: {.callout-tip title="Reflection"}
+
+Looking at the variables available and the summary that you just have created. Think how you can identify the 'main' mode before coding it.
+
+:::
+
+
+Now, implement the code which select the most frequently used mode for each person in the data. If there’s a tie, we’ll choose the mode that covered the most miles.
 
 ```{r}
 # Define only one 'main' mode per person based on frequency and distance
@@ -115,6 +115,13 @@ How is the distribution of the main mode looking?
 count(mode_main, mode_main)
 ```
 
+::: {.callout-tip title="Reflection"}
+
+Would it be possible to aggregate modal choice at a different unit of observation? 
+Are there implications?
+
+:::
+
 ## Independent variables
 
 In addition to the dependent variable (mode choice in three categories), we need to define the independent variables that we think are related to mode choice to work. For this, we include information from trips, individual, and households.
@@ -142,15 +149,31 @@ persons_main <- mode_main %>%
   left_join(households, by = 'household_id')
 ```
 
+
+::: {.callout-tip title="Reflection"}
+
 Have a look to the number of observations in `persons_main` compared to `persons`. Why do we see this difference?
+
+:::
 
 As in our prior lab, we format and label the variables that we will use:
 
 ```{r}
 # Write the name and appropriate order of the levels for hhincome_broad
 income_labs <- c(
-  'Under $25,000', '$25,000-$49,999', '$50,000-$74,999', 
-  '$75,000-$99,999', '$100,000-$199,999', '$200,000 or more'
+  "Under $25,000", 
+  "$25,000-$49,999", 
+  "$50,000-$74,999", 
+  "$75,000-$99,999", 
+  "$100,000-$199,999", 
+  "$200,000 or more"
+)
+
+# Categories for higher education (explicit definition)
+he_levs <- c(
+  "Bachelor degree",
+  "Graduate/post-graduate degree",
+  "Associates degree"
 )
 
 # Format and create appropriate variables
@@ -158,15 +181,15 @@ persons_main <- persons_main %>%
   mutate(
     # Whether person has free parking at work
     free_parking = ifelse(commute_subsidy_3 == 'Selected', 'Yes', 'No'),
-    # Simplify educaton, e.g. graduate and bachelor vs all other
-    higher_education = ifelse(
-      grepl('Graduate|Bachelor', education, ignore.case = TRUE), 'Yes', 'No'),
+    # Simplify education, e.g. graduate and bachelor vs all other
+    higher_education = ifelse(education %in% he_levs, 'Yes', 'No'),
     children = ifelse(numchildren == '0 children', 'No', 'Yes'),
     hhincome_broad = factor(hhincome_broad, levels = income_labs)
-  )
+)
 ```
 
-An we keep only the variables of interest for now.
+And, keep only the variables of interest for now.
+
 ```{r}
 # First, select variables of interest
 persons_main <- persons_main %>% 
@@ -187,7 +210,7 @@ persons_main <- persons_main %>%
 
 
 
-# Descriptive statistics
+## Descriptive statistics
 
 Before moving into the modelling stage, we check the main descriptive statistics. 
 
@@ -202,53 +225,37 @@ persons_main %>%
   add_overall()
 ```
 
+
+::: {.callout-tip title="Reflection"}
+
 Are there noticeable differences between respondent groups?
 
+:::
 
-# Models 
+## Multinomial model estimation
 
-We will need a category of reference for outcome variable in multinomial models. For this case, we will use 'Drive'.
+We will need a category of reference for outcome variable in multinomial models. By default in `R`, the reference is the first level/category of the outcome variable. However, we will choose 'Drive' for our case.
+
 ```{r}
 persons_main <- persons_main %>% 
   mutate(mode_main = fct_relevel(mode_main,  'Drive'))
 ```
 
-We can fit the multinomial model using a similar syntax to what we've done before, where the main mode (the dependent variable) is explained by whether individuals have free parking at work, as well as other control variables related to trips and socio-demographic characteristics. Just a note: the  `multinom()` function isn't part of base R, but it’s available in the `nnet::` package.
-
+We can fit the multinomial model using a similar syntax to what we've done before. The main mode (the dependent variable) is explained by whether individuals have free parking at work, as well as other control variables related to trips and socio-demographic characteristics. Important note: the  `multinom()` function is not part of base R, but it’s available in from the `nnet::` package.
 
 ```{r}
-# Fit Multinomial model
+# Estimate Multinomial model
 multinomial_model1 <- multinom(
   formula = mode_main ~ free_parking + avg_distance + gender + higher_education + children, 
   data = persons_main
 )
 ```
 
-And we print the summary of the model in the log odds scale:
-
-```{r}
-# Results in log odds
-multinomial_model1 %>% 
-  tbl_regression() %>% 
-  add_glance_table()
-```
-
-
-This is similar that the output for logistic regression. However, note that we have two sets of coefficients, namely: one for 'Active' and another for 'Transit'. As mentioned before, 'Drive' is the reference. So, any interpretation are relative to this category.
-
-In this summary, the interpretation of the coefficients is on the log-odds scale, as we have not exponentiated the coefficients. For example, the coefficient for free parking at work for active modes is -1.1, and it is significant. This implies that 
-
-> the log odds of using active travel are 1.1 lower than driving for individuals who have free parking at their workplace compared to those who do not have free parking. 
-
-Meanwhile, we have another coefficient for transit. Specifically, 
-
-> the log-odds of using transit are 1.5 lower than driving for individuals who have free parking compared to those who do not have free parking.
-
-Can you provide the interpretation for rest of the coefficients?
+The standard scale of the model output is the log of the odds (similar to logistic regression). We have already discussed some aspects of interpreting results on this scale, so we will avoid repetition and move directly to interpreting the coefficients on the odds ratio scale.
 
 ### Exponentied coefficients: Odds ratio
 
-As we know, the log-odds scale is not very intuitive. Similar to what we did with logistic regression, we can exponentiate the coefficients to obtain the odds ratios, which allows us to interpret the coefficients in terms of percentage changes.
+As we know, the log-odds scale is not very intuitive. Similar to what we did with logistic regression, we can exponentiate the coefficients to obtain the odds ratios, which allows us to interpret the coefficients in terms of percentage changes, holding other factors constant.
 
 ```{r}
 multinomial_model1 %>% 
@@ -256,9 +263,7 @@ multinomial_model1 %>%
   add_glance_table()
 ```
 
-Here, the interpretations change. Now we talk about odds ratios changes, and not log odds.
-
-Let's give it a go for our key independent variable: 
+Let's give it a go to the key independent variable: 
 
 > Compared to individuals without free parking at work, the odds of using active travel are 66% lower than driving for those with free parking at their workplace. Similarly, the odds of using transit are about 80% lower than driving for people with free parking at work relative to those without it.
 
@@ -266,26 +271,35 @@ More generally, we observe that the likelihood of both engaging in active travel
 
 As you can see, we can use the following formula to express the changes in percent terms `(1 - coefficient) * 100`. However, we can also use the direct coefficient and talk about X times changes. This is helpful when we have large coefficients. For example:
 
-> The odds of engagin in active travel are 2.11 times higher for individuals with higher education compared to those without a higher education degree.
+> The odds of engaging in active travel, compared to driving, are twice as high for individuals with a higher education degree compared to those without one.
 
-For continuous variables the formal interpretation is as follows: 
+For continuous variables the interpretation is as follows: 
 
-> For every additional mile to work, the odds of engaging in active travel are 35% lower than driving. Likewise, the odds of riding transit are 5% lower than driving for every additional mile to work.
+> For every additional average mile to work, the odds of engaging in active travel are 35% lower than driving. Likewise, the odds of riding transit are 5% lower than driving for every additional mile to work.
 
-Generally speaking, the likelihood of both engaging in active travel and using transit, relative to driving, decreases as the distance to work increases. However, this effect is more pronounced for active travel. Is this difference in line with your expectation?
+
+
+::: {.callout-tip title="Reflection"}
+
+Generally speaking, the odds of both active travel and transit use are less lower relative to driving and decrease as the distance to work increases. However, this effect is more pronounced for active travel. Does this difference align with your prior expectations?
 
 Can you provide the interpretation for rest of the coefficients?
 
-## Measures of fit
+:::
 
-We can compute a pseudo-r-squared value and other measures too:
+
+## Model assessment
+
+### Goodness-of-fit
+
+As with logistic regression, we can use the Akaike information criterion (AIC). Lower AIC values indicate a better-fitting model, i.e., a model that haves a good balance between goodness of fit and complexity.
+
+We can compute a pseudo-r-squared value and other measures for mutlinomial models, too:
 
 ```{r}
 # Measures of fit
 model_performance(multinomial_model1)
 ```
-
-As with logistic regression, we can use the Akaike information criterion (AIC). Lower AIC values indicate a better-fitting model, i.e., a model that haves a good balance between goodness of fit and complexity.
 
 From the table the column 'R2 (adj.)' corresponds to McFadden's pseudo R-squared values. This value ranges from 0 to 1.  Higher values indicate a better-fitting model.
 
@@ -303,23 +317,14 @@ We can check these predictions against observed data using a confusion matrix, a
 predicted_classes <- predict(multinomial_model1)
 confusionMatrix(predicted_classes, persons_main$mode_main)
 ```
-The diagonal of the matrix indicates the number of correct predictions. The sensitivity indicates the percentage of correct predictions.
+The diagonal values in the Confusion Matrix indicate the number of correct predictions. The sensitivity in Statistics by Class indicates the percentage of correct predictions. For further information consult the function documentation typing `?confusionMatrix`.
 
-<br>
-<br>
-<br>
+## Individual activities
 
-# Individual activities
-
-Run a similar analysis, but this time focus on sustainable modes. Specifically, disaggregate active travel into 'Walk' and 'Bike', and include 'Transit'. Exclude all other modes from the model. Additionally, include employer subsidies for public transport in the model, such as free passes or fares. This information can be found in the 'commute_subsidy_1' variable of the 'persons' table. Interpret the result of the model.
+Run a similar analysis, but this time focus on sustainable modes. Specifically, disaggregate active travel into 'Walk' and 'Bike', and include 'Transit'. Exclude all other modes from the model. Examine the relationship of employer subsidies for public transport in the model, such as free passes or fares. This information can be found in the 'persons' table. Interpret the result of the model.
 
 
-<br>
-<br>
-<br>
-
-
-# Bonus: Multinomial model assumption checks
+## Bonus: Multinomial model assumption checks
 
 Generally, there are two main assumptions for the multinomial model (Harris, 2020): 1) independence of errors, and independence of irrelevant alternatives (IIA). Independence of errors relates to the structure of the data or the way it has been collected. In this case, individuals might have dependencies at the household level.
 
@@ -356,6 +361,6 @@ hmftest(x = mlogit_model, z = mlogit_model_alt)
 
 The null hypothesis assumes that IIA holds. Since it's rejected in our results, this suggests that the IIA assumption does NOT hold in this model. The implication is that the multinomial logit model might not be appropriate because the choice probabilities are affected by irrelevant alternatives. In such a case, a nested logit model can be an alternative. However, this is out of the scope of this course.
 
-# References:
+## References and further reading
 
-Harrys J.K. 2020, Statistics With R: Solving Problems Using Real-World Data. Sage Publishing.
+Ch. 11 - Harrys J.K. (2020), Statistics With R: Solving Problems Using Real-World Data. Sage Publishing.
