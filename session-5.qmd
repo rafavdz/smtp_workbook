@@ -37,7 +37,7 @@ glimpse(persons_main)
 
 We start by estimating the same logistic regression model that we discussed in Session 4. Here, we aim to identify the relationships between having free parking at work (key independent variable) and persons engaging in active travel to work (dependent variable),  including control variables, such as average trip distance, gender, higher education, presence of children at household, and household income. 
 
-To estimate the logistic regression we use the `glm()` function and specify the family 'binomial'. The glm() function uses the first category as the reference group (the group without the outcome) and treats the second category as the outcome group. In this case, ‘1’ = *active travel*, and ‘0’ = *no active travel* (the reference group). This is critical to make correct coefficient interpretations.
+To estimate the logistic regression we use the `glm()` function and specify the family 'binomial'. The `glm()` function uses the first category as the reference group (the group without the outcome) and treats the second category as the outcome group. In this case, ‘1’ = *active travel*, and ‘0’ = *no active travel* (the reference group). This is critical to make correct coefficient interpretations.
 
 ```{r}
 logit_model1 <- glm(
