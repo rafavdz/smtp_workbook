@@ -326,7 +326,12 @@ Run a similar analysis, but this time focus on sustainable modes. Specifically, 
 
 ## Bonus: Multinomial model assumption checks
 
-Generally, there are two main assumptions for the multinomial model (Harris, 2020): 1) independence of errors, and independence of irrelevant alternatives (IIA). Independence of errors relates to the structure of the data or the way it has been collected. In this case, individuals might have dependencies at the household level.
+Generally, there are two main assumptions for the multinomial model (Harris, 2020): 
+
+1. Independence of errors, and 
+2. independence of irrelevant alternatives (IIA). 
+
+Independence of errors relates to the structure of the data or the way it has been collected. In this case, individuals might have dependencies at the household level.
 
 The IIA assumption states that the odds of choosing between any two alternatives are unaffected by the presence of other alternatives. For example, the odds of choosing active travel over driving are assumed to be unaffected by the presence of transit. In other words, if transit were removed from the model, the relative odds between drive and active would remain the same.
 
@@ -340,7 +345,11 @@ persons_main <- persons_main %>%
   mutate(across(is.character, as.factor)) 
 
 # Convert data to mlogit format
-mlogit_data <- mlogit.data(persons_main, choice = "mode_main", shape = "wide")
+mlogit_data <- mlogit.data(
+  persons_main, 
+  choice = "mode_main", 
+  shape = "wide"
+)
 
 # Refit the model using mlogit()
 mlogit_model <- mlogit(
@@ -359,7 +368,7 @@ mlogit_model_alt <- mlogit(
 hmftest(x = mlogit_model, z = mlogit_model_alt)
 ```
 
-The null hypothesis assumes that IIA holds. Since it's rejected in our results, this suggests that the IIA assumption does NOT hold in this model. The implication is that the multinomial logit model might not be appropriate because the choice probabilities are affected by irrelevant alternatives. In such a case, a nested logit model can be an alternative. However, this is out of the scope of this course.
+The null hypothesis assumes that IIA holds. Since it's rejected in our results, this suggests that the IIA assumption does NOT hold in this model. The implication is that the multinomial logit model might not be appropriate because the choice probabilities are affected by irrelevant alternatives. In such a case, a nested logit model can be an alternative. However, this is out of the scope of this course. More information is available at <https://github.com/friendly/nestedLogit>.
 
 ## References and further reading
 
