@@ -281,7 +281,7 @@ For continuous variables the interpretation is as follows:
 
 ::: {.callout-tip title="Reflection"}
 
-Generally speaking, the odds of both active travel and transit use are less lower relative to driving and decrease as the distance to work increases. However, this effect is more pronounced for active travel. Does this difference align with your prior expectations?
+Generally speaking, the odds of both active travel and transit use are lower relative to driving and decrease as the distance to work increases. However, this effect is more pronounced for active travel. Does this difference align with your prior expectations?
 
 Can you provide the interpretation for rest of the coefficients?
 
