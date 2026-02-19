@@ -454,7 +454,7 @@
     "href": "session-6.html#individual-activities",
     "title": "6  Session 6: Multinomial model",
     "section": "6.8 Individual activities",
-    "text": "6.8 Individual activities\nRun a similar analysis, but this time focus on sustainable modes. Specifically, disaggregate active travel into ‘Walk’ and ‘Bike’, and include ‘Transit’. Exclude all other modes from the model. Examine the relationship of employer subsidies for public transport in the model, such as free passes or fares. This information can be found in the ‘persons’ table. Interpret the result of the model.",
+    "text": "6.8 Individual activities\nRun a similar analysis at the person level, but this time focus on sustainable mode choice for a purpose of your choice other than work. Specifically, disaggregate active travel into ‘Walk’ and ‘Bike’, and include ‘Transit’. Exclude all other modes from the model. Examine the relationship of employer subsidies for public transport in the model, such as free passes or fares. This information can be found in the ‘persons’ table. Interpret the results of the model.",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Session 6: Multinomial model</span>"
     ]
@@ -484,7 +484,7 @@
     "href": "session-6.html#references-and-further-reading",
     "title": "6  Session 6: Multinomial model",
     "section": "6.10 References and further reading",
-    "text": "6.10 References and further reading\nCh. 11 - Harrys J.K. (2020), Statistics With R: Solving Problems Using Real-World Data. Sage Publishing.",
+    "text": "6.10 References and further reading\n\nHarris, J.K., 2019. Statistics with R: solving problems using real-world data. SAGE Publications. Chapter 11.1-11.6\nMartin, P. (2022) Regression Models for Categorical and Count Data. The Sage Quantitative Research Kit. Sage, London. Ch. 4\nChapter 8.1: Agresti, A. (2012). Categorical Data Analysis. John Wiley & Sons. [UoG library - ebook]\nChapter 9: Heeringa, S. G., West, B. T., & Berglund, P. A. (2017). Applied Survey Data Analysis, Second Edition. Chapman and Hall/CRC. https://doi.org/10.1201/9781315153278 [UoG library - ebook]\nOzbilen, B., Akar, G., White, K., Dabelko-Schoeny, H., & Cao, Q. (2022). Analysing the travel behaviour of older adults: what are the determinants of sustainable mobility? Ageing and Society, 1–29. https://doi.org/10.1017/S0144686X22001180",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Session 6: Multinomial model</span>"
     ]

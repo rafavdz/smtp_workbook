@@ -321,7 +321,7 @@ The diagonal values in the Confusion Matrix indicate the number of correct predi
 
 ## Individual activities
 
-Run a similar analysis, but this time focus on sustainable modes. Specifically, disaggregate active travel into 'Walk' and 'Bike', and include 'Transit'. Exclude all other modes from the model. Examine the relationship of employer subsidies for public transport in the model, such as free passes or fares. This information can be found in the 'persons' table. Interpret the result of the model.
+Run a similar analysis at the person level, but this time focus on sustainable mode choice for a purpose of your choice other than work. Specifically, disaggregate active travel into 'Walk' and 'Bike', and include 'Transit'. Exclude all other modes from the model. Examine the relationship of employer subsidies for public transport in the model, such as free passes or fares. This information can be found in the 'persons' table. Interpret the results of the model.
 
 
 ## Bonus: Multinomial model assumption checks
@@ -372,4 +372,8 @@ The null hypothesis assumes that IIA holds. Since it's rejected in our results, 
 
 ## References and further reading
 
-Ch. 11 - Harrys J.K. (2020), Statistics With R: Solving Problems Using Real-World Data. Sage Publishing.
+* Harris, J.K., 2019. Statistics with R: solving problems using real-world data. SAGE Publications. Chapter 11.1-11.6
+* Martin, P. (2022) Regression Models for Categorical and Count Data. The Sage Quantitative Research Kit.  Sage, London.  Ch. 4
+* Chapter 8.1: Agresti, A. (2012). Categorical Data Analysis. John Wiley & Sons.  [UoG library - ebook]
+* Chapter 9: Heeringa, S. G., West, B. T., & Berglund, P. A. (2017). Applied Survey Data Analysis, Second Edition. Chapman and Hall/CRC. https://doi.org/10.1201/9781315153278 [UoG library - ebook]
+* Ozbilen, B., Akar, G., White, K., Dabelko-Schoeny, H., & Cao, Q. (2022). Analysing the travel behaviour of older adults: what are the determinants of sustainable mobility? Ageing and Society, 1–29. https://doi.org/10.1017/S0144686X22001180
