@@ -6,6 +6,9 @@ format:
       echo: true
       warning: false
       message: false
+citation:
+  type: book
+  doi: 10.5281/zenodo.18760876
 ---
 
 
