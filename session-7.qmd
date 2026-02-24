@@ -5,8 +5,19 @@
 
 We will now explore count models, which are relevant in a number of transport applications for modelling variables such as the number of trips, number of vehicles, or number of collisions.
 
-The Poisson model is well suited approach to discrete numeric outcomes ranging from 0 to infinity. Unlike linear regression, Poisson models do not allow any negative values, and values should be integer (0, 1, 2, ...). Today, we will examine the **number of active travel trips** at the household level from the [Puget Sound Household Travel Survey](https://www.psrc.org/our-work/household-travel-survey-program).
+The Poisson model is well suited approach to discrete numeric outcomes from 0. Unlike linear regression, Poisson models do not allow any negative values, and values should be integer (0, 1, 2, ...). As a rule of thumbs, the mean of the count should be lower than 10.
 
+In Poisson regression, the expected count $\hat{\mu}$ is modelled on the log scale:
+
+$$\ln(\hat{\mu}) = \alpha + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_m X_m$$
+
+Exponentiating both sides and applying the rule of exponentials (i.e. $e^{a+b} = e^a \cdot e^b$), this becomes:
+
+$$\hat{\mu} = e^{\alpha} \cdot e^{\beta_1 X_1} \cdot e^{\beta_2 X_2} \cdots e^{\beta_m X_m}$$
+
+Now, the outcome is incidence rate ratio (IRR, or incidence rate for short). So an incidence rate of $1.5$ means the expected count is 1.5× higher, or IRR of $0.8$ means it is 20% lower. This is more intuitive than a raw log-scale coefficient.
+
+Today, we will examine the **number of active travel trips** at the household level from the [Puget Sound Household Travel Survey](https://www.psrc.org/our-work/household-travel-survey-program).
 
 ## Preliminaries
 
@@ -19,8 +30,7 @@ library(gtsummary) # Descriptive statistics
 library(performance) # For model fit measures
 ```
 
-
-This time, we will need information from trips and households tables only.
+We will use information from trips and households tables only.
 
 ```{r}
 # Load data
@@ -40,14 +50,14 @@ trips <- trips %>% filter(survey_year == 2023)
 
 ### Dependent variable: Number of active travel trips
 
-For now, we will consider trips that were completed using active travel modes, regardless of the purpose.
+The dependent variable is the total number of active travel trips per household (**active_trips_count**). To do so, we will consider trips that were completed using 'Bike' or 'Walk', regardless of the purpose.
 
 ```{r}
 active_trips <- trips %>%
   filter(mode_class == 'Bike' | mode_class == 'Walk')
 ```
 
-Next, we count the number of active travel trip for each household.
+Next, we count the number of active travel trips for each household.
 
 ```{r}
 # Summarise trips by household
@@ -56,9 +66,15 @@ trips_summary <- active_trips %>%
   summarise(active_trips_count = n())
 ```
 
-How many households report active travel trips?
 
-Note that the above does not include households with 0 active mode trips. So, this analysis focuses on the *intensity* of active travel use e.g. households that have reported at least 1 active travel trip.
+
+::: {.callout-tip title="How many households report active travel trips?"}
+
+You can check the number of rows in 'trips_summary' table and compare it with the original 'household_id'. What can you observe?
+
+:::
+
+Note that the above does not include households with 0 active mode trips. Therefore, this analysis focuses on the *intensity* of active travel use e.g. households that have reported at least 1 active travel trip.
 
 Let's look at the distribution, and variance.
 
@@ -69,11 +85,11 @@ var(trips_summary$active_trips_count)
 
 Does the variance approximate the mean?
 
-Remember that this is a key assumption in Poisson regression.
+Remember that this is an assumption in Poisson regression.
 
 ### Independent variables
 
-In addition to the dependent variable (trip count), we need to define the independent variables that we think are related to mode choice to work. For this, we include information from households. So, we supplement the dependent variable information with trips, persons, and households.
+In addition to the dependent variable (**active_trips_count**), we need the independent variables that we think are related to active travel intensity. For this example, we supplement the dependent variable information with information from households.
 
 ```{r}
 # Join the tables together
@@ -81,7 +97,7 @@ households_main <- trips_summary %>%
   left_join(households, by = 'household_id')
 ```
 
-Here, the order in `left_join(x, y)` matters, e.g. we join the number of active trips to all households. So, we exclude all of the households which did not reported active travel trips (click [here](https://tavareshugo.github.io/r-intro-tidyverse-gapminder/08-joins/index.html) fro additional).
+Here, the order in which data is entered to the function `left_join(x, y)` matters, e.g. we join the number of active trips (`x` table) to all households (`y` table). So, we exclude all of the households which did not reported active travel trips (for additional information on this operation, click [here](https://tavareshugo.github.io/r-intro-tidyverse-gapminder/08-joins/index.html)).
 
 As in our prior lab, we format and label the variables that we will use in the analysis:
 
@@ -97,21 +113,24 @@ income_labs <- c(
 )
 
 # Format and create appropriate variables
-households_main <- households_main <- households_main %>% 
+households_main <- households_main %>% 
   mutate(
+    # Children in household?
     children = ifelse(numchildren == '0 children', 'No', 'Yes'),
-    hhincome_broad = factor(hhincome_broad, levels = income_labs),
-    hhsize_int = readr::parse_number(hhsize),
+    # Number of vehicles per HH truncated
     vehicle_broad = case_when(
       vehicle_count == '0 (no vehicles)' ~  '0 (no vehicles)',
       vehicle_count == '1 vehicle' ~  '1 vehicle',
       TRUE ~ '2 or more'
     ),
+    hhincome_broad = factor(hhincome_broad, levels = income_labs),
+    hhsize_int = readr::parse_number(hhsize),
+    dayscomplete_int = readr::parse_number(numdayscomplete)
   )
 
 ```
 
-An we keep only the variables of interest for now.
+An we keep only the variables of interest in the 'households_main' table for now.
 ```{r}
 # First, select variables of interest
 households_main <- households_main %>% 
@@ -121,15 +140,13 @@ households_main <- households_main %>%
     vehicle_broad,
     hhincome_broad,
     hhsize_int,
-    numdayscomplete,
-    vehicle_broad
+    dayscomplete_int
   )
 
 # We also remove incomplete observations
 households_main <- households_main %>% 
   drop_na()
 ```
-
 
 
 ## Descriptive statistics
@@ -145,42 +162,34 @@ households_main %>%
   )
 ```
 
-Before moving into the modelling stage, we check the main descriptive statistics. 
+Before moving into the modelling stage, you can check the main descriptive statistics using the `tbl_summary()` function.
 
-```{r results='asis'}
-households_main %>% 
-  tbl_summary(
-    by = children,
-    statistic = all_continuous() ~ "{mean} ± {sd}"
-  ) %>% 
-  add_overall()
-```
-
-Are there noticeable differences between respondent groups?
 
 
 ## Models 
 
-We can fit the Poisson model using a the base-R function `glm()`. We specify the formula, as we have done it with other models, i.e. active trip count is explained by having children and number of motor vehicles. We also need other control variables, e.g. household size, and number of days reported in the survey.
+We can fit the Poisson model using a the base-R function `glm()`. We specify the formula, as we have done it with other models, i.e. active trip count is explained by having children and number of motor vehicles. We also need other control variables, e.g. household size, and number of days reported in the survey. In the 'family' argument we specify 'poisson'.
 
 
 ```{r}
 # Fit Poisson model
 poisson_m1 <- glm(
-  formula = active_trips_count ~ children + vehicle_broad + hhsize_int + numdayscomplete, 
+  formula = active_trips_count ~ children + vehicle_broad + hhsize_int + dayscomplete_int, 
   data = households_main, 
-  family = poisson
+  family = 'poisson'
 )
 ```
 
-Also, we can compute a pseudo-r-squared as a measure of fit.
+We can compute a pseudo-r-squared as a measure of fit.
 
 ```{r}
 # Measures of fit, e.g. pseudo-square
 r2_nagelkerke(poisson_m1)
 ```
 
-It is very high, why?
+The pseudo-r-squared is very high, why?
+
+<!-- We can also use a chi-squared test to assess whether a more complex nested model fits the data significantly better than a simpler one, e.g. null versus full. -->
 
 We can print the summary of the model in the log count scale:
 
@@ -191,7 +200,7 @@ poisson_m1 %>%
   add_glance_table()
 ```
 
-Here, coefficient interpretations are in terms of the *log count*. However, this is not very intuitive. So, we can exponentiate the coefficients and interpret those as *rate ratio* or *relative risk*.
+Here, coefficient interpretations are in terms of the *log count*, as we have a linear relationship. However, this is not very intuitive. So, we can exponentiate the coefficients and interpret those multiplicatively (in terms of percent change) as *incidence rate* or *incidence rate ratio* (IRR).
 
 ```{r}
 # Results in log count
@@ -202,36 +211,51 @@ poisson_m1 %>%
 
 We can see that having children in the household is significant. Specifically, 
 
-> the incidence rate of active travel trips is 2.6 times larger than households without children.
+> the incidence rate of active travel trips is 2.3 times larger for families with one or more children than those without any.
 
 Remember, categorical variables are always interpreted using the category of reference as the baseline.
 
-The household size is entered as a continuous variable. The interpretation is as following:
+The household size is entered as a continuous variable. Thus, the interpretation is as following:
 
-> For each additional member in the household, the rate of active travel trips is expected to increase by 13%.
+> For each additional member in the household, the incidence rate of active travel trips is expected to increase by 13%.
 
 As with other multiplicative equations, we can use the following formula to express the changes in percent terms `(1 - coefficient) * 100`.
 
+::: {.callout-tip title="Reflection"}
+
+Can you interpret the rest of the coefficients in the model summary?
+
+:::
+
 ## Model assumption checks
+
+Common assumptions of the standard Poisson model are:
+
+1. Poisson outcome variable
+2. Independence of errors
+3. Linearity
+4. Mean approximates variance
+
+Given the length constrains of this activity, we focus on the latter (4). Consult the recommended literature and lecture slides for further checks.
 
 One of the key assumptions of the Poisson model is that the mean is approximately equal to the variance. Dispersion can occur when the data is more variable than the model assumes. This can yield to estimation problems, such as underestimated errors (e.g. we can conclude something is significant when it is not), or poor model fit.
 
-We can easily test for over dispersion with the `perfomance::` package as following:
+We can test for over dispersion with the `perfomance::` package as following:
 
 ```{r}
 check_overdispersion(poisson_m1)
 ```
 
-From this test, the dispersion ratio should be close to 1. From the results we see that this is much larger, and the p-value is lower than 0.05. Thus, we can could that overdispersion is present.
+From this test, the dispersion ratio should be close to 1. From the results we see that this is much larger, and the p-value is lower than 0.05. Then, we can say that overdispersion is detected, and we should not trust the results from the previous regression.
 
-A common alternative, is to use a negative binomial model. This is also useful to model counts and does not assume that the variance is roughly similar to the mean of our count. Thus, this is appropriate when overdispersion is high. For this, we will require the `glm.nb()` function of the `MASS::` package.
+A common alternative is to use a negative binomial model. This is also useful to model counts and does not assume that the variance is roughly similar to the mean of our count. To estimate this model, we will require the `glm.nb()` function of the `MASS::` package.
 
 ```{r}
 library(MASS)
 
 # Fit the negative binomial model
 negbin_m2 <- glm.nb(
-  formula = active_trips ~ children + vehicle_broad + hhsize_int + numdayscomplete, 
+  formula = active_trips_count ~ children + vehicle_broad + hhsize_int + dayscomplete_int, 
   data = households_main
 )
 
@@ -243,17 +267,20 @@ negbin_m2 %>%
 
 Can you identify key differences compared to the Poisson model? The interpretation of coefficients is very similar.
 
-<br>
-<br>
-<br>
+### Zero inflated models
+
+In the example today, we ignored observations with 0s active travel counts. This reflects the intensity of active travel only. However, there are instances where you must or wish to include 0 values in the outcome variable. You can compare the observed proportion of zeros to the proportion predicted by a standard Poisson model to check whether your data may be zero-inflated. A large discrepancy suggests zero inflation. In `R`, you can handle this using the `pscl` package, which provides the `zeroinfl()` function to fit zero inflated poisson (ZIP) models.
 
 ## Individual activities
 
-Rerun a similar analysis which includes education, and free parking at work to model active travel counts. Think carefuly how you aggregate this information at the household level. Examine the key model assumption using an overdispersion test and use and appropriate model if the key assumption is violated.
+Rerun a similar analysis, but model active travel counts at the household level for a specific travel purpose of your choice. Also include information about education. Think carefully how you aggregate this information at the household level. Examine the key model assumption using an overdispersion test and use and appropriate model if the key assumption is violated.
 
+## References and further reading
 
-<br>
-<br>
-<br>
+* Martin, P. (2022) Regression Models for Categorical and Count Data. The Sage Quantitative Research Kit.  Sage, London.  Ch. 4
+* Coxe, S., West, S. G., & Aiken, L. S. (2009). The Analysis of Count Data: A Gentle Introduction to Poisson Regression and Its Alternatives. Journal of Personality Assessment, 91(2), 121–136. https://doi.org/10.1080/00223890802634175
+https://bookdown.org/roback/bookdown-BeyondMLR/ch-poissonreg.html
+* Chapter 4.3: Agresti, A. (2012). Categorical Data Analysis. John Wiley & Sons.  [UoG library - ebook]
+
 
 
