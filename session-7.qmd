@@ -15,9 +15,9 @@ Exponentiating both sides and applying the rule of exponentials (i.e. $e^{a+b} =
 
 $$\hat{\mu} = e^{\alpha} \cdot e^{\beta_1 X_1} \cdot e^{\beta_2 X_2} \cdots e^{\beta_m X_m}$$
 
-Now, the outcome is incidence rate ratio (IRR, or incidence rate for short). So an incidence rate of $1.5$ means the expected count is 1.5× higher, or IRR of $0.8$ means it is 20% lower. This is more intuitive than a raw log-scale coefficient.
+Now, the outcome is incidence rate ratio (IRR, or *incidence rate* for short). So an incidence rate of $1.5$ means the expected count is 1.5× higher, or IRR of $0.8$ means it is 20% lower. This is more intuitive than a raw log-scale coefficient.
 
-Today, we will examine the **number of active travel trips** at the household level from the [Puget Sound Household Travel Survey](https://www.psrc.org/our-work/household-travel-survey-program).
+Today, we will examine the *number of active travel trips* at the household level from the [Puget Sound Household Travel Survey](https://www.psrc.org/our-work/household-travel-survey-program).
 
 ## Preliminaries
 
@@ -83,13 +83,16 @@ summary(trips_summary$active_trips_count)
 var(trips_summary$active_trips_count)
 ```
 
-Does the variance approximate the mean?
 
-Remember that this is an assumption in Poisson regression.
+::: {.callout-tip title="Does the variance approximate the mean?"}
+
+Remember an assumption in Poisson regression is that the variance approximate the mean.
+
+:::
 
 ### Independent variables
 
-In addition to the dependent variable (**active_trips_count**), we need the independent variables that we think are related to active travel intensity. For this example, we supplement the dependent variable information with information from households.
+In addition to the dependent variable, we need the independent variables that we think are related to active travel intensity. For this example, we supplement the dependent variable information with information from households.
 
 ```{r}
 # Join the tables together
@@ -269,7 +272,7 @@ Can you identify key differences compared to the Poisson model? The interpretati
 
 ### Zero inflated models
 
-In the example today, we ignored observations with 0s active travel counts. This reflects the intensity of active travel only. However, there are instances where you must or wish to include 0 values in the outcome variable. You can compare the observed proportion of zeros to the proportion predicted by a standard Poisson model to check whether your data may be zero-inflated. A large discrepancy suggests zero inflation. In `R`, you can handle this using the `pscl` package, which provides the `zeroinfl()` function to fit zero inflated poisson (ZIP) models.
+In the example today, we ignored observations with 0 active travel counts. This reflects the intensity of active travel only. However, there are instances where you must or wish to include 0 values in the outcome variable. You can compare the observed proportion of zeros to the proportion predicted by a standard Poisson model to check whether your data may be zero-inflated. A large discrepancy suggests zero inflation. In `R`, you can handle this using the `pscl` package, which provides the `zeroinfl()` function to fit zero inflated poisson (ZIP) models.
 
 ## Individual activities
 

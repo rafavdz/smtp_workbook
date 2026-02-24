@@ -279,8 +279,8 @@ window.Quarto = {
 <p><span class="math display">\[\ln(\hat{\mu}) = \alpha + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_m X_m\]</span></p>
 <p>Exponentiating both sides and applying the rule of exponentials (i.e.&nbsp;<span class="math inline">\(e^{a+b} = e^a \cdot e^b\)</span>), this becomes:</p>
 <p><span class="math display">\[\hat{\mu} = e^{\alpha} \cdot e^{\beta_1 X_1} \cdot e^{\beta_2 X_2} \cdots e^{\beta_m X_m}\]</span></p>
-<p>Now, the outcome is incidence rate ratio (IRR, or incidence rate for short). So an incidence rate of <span class="math inline">\(1.5\)</span> means the expected count is 1.5× higher, or IRR of <span class="math inline">\(0.8\)</span> means it is 20% lower. This is more intuitive than a raw log-scale coefficient.</p>
-<p>Today, we will examine the <strong>number of active travel trips</strong> at the household level from the <a href="https://www.psrc.org/our-work/household-travel-survey-program">Puget Sound Household Travel Survey</a>.</p>
+<p>Now, the outcome is incidence rate ratio (IRR, or <em>incidence rate</em> for short). So an incidence rate of <span class="math inline">\(1.5\)</span> means the expected count is 1.5× higher, or IRR of <span class="math inline">\(0.8\)</span> means it is 20% lower. This is more intuitive than a raw log-scale coefficient.</p>
+<p>Today, we will examine the <em>number of active travel trips</em> at the household level from the <a href="https://www.psrc.org/our-work/household-travel-survey-program">Puget Sound Household Travel Survey</a>.</p>
 </section>
 <section id="preliminaries" class="level2" data-number="7.2">
 <h2 data-number="7.2" class="anchored" data-anchor-id="preliminaries"><span class="header-section-number">7.2</span> Preliminaries</h2>
@@ -346,12 +346,23 @@ How many households report active travel trips?
 <pre><code>[1] 128.6674</code></pre>
 </div>
 </div>
-<p>Does the variance approximate the mean?</p>
-<p>Remember that this is an assumption in Poisson regression.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Does the variance approximate the mean?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Does the variance approximate the mean?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Remember an assumption in Poisson regression is that the variance approximate the mean.</p>
+</div>
+</div>
 </section>
 <section id="independent-variables" class="level3" data-number="7.3.2">
 <h3 data-number="7.3.2" class="anchored" data-anchor-id="independent-variables"><span class="header-section-number">7.3.2</span> Independent variables</h3>
-<p>In addition to the dependent variable (<strong>active_trips_count</strong>), we need the independent variables that we think are related to active travel intensity. For this example, we supplement the dependent variable information with information from households.</p>
+<p>In addition to the dependent variable, we need the independent variables that we think are related to active travel intensity. For this example, we supplement the dependent variable information with information from households.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join the tables together</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>households_main <span class="ot">&lt;-</span> trips_summary <span class="sc">%&gt;%</span> </span>
@@ -455,23 +466,23 @@ How many households report active travel trips?
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_regression</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_glance_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="anggkpbygh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#anggkpbygh table {
+<div id="yobdolnnst" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yobdolnnst table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#anggkpbygh thead, #anggkpbygh tbody, #anggkpbygh tfoot, #anggkpbygh tr, #anggkpbygh td, #anggkpbygh th {
+#yobdolnnst thead, #yobdolnnst tbody, #yobdolnnst tfoot, #yobdolnnst tr, #yobdolnnst td, #yobdolnnst th {
   border-style: none;
 }
 
-#anggkpbygh p {
+#yobdolnnst p {
   margin: 0;
   padding: 0;
 }
 
-#anggkpbygh .gt_table {
+#yobdolnnst .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -497,12 +508,12 @@ How many households report active travel trips?
   border-left-color: #D3D3D3;
 }
 
-#anggkpbygh .gt_caption {
+#yobdolnnst .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#anggkpbygh .gt_title {
+#yobdolnnst .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -514,7 +525,7 @@ How many households report active travel trips?
   border-bottom-width: 0;
 }
 
-#anggkpbygh .gt_subtitle {
+#yobdolnnst .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -526,7 +537,7 @@ How many households report active travel trips?
   border-top-width: 0;
 }
 
-#anggkpbygh .gt_heading {
+#yobdolnnst .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -538,13 +549,13 @@ How many households report active travel trips?
   border-right-color: #D3D3D3;
 }
 
-#anggkpbygh .gt_bottom_border {
+#yobdolnnst .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#anggkpbygh .gt_col_headings {
+#yobdolnnst .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -559,7 +570,7 @@ How many households report active travel trips?
   border-right-color: #D3D3D3;
 }
 
-#anggkpbygh .gt_col_heading {
+#yobdolnnst .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -579,7 +590,7 @@ How many households report active travel trips?
   overflow-x: hidden;
 }
 
-#anggkpbygh .gt_column_spanner_outer {
+#yobdolnnst .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -591,15 +602,15 @@ How many households report active travel trips?
   padding-right: 4px;
 }
 
-#anggkpbygh .gt_column_spanner_outer:first-child {
+#yobdolnnst .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#anggkpbygh .gt_column_spanner_outer:last-child {
+#yobdolnnst .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#anggkpbygh .gt_column_spanner {
+#yobdolnnst .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -611,11 +622,11 @@ How many households report active travel trips?
   width: 100%;
 }
 
-#anggkpbygh .gt_spanner_row {
+#yobdolnnst .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#anggkpbygh .gt_group_heading {
+#yobdolnnst .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -641,7 +652,7 @@ How many households report active travel trips?
   text-align: left;
 }
 
-#anggkpbygh .gt_empty_group_heading {
+#yobdolnnst .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -656,15 +667,15 @@ How many households report active travel trips?
   vertical-align: middle;
 }
 
-#anggkpbygh .gt_from_md > :first-child {
+#yobdolnnst .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#anggkpbygh .gt_from_md > :last-child {
+#yobdolnnst .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#anggkpbygh .gt_row {
+#yobdolnnst .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -683,7 +694,7 @@ How many households report active travel trips?
   overflow-x: hidden;
 }
 
-#anggkpbygh .gt_stub {
+#yobdolnnst .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -696,7 +707,7 @@ How many households report active travel trips?
   padding-right: 5px;
 }
 
-#anggkpbygh .gt_stub_row_group {
+#yobdolnnst .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -710,15 +721,15 @@ How many households report active travel trips?
   vertical-align: top;
 }
 
-#anggkpbygh .gt_row_group_first td {
+#yobdolnnst .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#anggkpbygh .gt_row_group_first th {
+#yobdolnnst .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#anggkpbygh .gt_summary_row {
+#yobdolnnst .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -728,16 +739,16 @@ How many households report active travel trips?
   padding-right: 5px;
 }
 
-#anggkpbygh .gt_first_summary_row {
+#yobdolnnst .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#anggkpbygh .gt_first_summary_row.thick {
+#yobdolnnst .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#anggkpbygh .gt_last_summary_row {
+#yobdolnnst .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -747,7 +758,7 @@ How many households report active travel trips?
   border-bottom-color: #D3D3D3;
 }
 
-#anggkpbygh .gt_grand_summary_row {
+#yobdolnnst .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -757,7 +768,7 @@ How many households report active travel trips?
   padding-right: 5px;
 }
 
-#anggkpbygh .gt_first_grand_summary_row {
+#yobdolnnst .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -767,7 +778,7 @@ How many households report active travel trips?
   border-top-color: #D3D3D3;
 }
 
-#anggkpbygh .gt_last_grand_summary_row_top {
+#yobdolnnst .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -777,11 +788,11 @@ How many households report active travel trips?
   border-bottom-color: #D3D3D3;
 }
 
-#anggkpbygh .gt_striped {
+#yobdolnnst .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#anggkpbygh .gt_table_body {
+#yobdolnnst .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -790,7 +801,7 @@ How many households report active travel trips?
   border-bottom-color: #D3D3D3;
 }
 
-#anggkpbygh .gt_footnotes {
+#yobdolnnst .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -804,7 +815,7 @@ How many households report active travel trips?
   border-right-color: #D3D3D3;
 }
 
-#anggkpbygh .gt_footnote {
+#yobdolnnst .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -813,7 +824,7 @@ How many households report active travel trips?
   padding-right: 5px;
 }
 
-#anggkpbygh .gt_sourcenotes {
+#yobdolnnst .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -827,7 +838,7 @@ How many households report active travel trips?
   border-right-color: #D3D3D3;
 }
 
-#anggkpbygh .gt_sourcenote {
+#yobdolnnst .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -835,72 +846,72 @@ How many households report active travel trips?
   padding-right: 5px;
 }
 
-#anggkpbygh .gt_left {
+#yobdolnnst .gt_left {
   text-align: left;
 }
 
-#anggkpbygh .gt_center {
+#yobdolnnst .gt_center {
   text-align: center;
 }
 
-#anggkpbygh .gt_right {
+#yobdolnnst .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#anggkpbygh .gt_font_normal {
+#yobdolnnst .gt_font_normal {
   font-weight: normal;
 }
 
-#anggkpbygh .gt_font_bold {
+#yobdolnnst .gt_font_bold {
   font-weight: bold;
 }
 
-#anggkpbygh .gt_font_italic {
+#yobdolnnst .gt_font_italic {
   font-style: italic;
 }
 
-#anggkpbygh .gt_super {
+#yobdolnnst .gt_super {
   font-size: 65%;
 }
 
-#anggkpbygh .gt_footnote_marks {
+#yobdolnnst .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#anggkpbygh .gt_asterisk {
+#yobdolnnst .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#anggkpbygh .gt_indent_1 {
+#yobdolnnst .gt_indent_1 {
   text-indent: 5px;
 }
 
-#anggkpbygh .gt_indent_2 {
+#yobdolnnst .gt_indent_2 {
   text-indent: 10px;
 }
 
-#anggkpbygh .gt_indent_3 {
+#yobdolnnst .gt_indent_3 {
   text-indent: 15px;
 }
 
-#anggkpbygh .gt_indent_4 {
+#yobdolnnst .gt_indent_4 {
   text-indent: 20px;
 }
 
-#anggkpbygh .gt_indent_5 {
+#yobdolnnst .gt_indent_5 {
   text-indent: 25px;
 }
 
-#anggkpbygh .katex-display {
+#yobdolnnst .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#anggkpbygh div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#yobdolnnst div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1065,23 +1076,23 @@ How many households report active travel trips?
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_regression</span>(<span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_glance_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="hdxgbftrlb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#hdxgbftrlb table {
+<div id="eyxwplahkm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#eyxwplahkm table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#hdxgbftrlb thead, #hdxgbftrlb tbody, #hdxgbftrlb tfoot, #hdxgbftrlb tr, #hdxgbftrlb td, #hdxgbftrlb th {
+#eyxwplahkm thead, #eyxwplahkm tbody, #eyxwplahkm tfoot, #eyxwplahkm tr, #eyxwplahkm td, #eyxwplahkm th {
   border-style: none;
 }
 
-#hdxgbftrlb p {
+#eyxwplahkm p {
   margin: 0;
   padding: 0;
 }
 
-#hdxgbftrlb .gt_table {
+#eyxwplahkm .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1107,12 +1118,12 @@ How many households report active travel trips?
   border-left-color: #D3D3D3;
 }
 
-#hdxgbftrlb .gt_caption {
+#eyxwplahkm .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#hdxgbftrlb .gt_title {
+#eyxwplahkm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1124,7 +1135,7 @@ How many households report active travel trips?
   border-bottom-width: 0;
 }
 
-#hdxgbftrlb .gt_subtitle {
+#eyxwplahkm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1136,7 +1147,7 @@ How many households report active travel trips?
   border-top-width: 0;
 }
 
-#hdxgbftrlb .gt_heading {
+#eyxwplahkm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1148,13 +1159,13 @@ How many households report active travel trips?
   border-right-color: #D3D3D3;
 }
 
-#hdxgbftrlb .gt_bottom_border {
+#eyxwplahkm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#hdxgbftrlb .gt_col_headings {
+#eyxwplahkm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1169,7 +1180,7 @@ How many households report active travel trips?
   border-right-color: #D3D3D3;
 }
 
-#hdxgbftrlb .gt_col_heading {
+#eyxwplahkm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1189,7 +1200,7 @@ How many households report active travel trips?
   overflow-x: hidden;
 }
 
-#hdxgbftrlb .gt_column_spanner_outer {
+#eyxwplahkm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1201,15 +1212,15 @@ How many households report active travel trips?
   padding-right: 4px;
 }
 
-#hdxgbftrlb .gt_column_spanner_outer:first-child {
+#eyxwplahkm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#hdxgbftrlb .gt_column_spanner_outer:last-child {
+#eyxwplahkm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#hdxgbftrlb .gt_column_spanner {
+#eyxwplahkm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1221,11 +1232,11 @@ How many households report active travel trips?
   width: 100%;
 }
 
-#hdxgbftrlb .gt_spanner_row {
+#eyxwplahkm .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#hdxgbftrlb .gt_group_heading {
+#eyxwplahkm .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1251,7 +1262,7 @@ How many households report active travel trips?
   text-align: left;
 }
 
-#hdxgbftrlb .gt_empty_group_heading {
+#eyxwplahkm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1266,15 +1277,15 @@ How many households report active travel trips?
   vertical-align: middle;
 }
 
-#hdxgbftrlb .gt_from_md > :first-child {
+#eyxwplahkm .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#hdxgbftrlb .gt_from_md > :last-child {
+#eyxwplahkm .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#hdxgbftrlb .gt_row {
+#eyxwplahkm .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1293,7 +1304,7 @@ How many households report active travel trips?
   overflow-x: hidden;
 }
 
-#hdxgbftrlb .gt_stub {
+#eyxwplahkm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1306,7 +1317,7 @@ How many households report active travel trips?
   padding-right: 5px;
 }
 
-#hdxgbftrlb .gt_stub_row_group {
+#eyxwplahkm .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1320,15 +1331,15 @@ How many households report active travel trips?
   vertical-align: top;
 }
 
-#hdxgbftrlb .gt_row_group_first td {
+#eyxwplahkm .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#hdxgbftrlb .gt_row_group_first th {
+#eyxwplahkm .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#hdxgbftrlb .gt_summary_row {
+#eyxwplahkm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1338,16 +1349,16 @@ How many households report active travel trips?
   padding-right: 5px;
 }
 
-#hdxgbftrlb .gt_first_summary_row {
+#eyxwplahkm .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#hdxgbftrlb .gt_first_summary_row.thick {
+#eyxwplahkm .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#hdxgbftrlb .gt_last_summary_row {
+#eyxwplahkm .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1357,7 +1368,7 @@ How many households report active travel trips?
   border-bottom-color: #D3D3D3;
 }
 
-#hdxgbftrlb .gt_grand_summary_row {
+#eyxwplahkm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1367,7 +1378,7 @@ How many households report active travel trips?
   padding-right: 5px;
 }
 
-#hdxgbftrlb .gt_first_grand_summary_row {
+#eyxwplahkm .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1377,7 +1388,7 @@ How many households report active travel trips?
   border-top-color: #D3D3D3;
 }
 
-#hdxgbftrlb .gt_last_grand_summary_row_top {
+#eyxwplahkm .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1387,11 +1398,11 @@ How many households report active travel trips?
   border-bottom-color: #D3D3D3;
 }
 
-#hdxgbftrlb .gt_striped {
+#eyxwplahkm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#hdxgbftrlb .gt_table_body {
+#eyxwplahkm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1400,7 +1411,7 @@ How many households report active travel trips?
   border-bottom-color: #D3D3D3;
 }
 
-#hdxgbftrlb .gt_footnotes {
+#eyxwplahkm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1414,7 +1425,7 @@ How many households report active travel trips?
   border-right-color: #D3D3D3;
 }
 
-#hdxgbftrlb .gt_footnote {
+#eyxwplahkm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1423,7 +1434,7 @@ How many households report active travel trips?
   padding-right: 5px;
 }
 
-#hdxgbftrlb .gt_sourcenotes {
+#eyxwplahkm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1437,7 +1448,7 @@ How many households report active travel trips?
   border-right-color: #D3D3D3;
 }
 
-#hdxgbftrlb .gt_sourcenote {
+#eyxwplahkm .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1445,72 +1456,72 @@ How many households report active travel trips?
   padding-right: 5px;
 }
 
-#hdxgbftrlb .gt_left {
+#eyxwplahkm .gt_left {
   text-align: left;
 }
 
-#hdxgbftrlb .gt_center {
+#eyxwplahkm .gt_center {
   text-align: center;
 }
 
-#hdxgbftrlb .gt_right {
+#eyxwplahkm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#hdxgbftrlb .gt_font_normal {
+#eyxwplahkm .gt_font_normal {
   font-weight: normal;
 }
 
-#hdxgbftrlb .gt_font_bold {
+#eyxwplahkm .gt_font_bold {
   font-weight: bold;
 }
 
-#hdxgbftrlb .gt_font_italic {
+#eyxwplahkm .gt_font_italic {
   font-style: italic;
 }
 
-#hdxgbftrlb .gt_super {
+#eyxwplahkm .gt_super {
   font-size: 65%;
 }
 
-#hdxgbftrlb .gt_footnote_marks {
+#eyxwplahkm .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#hdxgbftrlb .gt_asterisk {
+#eyxwplahkm .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#hdxgbftrlb .gt_indent_1 {
+#eyxwplahkm .gt_indent_1 {
   text-indent: 5px;
 }
 
-#hdxgbftrlb .gt_indent_2 {
+#eyxwplahkm .gt_indent_2 {
   text-indent: 10px;
 }
 
-#hdxgbftrlb .gt_indent_3 {
+#eyxwplahkm .gt_indent_3 {
   text-indent: 15px;
 }
 
-#hdxgbftrlb .gt_indent_4 {
+#eyxwplahkm .gt_indent_4 {
   text-indent: 20px;
 }
 
-#hdxgbftrlb .gt_indent_5 {
+#eyxwplahkm .gt_indent_5 {
   text-indent: 25px;
 }
 
-#hdxgbftrlb .katex-display {
+#eyxwplahkm .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#hdxgbftrlb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#eyxwplahkm div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1730,23 +1741,23 @@ Reflection
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_regression</span>(<span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_glance_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="ewchobwurq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ewchobwurq table {
+<div id="skxpcwmtfl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#skxpcwmtfl table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ewchobwurq thead, #ewchobwurq tbody, #ewchobwurq tfoot, #ewchobwurq tr, #ewchobwurq td, #ewchobwurq th {
+#skxpcwmtfl thead, #skxpcwmtfl tbody, #skxpcwmtfl tfoot, #skxpcwmtfl tr, #skxpcwmtfl td, #skxpcwmtfl th {
   border-style: none;
 }
 
-#ewchobwurq p {
+#skxpcwmtfl p {
   margin: 0;
   padding: 0;
 }
 
-#ewchobwurq .gt_table {
+#skxpcwmtfl .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1772,12 +1783,12 @@ Reflection
   border-left-color: #D3D3D3;
 }
 
-#ewchobwurq .gt_caption {
+#skxpcwmtfl .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ewchobwurq .gt_title {
+#skxpcwmtfl .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1789,7 +1800,7 @@ Reflection
   border-bottom-width: 0;
 }
 
-#ewchobwurq .gt_subtitle {
+#skxpcwmtfl .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1801,7 +1812,7 @@ Reflection
   border-top-width: 0;
 }
 
-#ewchobwurq .gt_heading {
+#skxpcwmtfl .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1813,13 +1824,13 @@ Reflection
   border-right-color: #D3D3D3;
 }
 
-#ewchobwurq .gt_bottom_border {
+#skxpcwmtfl .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ewchobwurq .gt_col_headings {
+#skxpcwmtfl .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1834,7 +1845,7 @@ Reflection
   border-right-color: #D3D3D3;
 }
 
-#ewchobwurq .gt_col_heading {
+#skxpcwmtfl .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1854,7 +1865,7 @@ Reflection
   overflow-x: hidden;
 }
 
-#ewchobwurq .gt_column_spanner_outer {
+#skxpcwmtfl .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1866,15 +1877,15 @@ Reflection
   padding-right: 4px;
 }
 
-#ewchobwurq .gt_column_spanner_outer:first-child {
+#skxpcwmtfl .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ewchobwurq .gt_column_spanner_outer:last-child {
+#skxpcwmtfl .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ewchobwurq .gt_column_spanner {
+#skxpcwmtfl .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1886,11 +1897,11 @@ Reflection
   width: 100%;
 }
 
-#ewchobwurq .gt_spanner_row {
+#skxpcwmtfl .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ewchobwurq .gt_group_heading {
+#skxpcwmtfl .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1916,7 +1927,7 @@ Reflection
   text-align: left;
 }
 
-#ewchobwurq .gt_empty_group_heading {
+#skxpcwmtfl .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1931,15 +1942,15 @@ Reflection
   vertical-align: middle;
 }
 
-#ewchobwurq .gt_from_md > :first-child {
+#skxpcwmtfl .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ewchobwurq .gt_from_md > :last-child {
+#skxpcwmtfl .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ewchobwurq .gt_row {
+#skxpcwmtfl .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1958,7 +1969,7 @@ Reflection
   overflow-x: hidden;
 }
 
-#ewchobwurq .gt_stub {
+#skxpcwmtfl .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1971,7 +1982,7 @@ Reflection
   padding-right: 5px;
 }
 
-#ewchobwurq .gt_stub_row_group {
+#skxpcwmtfl .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1985,15 +1996,15 @@ Reflection
   vertical-align: top;
 }
 
-#ewchobwurq .gt_row_group_first td {
+#skxpcwmtfl .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ewchobwurq .gt_row_group_first th {
+#skxpcwmtfl .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ewchobwurq .gt_summary_row {
+#skxpcwmtfl .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2003,16 +2014,16 @@ Reflection
   padding-right: 5px;
 }
 
-#ewchobwurq .gt_first_summary_row {
+#skxpcwmtfl .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ewchobwurq .gt_first_summary_row.thick {
+#skxpcwmtfl .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ewchobwurq .gt_last_summary_row {
+#skxpcwmtfl .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2022,7 +2033,7 @@ Reflection
   border-bottom-color: #D3D3D3;
 }
 
-#ewchobwurq .gt_grand_summary_row {
+#skxpcwmtfl .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2032,7 +2043,7 @@ Reflection
   padding-right: 5px;
 }
 
-#ewchobwurq .gt_first_grand_summary_row {
+#skxpcwmtfl .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2042,7 +2053,7 @@ Reflection
   border-top-color: #D3D3D3;
 }
 
-#ewchobwurq .gt_last_grand_summary_row_top {
+#skxpcwmtfl .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2052,11 +2063,11 @@ Reflection
   border-bottom-color: #D3D3D3;
 }
 
-#ewchobwurq .gt_striped {
+#skxpcwmtfl .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ewchobwurq .gt_table_body {
+#skxpcwmtfl .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2065,7 +2076,7 @@ Reflection
   border-bottom-color: #D3D3D3;
 }
 
-#ewchobwurq .gt_footnotes {
+#skxpcwmtfl .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2079,7 +2090,7 @@ Reflection
   border-right-color: #D3D3D3;
 }
 
-#ewchobwurq .gt_footnote {
+#skxpcwmtfl .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2088,7 +2099,7 @@ Reflection
   padding-right: 5px;
 }
 
-#ewchobwurq .gt_sourcenotes {
+#skxpcwmtfl .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2102,7 +2113,7 @@ Reflection
   border-right-color: #D3D3D3;
 }
 
-#ewchobwurq .gt_sourcenote {
+#skxpcwmtfl .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2110,72 +2121,72 @@ Reflection
   padding-right: 5px;
 }
 
-#ewchobwurq .gt_left {
+#skxpcwmtfl .gt_left {
   text-align: left;
 }
 
-#ewchobwurq .gt_center {
+#skxpcwmtfl .gt_center {
   text-align: center;
 }
 
-#ewchobwurq .gt_right {
+#skxpcwmtfl .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ewchobwurq .gt_font_normal {
+#skxpcwmtfl .gt_font_normal {
   font-weight: normal;
 }
 
-#ewchobwurq .gt_font_bold {
+#skxpcwmtfl .gt_font_bold {
   font-weight: bold;
 }
 
-#ewchobwurq .gt_font_italic {
+#skxpcwmtfl .gt_font_italic {
   font-style: italic;
 }
 
-#ewchobwurq .gt_super {
+#skxpcwmtfl .gt_super {
   font-size: 65%;
 }
 
-#ewchobwurq .gt_footnote_marks {
+#skxpcwmtfl .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ewchobwurq .gt_asterisk {
+#skxpcwmtfl .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ewchobwurq .gt_indent_1 {
+#skxpcwmtfl .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ewchobwurq .gt_indent_2 {
+#skxpcwmtfl .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ewchobwurq .gt_indent_3 {
+#skxpcwmtfl .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ewchobwurq .gt_indent_4 {
+#skxpcwmtfl .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ewchobwurq .gt_indent_5 {
+#skxpcwmtfl .gt_indent_5 {
   text-indent: 25px;
 }
 
-#ewchobwurq .katex-display {
+#skxpcwmtfl .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#ewchobwurq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#skxpcwmtfl div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2336,7 +2347,7 @@ Reflection
 <p>Can you identify key differences compared to the Poisson model? The interpretation of coefficients is very similar.</p>
 <section id="zero-inflated-models" class="level3" data-number="7.6.1">
 <h3 data-number="7.6.1" class="anchored" data-anchor-id="zero-inflated-models"><span class="header-section-number">7.6.1</span> Zero inflated models</h3>
-<p>In the example today, we ignored observations with 0s active travel counts. This reflects the intensity of active travel only. However, there are instances where you must or wish to include 0 values in the outcome variable. You can compare the observed proportion of zeros to the proportion predicted by a standard Poisson model to check whether your data may be zero-inflated. A large discrepancy suggests zero inflation. In <code>R</code>, you can handle this using the <code>pscl</code> package, which provides the <code>zeroinfl()</code> function to fit zero inflated poisson (ZIP) models.</p>
+<p>In the example today, we ignored observations with 0 active travel counts. This reflects the intensity of active travel only. However, there are instances where you must or wish to include 0 values in the outcome variable. You can compare the observed proportion of zeros to the proportion predicted by a standard Poisson model to check whether your data may be zero-inflated. A large discrepancy suggests zero inflation. In <code>R</code>, you can handle this using the <code>pscl</code> package, which provides the <code>zeroinfl()</code> function to fit zero inflated poisson (ZIP) models.</p>
 </section>
 </section>
 <section id="individual-activities" class="level2" data-number="7.7">
