@@ -1,7 +1,9 @@
 # SMPT Workbook
 
 
-### Statistical Methods for Transport Planning - Workbook
+## Statistical Methods for Transport Planning - Workbook
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18760876.svg)](https://doi.org/10.5281/zenodo.18760876)
 
 This is a companion workbook for the [University of
 Glasgow](https://www.gla.ac.uk/) course [Statistical Methods for
@@ -12,6 +14,16 @@ during weekly hands-on activity sessions.
 
 The on-line workbook publicly available at:
 <https://rafavdz.github.io/smtp_workbook/>.
+
+## Citation
+
+Please cite this as:
+
+- Verduzco-Torres, J. R. (2026). Statistical Methods for Transport
+  Planning - Workbook (v1.0.0) \[Web\]. Zenodo. DOI:
+  https://doi.org/10.5281/zenodo.18760876
+
+## Terms of use
 
 Licence: [MIT Licence](https://opensource.org/license/mit). See more in
 Licence document.
