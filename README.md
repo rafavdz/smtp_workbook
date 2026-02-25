@@ -1,9 +1,9 @@
 # SMPT Workbook
 
 
-## Statistical Methods for Transport Planning - Workbook
-
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18760876.svg)](https://doi.org/10.5281/zenodo.18760876)
+
+## Statistical Methods for Transport Planning - Workbook
 
 This is a companion workbook for the [University of
 Glasgow](https://www.gla.ac.uk/) course [Statistical Methods for
