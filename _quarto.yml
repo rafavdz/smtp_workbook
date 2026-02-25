@@ -4,7 +4,11 @@ project:
 
 book:
   title: "Statistical Methods for Transport Planning - Workbook"
-  author: "Rafael Verduzco-Torres"
+  author: Rafael Verduzco-Torres
+  subtitle: |
+    <a href="https://doi.org/10.5281/zenodo.18760876">
+      <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.18760876.svg" alt="DOI" width="170">
+    </a>
   chapters:
     - index.qmd
     - session-1.qmd
