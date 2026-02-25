@@ -70,11 +70,11 @@ trips_summary <- active_trips %>%
 
 ::: {.callout-tip title="How many households report active travel trips?"}
 
-You can check the number of rows in 'trips_summary' table and compare it with the original 'household_id'. What can you observe?
+You can check the number of rows in 'trips_summary' table and compare it with the original 'households' one. What can you observe? Why does this happen?
 
 :::
 
-Note that the above does not include households with 0 active mode trips. Therefore, this analysis focuses on the *intensity* of active travel use e.g. households that have reported at least 1 active travel trip.
+Note that the above does not include households with 0 active mode trips. Therefore, this analysis focuses on the *intensity* of active travel use e.g. households that have reported at least one active travel trip.
 
 Let's look at the distribution, and variance.
 
@@ -272,7 +272,7 @@ Can you identify key differences compared to the Poisson model? The interpretati
 
 ### Zero inflated models
 
-In the example today, we ignored observations with 0 active travel counts. This reflects the intensity of active travel only. However, there are instances where you must or wish to include 0 values in the outcome variable. You can compare the observed proportion of zeros to the proportion predicted by a standard Poisson model to check whether your data may be zero-inflated. A large discrepancy suggests zero inflation. In `R`, you can handle this using the `pscl` package, which provides the `zeroinfl()` function to fit zero inflated poisson (ZIP) models.
+In the example today, we ignored observations with 0 active travel counts. This outcome thus reflects the intensity of active travel only. However, there are instances where you must or wish to include 0 values in the outcome variable. You can compare the observed proportion of zeros to the proportion predicted by a standard Poisson model to check whether your data may be zero-inflated. A large discrepancy suggests zero inflation. In `R`, you can handle this using the `pscl` package, which provides the `zeroinfl()` function to estimate zero inflated poisson (ZIP) models.
 
 ## Individual activities
 
