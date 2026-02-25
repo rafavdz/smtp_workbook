@@ -330,10 +330,10 @@ How many households report active travel trips?
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>You can check the number of rows in ‘trips_summary’ table and compare it with the original ‘household_id’. What can you observe?</p>
+<p>You can check the number of rows in ‘trips_summary’ table and compare it with the original ‘households’ one. What can you observe? Why does this happen?</p>
 </div>
 </div>
-<p>Note that the above does not include households with 0 active mode trips. Therefore, this analysis focuses on the <em>intensity</em> of active travel use e.g.&nbsp;households that have reported at least 1 active travel trip.</p>
+<p>Note that the above does not include households with 0 active mode trips. Therefore, this analysis focuses on the <em>intensity</em> of active travel use e.g.&nbsp;households that have reported at least one active travel trip.</p>
 <p>Let’s look at the distribution, and variance.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(trips_summary<span class="sc">$</span>active_trips_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -466,23 +466,23 @@ Does the variance approximate the mean?
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_regression</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_glance_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="yobdolnnst" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#yobdolnnst table {
+<div id="kgtdcndofl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kgtdcndofl table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#yobdolnnst thead, #yobdolnnst tbody, #yobdolnnst tfoot, #yobdolnnst tr, #yobdolnnst td, #yobdolnnst th {
+#kgtdcndofl thead, #kgtdcndofl tbody, #kgtdcndofl tfoot, #kgtdcndofl tr, #kgtdcndofl td, #kgtdcndofl th {
   border-style: none;
 }
 
-#yobdolnnst p {
+#kgtdcndofl p {
   margin: 0;
   padding: 0;
 }
 
-#yobdolnnst .gt_table {
+#kgtdcndofl .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -508,12 +508,12 @@ Does the variance approximate the mean?
   border-left-color: #D3D3D3;
 }
 
-#yobdolnnst .gt_caption {
+#kgtdcndofl .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#yobdolnnst .gt_title {
+#kgtdcndofl .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -525,7 +525,7 @@ Does the variance approximate the mean?
   border-bottom-width: 0;
 }
 
-#yobdolnnst .gt_subtitle {
+#kgtdcndofl .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -537,7 +537,7 @@ Does the variance approximate the mean?
   border-top-width: 0;
 }
 
-#yobdolnnst .gt_heading {
+#kgtdcndofl .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -549,13 +549,13 @@ Does the variance approximate the mean?
   border-right-color: #D3D3D3;
 }
 
-#yobdolnnst .gt_bottom_border {
+#kgtdcndofl .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#yobdolnnst .gt_col_headings {
+#kgtdcndofl .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -570,7 +570,7 @@ Does the variance approximate the mean?
   border-right-color: #D3D3D3;
 }
 
-#yobdolnnst .gt_col_heading {
+#kgtdcndofl .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -590,7 +590,7 @@ Does the variance approximate the mean?
   overflow-x: hidden;
 }
 
-#yobdolnnst .gt_column_spanner_outer {
+#kgtdcndofl .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -602,15 +602,15 @@ Does the variance approximate the mean?
   padding-right: 4px;
 }
 
-#yobdolnnst .gt_column_spanner_outer:first-child {
+#kgtdcndofl .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#yobdolnnst .gt_column_spanner_outer:last-child {
+#kgtdcndofl .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#yobdolnnst .gt_column_spanner {
+#kgtdcndofl .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -622,11 +622,11 @@ Does the variance approximate the mean?
   width: 100%;
 }
 
-#yobdolnnst .gt_spanner_row {
+#kgtdcndofl .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#yobdolnnst .gt_group_heading {
+#kgtdcndofl .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -652,7 +652,7 @@ Does the variance approximate the mean?
   text-align: left;
 }
 
-#yobdolnnst .gt_empty_group_heading {
+#kgtdcndofl .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -667,15 +667,15 @@ Does the variance approximate the mean?
   vertical-align: middle;
 }
 
-#yobdolnnst .gt_from_md > :first-child {
+#kgtdcndofl .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#yobdolnnst .gt_from_md > :last-child {
+#kgtdcndofl .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#yobdolnnst .gt_row {
+#kgtdcndofl .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -694,7 +694,7 @@ Does the variance approximate the mean?
   overflow-x: hidden;
 }
 
-#yobdolnnst .gt_stub {
+#kgtdcndofl .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -707,7 +707,7 @@ Does the variance approximate the mean?
   padding-right: 5px;
 }
 
-#yobdolnnst .gt_stub_row_group {
+#kgtdcndofl .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -721,15 +721,15 @@ Does the variance approximate the mean?
   vertical-align: top;
 }
 
-#yobdolnnst .gt_row_group_first td {
+#kgtdcndofl .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#yobdolnnst .gt_row_group_first th {
+#kgtdcndofl .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#yobdolnnst .gt_summary_row {
+#kgtdcndofl .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -739,16 +739,16 @@ Does the variance approximate the mean?
   padding-right: 5px;
 }
 
-#yobdolnnst .gt_first_summary_row {
+#kgtdcndofl .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#yobdolnnst .gt_first_summary_row.thick {
+#kgtdcndofl .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#yobdolnnst .gt_last_summary_row {
+#kgtdcndofl .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -758,7 +758,7 @@ Does the variance approximate the mean?
   border-bottom-color: #D3D3D3;
 }
 
-#yobdolnnst .gt_grand_summary_row {
+#kgtdcndofl .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -768,7 +768,7 @@ Does the variance approximate the mean?
   padding-right: 5px;
 }
 
-#yobdolnnst .gt_first_grand_summary_row {
+#kgtdcndofl .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -778,7 +778,7 @@ Does the variance approximate the mean?
   border-top-color: #D3D3D3;
 }
 
-#yobdolnnst .gt_last_grand_summary_row_top {
+#kgtdcndofl .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -788,11 +788,11 @@ Does the variance approximate the mean?
   border-bottom-color: #D3D3D3;
 }
 
-#yobdolnnst .gt_striped {
+#kgtdcndofl .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#yobdolnnst .gt_table_body {
+#kgtdcndofl .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -801,7 +801,7 @@ Does the variance approximate the mean?
   border-bottom-color: #D3D3D3;
 }
 
-#yobdolnnst .gt_footnotes {
+#kgtdcndofl .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -815,7 +815,7 @@ Does the variance approximate the mean?
   border-right-color: #D3D3D3;
 }
 
-#yobdolnnst .gt_footnote {
+#kgtdcndofl .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -824,7 +824,7 @@ Does the variance approximate the mean?
   padding-right: 5px;
 }
 
-#yobdolnnst .gt_sourcenotes {
+#kgtdcndofl .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -838,7 +838,7 @@ Does the variance approximate the mean?
   border-right-color: #D3D3D3;
 }
 
-#yobdolnnst .gt_sourcenote {
+#kgtdcndofl .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -846,72 +846,72 @@ Does the variance approximate the mean?
   padding-right: 5px;
 }
 
-#yobdolnnst .gt_left {
+#kgtdcndofl .gt_left {
   text-align: left;
 }
 
-#yobdolnnst .gt_center {
+#kgtdcndofl .gt_center {
   text-align: center;
 }
 
-#yobdolnnst .gt_right {
+#kgtdcndofl .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#yobdolnnst .gt_font_normal {
+#kgtdcndofl .gt_font_normal {
   font-weight: normal;
 }
 
-#yobdolnnst .gt_font_bold {
+#kgtdcndofl .gt_font_bold {
   font-weight: bold;
 }
 
-#yobdolnnst .gt_font_italic {
+#kgtdcndofl .gt_font_italic {
   font-style: italic;
 }
 
-#yobdolnnst .gt_super {
+#kgtdcndofl .gt_super {
   font-size: 65%;
 }
 
-#yobdolnnst .gt_footnote_marks {
+#kgtdcndofl .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#yobdolnnst .gt_asterisk {
+#kgtdcndofl .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#yobdolnnst .gt_indent_1 {
+#kgtdcndofl .gt_indent_1 {
   text-indent: 5px;
 }
 
-#yobdolnnst .gt_indent_2 {
+#kgtdcndofl .gt_indent_2 {
   text-indent: 10px;
 }
 
-#yobdolnnst .gt_indent_3 {
+#kgtdcndofl .gt_indent_3 {
   text-indent: 15px;
 }
 
-#yobdolnnst .gt_indent_4 {
+#kgtdcndofl .gt_indent_4 {
   text-indent: 20px;
 }
 
-#yobdolnnst .gt_indent_5 {
+#kgtdcndofl .gt_indent_5 {
   text-indent: 25px;
 }
 
-#yobdolnnst .katex-display {
+#kgtdcndofl .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#yobdolnnst div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#kgtdcndofl div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1076,23 +1076,23 @@ Does the variance approximate the mean?
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_regression</span>(<span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_glance_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="eyxwplahkm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#eyxwplahkm table {
+<div id="juqoxuzzpu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#juqoxuzzpu table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#eyxwplahkm thead, #eyxwplahkm tbody, #eyxwplahkm tfoot, #eyxwplahkm tr, #eyxwplahkm td, #eyxwplahkm th {
+#juqoxuzzpu thead, #juqoxuzzpu tbody, #juqoxuzzpu tfoot, #juqoxuzzpu tr, #juqoxuzzpu td, #juqoxuzzpu th {
   border-style: none;
 }
 
-#eyxwplahkm p {
+#juqoxuzzpu p {
   margin: 0;
   padding: 0;
 }
 
-#eyxwplahkm .gt_table {
+#juqoxuzzpu .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1118,12 +1118,12 @@ Does the variance approximate the mean?
   border-left-color: #D3D3D3;
 }
 
-#eyxwplahkm .gt_caption {
+#juqoxuzzpu .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#eyxwplahkm .gt_title {
+#juqoxuzzpu .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1135,7 +1135,7 @@ Does the variance approximate the mean?
   border-bottom-width: 0;
 }
 
-#eyxwplahkm .gt_subtitle {
+#juqoxuzzpu .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1147,7 +1147,7 @@ Does the variance approximate the mean?
   border-top-width: 0;
 }
 
-#eyxwplahkm .gt_heading {
+#juqoxuzzpu .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1159,13 +1159,13 @@ Does the variance approximate the mean?
   border-right-color: #D3D3D3;
 }
 
-#eyxwplahkm .gt_bottom_border {
+#juqoxuzzpu .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#eyxwplahkm .gt_col_headings {
+#juqoxuzzpu .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1180,7 +1180,7 @@ Does the variance approximate the mean?
   border-right-color: #D3D3D3;
 }
 
-#eyxwplahkm .gt_col_heading {
+#juqoxuzzpu .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1200,7 +1200,7 @@ Does the variance approximate the mean?
   overflow-x: hidden;
 }
 
-#eyxwplahkm .gt_column_spanner_outer {
+#juqoxuzzpu .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1212,15 +1212,15 @@ Does the variance approximate the mean?
   padding-right: 4px;
 }
 
-#eyxwplahkm .gt_column_spanner_outer:first-child {
+#juqoxuzzpu .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#eyxwplahkm .gt_column_spanner_outer:last-child {
+#juqoxuzzpu .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#eyxwplahkm .gt_column_spanner {
+#juqoxuzzpu .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1232,11 +1232,11 @@ Does the variance approximate the mean?
   width: 100%;
 }
 
-#eyxwplahkm .gt_spanner_row {
+#juqoxuzzpu .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#eyxwplahkm .gt_group_heading {
+#juqoxuzzpu .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1262,7 +1262,7 @@ Does the variance approximate the mean?
   text-align: left;
 }
 
-#eyxwplahkm .gt_empty_group_heading {
+#juqoxuzzpu .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1277,15 +1277,15 @@ Does the variance approximate the mean?
   vertical-align: middle;
 }
 
-#eyxwplahkm .gt_from_md > :first-child {
+#juqoxuzzpu .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#eyxwplahkm .gt_from_md > :last-child {
+#juqoxuzzpu .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#eyxwplahkm .gt_row {
+#juqoxuzzpu .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1304,7 +1304,7 @@ Does the variance approximate the mean?
   overflow-x: hidden;
 }
 
-#eyxwplahkm .gt_stub {
+#juqoxuzzpu .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1317,7 +1317,7 @@ Does the variance approximate the mean?
   padding-right: 5px;
 }
 
-#eyxwplahkm .gt_stub_row_group {
+#juqoxuzzpu .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1331,15 +1331,15 @@ Does the variance approximate the mean?
   vertical-align: top;
 }
 
-#eyxwplahkm .gt_row_group_first td {
+#juqoxuzzpu .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#eyxwplahkm .gt_row_group_first th {
+#juqoxuzzpu .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#eyxwplahkm .gt_summary_row {
+#juqoxuzzpu .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1349,16 +1349,16 @@ Does the variance approximate the mean?
   padding-right: 5px;
 }
 
-#eyxwplahkm .gt_first_summary_row {
+#juqoxuzzpu .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#eyxwplahkm .gt_first_summary_row.thick {
+#juqoxuzzpu .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#eyxwplahkm .gt_last_summary_row {
+#juqoxuzzpu .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1368,7 +1368,7 @@ Does the variance approximate the mean?
   border-bottom-color: #D3D3D3;
 }
 
-#eyxwplahkm .gt_grand_summary_row {
+#juqoxuzzpu .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1378,7 +1378,7 @@ Does the variance approximate the mean?
   padding-right: 5px;
 }
 
-#eyxwplahkm .gt_first_grand_summary_row {
+#juqoxuzzpu .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1388,7 +1388,7 @@ Does the variance approximate the mean?
   border-top-color: #D3D3D3;
 }
 
-#eyxwplahkm .gt_last_grand_summary_row_top {
+#juqoxuzzpu .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1398,11 +1398,11 @@ Does the variance approximate the mean?
   border-bottom-color: #D3D3D3;
 }
 
-#eyxwplahkm .gt_striped {
+#juqoxuzzpu .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#eyxwplahkm .gt_table_body {
+#juqoxuzzpu .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1411,7 +1411,7 @@ Does the variance approximate the mean?
   border-bottom-color: #D3D3D3;
 }
 
-#eyxwplahkm .gt_footnotes {
+#juqoxuzzpu .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1425,7 +1425,7 @@ Does the variance approximate the mean?
   border-right-color: #D3D3D3;
 }
 
-#eyxwplahkm .gt_footnote {
+#juqoxuzzpu .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1434,7 +1434,7 @@ Does the variance approximate the mean?
   padding-right: 5px;
 }
 
-#eyxwplahkm .gt_sourcenotes {
+#juqoxuzzpu .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1448,7 +1448,7 @@ Does the variance approximate the mean?
   border-right-color: #D3D3D3;
 }
 
-#eyxwplahkm .gt_sourcenote {
+#juqoxuzzpu .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1456,72 +1456,72 @@ Does the variance approximate the mean?
   padding-right: 5px;
 }
 
-#eyxwplahkm .gt_left {
+#juqoxuzzpu .gt_left {
   text-align: left;
 }
 
-#eyxwplahkm .gt_center {
+#juqoxuzzpu .gt_center {
   text-align: center;
 }
 
-#eyxwplahkm .gt_right {
+#juqoxuzzpu .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#eyxwplahkm .gt_font_normal {
+#juqoxuzzpu .gt_font_normal {
   font-weight: normal;
 }
 
-#eyxwplahkm .gt_font_bold {
+#juqoxuzzpu .gt_font_bold {
   font-weight: bold;
 }
 
-#eyxwplahkm .gt_font_italic {
+#juqoxuzzpu .gt_font_italic {
   font-style: italic;
 }
 
-#eyxwplahkm .gt_super {
+#juqoxuzzpu .gt_super {
   font-size: 65%;
 }
 
-#eyxwplahkm .gt_footnote_marks {
+#juqoxuzzpu .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#eyxwplahkm .gt_asterisk {
+#juqoxuzzpu .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#eyxwplahkm .gt_indent_1 {
+#juqoxuzzpu .gt_indent_1 {
   text-indent: 5px;
 }
 
-#eyxwplahkm .gt_indent_2 {
+#juqoxuzzpu .gt_indent_2 {
   text-indent: 10px;
 }
 
-#eyxwplahkm .gt_indent_3 {
+#juqoxuzzpu .gt_indent_3 {
   text-indent: 15px;
 }
 
-#eyxwplahkm .gt_indent_4 {
+#juqoxuzzpu .gt_indent_4 {
   text-indent: 20px;
 }
 
-#eyxwplahkm .gt_indent_5 {
+#juqoxuzzpu .gt_indent_5 {
   text-indent: 25px;
 }
 
-#eyxwplahkm .katex-display {
+#juqoxuzzpu .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#eyxwplahkm div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#juqoxuzzpu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1741,23 +1741,23 @@ Reflection
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_regression</span>(<span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_glance_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="skxpcwmtfl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#skxpcwmtfl table {
+<div id="avnyedgipf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#avnyedgipf table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#skxpcwmtfl thead, #skxpcwmtfl tbody, #skxpcwmtfl tfoot, #skxpcwmtfl tr, #skxpcwmtfl td, #skxpcwmtfl th {
+#avnyedgipf thead, #avnyedgipf tbody, #avnyedgipf tfoot, #avnyedgipf tr, #avnyedgipf td, #avnyedgipf th {
   border-style: none;
 }
 
-#skxpcwmtfl p {
+#avnyedgipf p {
   margin: 0;
   padding: 0;
 }
 
-#skxpcwmtfl .gt_table {
+#avnyedgipf .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1783,12 +1783,12 @@ Reflection
   border-left-color: #D3D3D3;
 }
 
-#skxpcwmtfl .gt_caption {
+#avnyedgipf .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#skxpcwmtfl .gt_title {
+#avnyedgipf .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1800,7 +1800,7 @@ Reflection
   border-bottom-width: 0;
 }
 
-#skxpcwmtfl .gt_subtitle {
+#avnyedgipf .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1812,7 +1812,7 @@ Reflection
   border-top-width: 0;
 }
 
-#skxpcwmtfl .gt_heading {
+#avnyedgipf .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1824,13 +1824,13 @@ Reflection
   border-right-color: #D3D3D3;
 }
 
-#skxpcwmtfl .gt_bottom_border {
+#avnyedgipf .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#skxpcwmtfl .gt_col_headings {
+#avnyedgipf .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1845,7 +1845,7 @@ Reflection
   border-right-color: #D3D3D3;
 }
 
-#skxpcwmtfl .gt_col_heading {
+#avnyedgipf .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1865,7 +1865,7 @@ Reflection
   overflow-x: hidden;
 }
 
-#skxpcwmtfl .gt_column_spanner_outer {
+#avnyedgipf .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1877,15 +1877,15 @@ Reflection
   padding-right: 4px;
 }
 
-#skxpcwmtfl .gt_column_spanner_outer:first-child {
+#avnyedgipf .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#skxpcwmtfl .gt_column_spanner_outer:last-child {
+#avnyedgipf .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#skxpcwmtfl .gt_column_spanner {
+#avnyedgipf .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1897,11 +1897,11 @@ Reflection
   width: 100%;
 }
 
-#skxpcwmtfl .gt_spanner_row {
+#avnyedgipf .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#skxpcwmtfl .gt_group_heading {
+#avnyedgipf .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1927,7 +1927,7 @@ Reflection
   text-align: left;
 }
 
-#skxpcwmtfl .gt_empty_group_heading {
+#avnyedgipf .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1942,15 +1942,15 @@ Reflection
   vertical-align: middle;
 }
 
-#skxpcwmtfl .gt_from_md > :first-child {
+#avnyedgipf .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#skxpcwmtfl .gt_from_md > :last-child {
+#avnyedgipf .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#skxpcwmtfl .gt_row {
+#avnyedgipf .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1969,7 +1969,7 @@ Reflection
   overflow-x: hidden;
 }
 
-#skxpcwmtfl .gt_stub {
+#avnyedgipf .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1982,7 +1982,7 @@ Reflection
   padding-right: 5px;
 }
 
-#skxpcwmtfl .gt_stub_row_group {
+#avnyedgipf .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1996,15 +1996,15 @@ Reflection
   vertical-align: top;
 }
 
-#skxpcwmtfl .gt_row_group_first td {
+#avnyedgipf .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#skxpcwmtfl .gt_row_group_first th {
+#avnyedgipf .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#skxpcwmtfl .gt_summary_row {
+#avnyedgipf .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2014,16 +2014,16 @@ Reflection
   padding-right: 5px;
 }
 
-#skxpcwmtfl .gt_first_summary_row {
+#avnyedgipf .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#skxpcwmtfl .gt_first_summary_row.thick {
+#avnyedgipf .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#skxpcwmtfl .gt_last_summary_row {
+#avnyedgipf .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2033,7 +2033,7 @@ Reflection
   border-bottom-color: #D3D3D3;
 }
 
-#skxpcwmtfl .gt_grand_summary_row {
+#avnyedgipf .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2043,7 +2043,7 @@ Reflection
   padding-right: 5px;
 }
 
-#skxpcwmtfl .gt_first_grand_summary_row {
+#avnyedgipf .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2053,7 +2053,7 @@ Reflection
   border-top-color: #D3D3D3;
 }
 
-#skxpcwmtfl .gt_last_grand_summary_row_top {
+#avnyedgipf .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2063,11 +2063,11 @@ Reflection
   border-bottom-color: #D3D3D3;
 }
 
-#skxpcwmtfl .gt_striped {
+#avnyedgipf .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#skxpcwmtfl .gt_table_body {
+#avnyedgipf .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2076,7 +2076,7 @@ Reflection
   border-bottom-color: #D3D3D3;
 }
 
-#skxpcwmtfl .gt_footnotes {
+#avnyedgipf .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2090,7 +2090,7 @@ Reflection
   border-right-color: #D3D3D3;
 }
 
-#skxpcwmtfl .gt_footnote {
+#avnyedgipf .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2099,7 +2099,7 @@ Reflection
   padding-right: 5px;
 }
 
-#skxpcwmtfl .gt_sourcenotes {
+#avnyedgipf .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2113,7 +2113,7 @@ Reflection
   border-right-color: #D3D3D3;
 }
 
-#skxpcwmtfl .gt_sourcenote {
+#avnyedgipf .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2121,72 +2121,72 @@ Reflection
   padding-right: 5px;
 }
 
-#skxpcwmtfl .gt_left {
+#avnyedgipf .gt_left {
   text-align: left;
 }
 
-#skxpcwmtfl .gt_center {
+#avnyedgipf .gt_center {
   text-align: center;
 }
 
-#skxpcwmtfl .gt_right {
+#avnyedgipf .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#skxpcwmtfl .gt_font_normal {
+#avnyedgipf .gt_font_normal {
   font-weight: normal;
 }
 
-#skxpcwmtfl .gt_font_bold {
+#avnyedgipf .gt_font_bold {
   font-weight: bold;
 }
 
-#skxpcwmtfl .gt_font_italic {
+#avnyedgipf .gt_font_italic {
   font-style: italic;
 }
 
-#skxpcwmtfl .gt_super {
+#avnyedgipf .gt_super {
   font-size: 65%;
 }
 
-#skxpcwmtfl .gt_footnote_marks {
+#avnyedgipf .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#skxpcwmtfl .gt_asterisk {
+#avnyedgipf .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#skxpcwmtfl .gt_indent_1 {
+#avnyedgipf .gt_indent_1 {
   text-indent: 5px;
 }
 
-#skxpcwmtfl .gt_indent_2 {
+#avnyedgipf .gt_indent_2 {
   text-indent: 10px;
 }
 
-#skxpcwmtfl .gt_indent_3 {
+#avnyedgipf .gt_indent_3 {
   text-indent: 15px;
 }
 
-#skxpcwmtfl .gt_indent_4 {
+#avnyedgipf .gt_indent_4 {
   text-indent: 20px;
 }
 
-#skxpcwmtfl .gt_indent_5 {
+#avnyedgipf .gt_indent_5 {
   text-indent: 25px;
 }
 
-#skxpcwmtfl .katex-display {
+#avnyedgipf .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#skxpcwmtfl div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#avnyedgipf div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2347,7 +2347,7 @@ Reflection
 <p>Can you identify key differences compared to the Poisson model? The interpretation of coefficients is very similar.</p>
 <section id="zero-inflated-models" class="level3" data-number="7.6.1">
 <h3 data-number="7.6.1" class="anchored" data-anchor-id="zero-inflated-models"><span class="header-section-number">7.6.1</span> Zero inflated models</h3>
-<p>In the example today, we ignored observations with 0 active travel counts. This reflects the intensity of active travel only. However, there are instances where you must or wish to include 0 values in the outcome variable. You can compare the observed proportion of zeros to the proportion predicted by a standard Poisson model to check whether your data may be zero-inflated. A large discrepancy suggests zero inflation. In <code>R</code>, you can handle this using the <code>pscl</code> package, which provides the <code>zeroinfl()</code> function to fit zero inflated poisson (ZIP) models.</p>
+<p>In the example today, we ignored observations with 0 active travel counts. This outcome thus reflects the intensity of active travel only. However, there are instances where you must or wish to include 0 values in the outcome variable. You can compare the observed proportion of zeros to the proportion predicted by a standard Poisson model to check whether your data may be zero-inflated. A large discrepancy suggests zero inflation. In <code>R</code>, you can handle this using the <code>pscl</code> package, which provides the <code>zeroinfl()</code> function to estimate zero inflated poisson (ZIP) models.</p>
 </section>
 </section>
 <section id="individual-activities" class="level2" data-number="7.7">

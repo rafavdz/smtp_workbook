@@ -22,6 +22,16 @@ The activities assume you already have `R` and `RStudio` installed in your machi
 
 Also, the activities assume prior knowledge `R` coding skills.
 
+## Citation
+
+Please cite this as:
+
+* Verduzco-Torres, J. R. (2026). Statistical Methods for Transport Planning - Workbook (v1.0.0) [Web]. Zenodo. DOI: https://doi.org/10.5281/zenodo.18760876
+
+## Source code
+
+All the source code is openly available at: <https://github.com/rafavdz/smtp_workbook>.
+
 ## Contact
 
 JoseRafael.Verduzco-Torres@glasgow.ac.uk
