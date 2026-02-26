@@ -3,7 +3,7 @@
 
 ## Introduction
 
-We will now explore count models, which are relevant in a number of transport applications for modelling variables such as the number of trips, number of vehicles, or number of collisions.
+We will now explore count models, which are relevant in a range of transport applications for modelling variables such as the number of trips, number of vehicles, or number of collisions.
 
 The Poisson model is well suited approach to discrete numeric outcomes from 0. Unlike linear regression, Poisson models do not allow any negative values, and values should be integer (0, 1, 2, ...). As a rule of thumbs, the mean of the count should be lower than 10.
 
@@ -214,7 +214,7 @@ poisson_m1 %>%
 
 We can see that having children in the household is significant. Specifically, 
 
-> the incidence rate of active travel trips is 2.3 times larger for families with one or more children than those without any.
+> The incidence rate of active travel trips is 2.3 times higher for families with one or more children than for those without any.
 
 Remember, categorical variables are always interpreted using the category of reference as the baseline.
 
@@ -241,7 +241,7 @@ Common assumptions of the standard Poisson model are:
 
 Given the length constrains of this activity, we focus on the latter (4). Consult the recommended literature and lecture slides for further checks.
 
-One of the key assumptions of the Poisson model is that the mean is approximately equal to the variance. Dispersion can occur when the data is more variable than the model assumes. This can yield to estimation problems, such as underestimated errors (e.g. we can conclude something is significant when it is not), or poor model fit.
+One of the key assumptions of the Poisson model is that the mean is approximately equal to the variance. Dispersion can occur when the data is more variable than the model assumes. This can create estimation problems, such as underestimated errors (e.g. we can conclude something is significant when it is not), or poor model fit.
 
 We can test for over dispersion with the `perfomance::` package as following:
 
@@ -251,7 +251,7 @@ check_overdispersion(poisson_m1)
 
 From this test, the dispersion ratio should be close to 1. From the results we see that this is much larger, and the p-value is lower than 0.05. Then, we can say that overdispersion is detected, and we should not trust the results from the previous regression.
 
-A common alternative is to use a negative binomial model. This is also useful to model counts and does not assume that the variance is roughly similar to the mean of our count. To estimate this model, we will require the `glm.nb()` function of the `MASS::` package.
+A common alternative is to use a negative binomial model. This is an extension of the standard Poisson model and does not assume that the variance is roughly similar to the mean of our count. To estimate this model, we will require the `glm.nb()` function of the `MASS::` package.
 
 ```{r}
 library(MASS)
