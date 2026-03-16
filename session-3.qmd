@@ -50,7 +50,7 @@ miles_driven_hh <- trips_drive %>%
   group_by(household_id) %>% 
   summarise(
     total_miles_hh = sum(distance_miles, na.rm = TRUE),
-    num_days_trips = max(daynum),
+    num_days_trips = n_distinct(daynum),
     avg_miles_driven = total_miles_hh / num_days_trips
   )
 ```

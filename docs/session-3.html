@@ -277,7 +277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(household_id) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_miles_hh =</span> <span class="fu">sum</span>(distance_miles, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_days_trips =</span> <span class="fu">max</span>(daynum),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_days_trips =</span> <span class="fu">n_distinct</span>(daynum),</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_miles_driven =</span> total_miles_hh <span class="sc">/</span> num_days_trips</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -422,8 +422,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 2 × 3
   any_work_home miles_driven_mean miles_driven_sd
   &lt;chr&gt;                     &lt;dbl&gt;           &lt;dbl&gt;
-1 No                         37.2            48.1
-2 Yes                        37.4            42.3</code></pre>
+1 No                         38.4            48.5
+2 Yes                        38.7            42.7</code></pre>
 </div>
 </div>
 </section>
@@ -442,18 +442,18 @@ lm(formula = avg_miles_driven ~ any_work_home, data = .)
 
 Residuals:
    Min     1Q Median     3Q    Max 
--37.27 -26.84 -13.48  10.05 448.62 
+-38.53 -27.34 -13.47   9.98 447.39 
 
 Coefficients:
                  Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)       37.1775     1.1546  32.200   &lt;2e-16 ***
-any_work_homeYes   0.1998     1.7202   0.116    0.908    
+(Intercept)       38.4147     1.1645  32.989   &lt;2e-16 ***
+any_work_homeYes   0.3259     1.7349   0.188    0.851    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 45.6 on 2837 degrees of freedom
-Multiple R-squared:  4.755e-06, Adjusted R-squared:  -0.0003477 
-F-statistic: 0.01349 on 1 and 2837 DF,  p-value: 0.9075</code></pre>
+Residual standard error: 45.99 on 2837 degrees of freedom
+Multiple R-squared:  1.244e-05, Adjusted R-squared:  -0.00034 
+F-statistic: 0.03528 on 1 and 2837 DF,  p-value: 0.851</code></pre>
 </div>
 </div>
 <p>Are there potential problems with this model or results?</p>
@@ -495,26 +495,26 @@ lm(formula = avg_miles_driven ~ any_work_home + hhsize_int +
 
 Residuals:
    Min     1Q Median     3Q    Max 
--89.21 -22.86 -10.41   8.87 434.78 
+-85.49 -23.42 -10.93   9.53 433.53 
 
 Coefficients:
                                 Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)                        4.927      3.609   1.365 0.172338    
-any_work_homeYes                  -8.301      1.933  -4.295 1.81e-05 ***
-hhsize_int                        10.952      1.084  10.107  &lt; 2e-16 ***
-hhincome_broad$25,000-$49,999      5.298      4.069   1.302 0.193021    
-hhincome_broad$50,000-$74,999     13.181      3.974   3.317 0.000923 ***
-hhincome_broad$75,000-$99,999     10.543      4.104   2.569 0.010254 *  
-hhincome_broad$100,000-$199,999   19.243      3.716   5.178 2.41e-07 ***
-hhincome_broad$200,000 or more    13.724      4.054   3.386 0.000721 ***
-children_binaryYes                 1.628      3.092   0.526 0.598643    
+(Intercept)                        7.253      3.661   1.981 0.047702 *  
+any_work_homeYes                  -7.782      1.961  -3.969 7.43e-05 ***
+hhsize_int                        10.390      1.099   9.451  &lt; 2e-16 ***
+hhincome_broad$25,000-$49,999      6.121      4.128   1.483 0.138285    
+hhincome_broad$50,000-$74,999     13.564      4.031   3.365 0.000778 ***
+hhincome_broad$75,000-$99,999     10.066      4.163   2.418 0.015682 *  
+hhincome_broad$100,000-$199,999   18.768      3.770   4.978 6.84e-07 ***
+hhincome_broad$200,000 or more    13.923      4.112   3.386 0.000721 ***
+children_binaryYes                 1.522      3.137   0.485 0.627681    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 44.44 on 2562 degrees of freedom
+Residual standard error: 45.08 on 2562 degrees of freedom
   (268 observations deleted due to missingness)
-Multiple R-squared:  0.1021,    Adjusted R-squared:  0.09928 
-F-statistic: 36.41 on 8 and 2562 DF,  p-value: &lt; 2.2e-16</code></pre>
+Multiple R-squared:  0.09071,   Adjusted R-squared:  0.08787 
+F-statistic: 31.95 on 8 and 2562 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <p>Discuss the model results with your tutor.</p>
@@ -566,26 +566,26 @@ lm(formula = log_miles_driven ~ any_work_home + hhsize_int +
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--5.0276 -0.6560  0.1140  0.7483  3.5693 
+-4.8991 -0.6340  0.1017  0.7374  3.4246 
 
 Coefficients:
                                 Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)                      1.86366    0.09244  20.161  &lt; 2e-16 ***
-any_work_homeYes                -0.23932    0.04951  -4.834 1.42e-06 ***
-hhsize_int                       0.30433    0.02776  10.964  &lt; 2e-16 ***
-hhincome_broad$25,000-$49,999    0.29811    0.10423   2.860  0.00427 ** 
-hhincome_broad$50,000-$74,999    0.57722    0.10179   5.671 1.58e-08 ***
-hhincome_broad$75,000-$99,999    0.59114    0.10511   5.624 2.07e-08 ***
-hhincome_broad$100,000-$199,999  0.83933    0.09518   8.818  &lt; 2e-16 ***
-hhincome_broad$200,000 or more   0.77063    0.10383   7.422 1.56e-13 ***
-children_binaryYes               0.00540    0.07921   0.068  0.94565    
+(Intercept)                      2.10369    0.08813  23.872  &lt; 2e-16 ***
+any_work_homeYes                -0.21061    0.04720  -4.462 8.46e-06 ***
+hhsize_int                       0.26492    0.02646  10.012  &lt; 2e-16 ***
+hhincome_broad$25,000-$49,999    0.24219    0.09936   2.437   0.0149 *  
+hhincome_broad$50,000-$74,999    0.50126    0.09704   5.166 2.58e-07 ***
+hhincome_broad$75,000-$99,999    0.49212    0.10021   4.911 9.63e-07 ***
+hhincome_broad$100,000-$199,999  0.71162    0.09074   7.843 6.42e-15 ***
+hhincome_broad$200,000 or more   0.65926    0.09899   6.660 3.33e-11 ***
+children_binaryYes               0.01942    0.07551   0.257   0.7971    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 1.138 on 2562 degrees of freedom
+Residual standard error: 1.085 on 2562 degrees of freedom
   (268 observations deleted due to missingness)
-Multiple R-squared:  0.1396,    Adjusted R-squared:  0.1369 
-F-statistic: 51.95 on 8 and 2562 DF,  p-value: &lt; 2.2e-16</code></pre>
+Multiple R-squared:   0.12, Adjusted R-squared:  0.1173 
+F-statistic: 43.68 on 8 and 2562 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <p>Which model would you choose? Are the any other potentially omitted variables?</p>
