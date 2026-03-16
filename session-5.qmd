@@ -92,13 +92,13 @@ Before anything, scan and determine which variables are significant. The confide
 
 When it comes to the the size of coefficients, the interpretations change compared to the log of the odds. For example,
 
-> the odds ratio of using active transport modes are about 50% lower for people with free parking at work compared to those without free parking.
+> the odds ratio of using active transport modes are about 54% lower for people with free parking at work compared to those without free parking.
 
 Note that we make interpretations in relation to 1. Specifically, a value lower than one implies a decrease in the odds of using active transport modes. Generally we use the following formula to express the changes in percent terms `(1 - coefficient) * 100`.
 
 For continuous variables the interpretation is as follows:
 
-> Every additional mile to work is associated with a 20% decrease in the odds ratio for using active transport modes.
+> Every additional mile to work is associated with a 17% decrease in the odds ratio for using active transport modes.
 
 Note that we are talking either about the log of the odds or the odds ratio, not the probability.
 
