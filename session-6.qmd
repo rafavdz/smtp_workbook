@@ -133,7 +133,7 @@ trips_distance <- trips_work %>%
   group_by(person_id) %>% 
   summarise(
     total_miles = sum(distance_miles, na.rm = TRUE),
-    num_days_trips = max(daynum),
+    num_days_trips = n_distinct(daynum),
     avg_distance = total_miles / num_days_trips
   ) %>% 
   filter(num_days_trips > 0 & avg_distance < 100)
@@ -265,7 +265,7 @@ multinomial_model1 %>%
 
 Let's give it a go to the key independent variable: 
 
-> Compared to individuals without free parking at work, the odds of using active travel are 66% lower than driving for those with free parking at their workplace. Similarly, the odds of using transit are about 80% lower than driving for people with free parking at work relative to those without it.
+> Compared to individuals without free parking at work, the odds of using active travel are 68% lower than driving for those with free parking at their workplace. Similarly, the odds of using transit are about 80% lower than driving for people with free parking at work relative to those without it.
 
 More generally, we observe that the likelihood of both engaging in active travel and using transit is lower than driving for individuals with free parking at work compared to those without it. Additionally, the effect is more pronounced for transit than for active travel.
 
@@ -275,7 +275,7 @@ As you can see, we can use the following formula to express the changes in perce
 
 For continuous variables the interpretation is as follows: 
 
-> For every additional average mile to work, the odds of engaging in active travel are 35% lower than driving. Likewise, the odds of riding transit are 5% lower than driving for every additional mile to work.
+> For every additional average mile to work, the odds of engaging in active travel are 33% lower than driving. Likewise, the odds of riding transit are 5% lower than driving for every additional mile to work.
 
 
 
