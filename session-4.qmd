@@ -79,7 +79,7 @@ trips_summary <- trips_work %>%
     # Total distance travelled across all work trips
     total_miles = sum(distance_miles, na.rm = TRUE),
     # Number of days with observed trips
-    num_days_trips = max(daynum, na.rm = TRUE),
+    num_days_trips = n_distinct(daynum),
     # Average distance travelled per day
     avg_distance = total_miles / num_days_trips
 )
@@ -256,9 +256,9 @@ $$
 \log\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1 \cdot \text{FreeParking} + \dots
 $$
 
-where $p$ is the probability of using an active mode, and $\beta_1 = -0.75$.
+where $p$ is the probability of using an active mode, and $\beta_1 = -0.77$.
 
-For continuous variables: We expect the log-odds of using active transport modes to decrease by 0.24 for every additional mile to work. This is also a significant predictor.
+For continuous variables: We expect the log-odds of using active transport modes to decrease by 0.18 for every additional mile to work. This is also a significant predictor.
 
 
 ::: {.callout-note title="Reflection"}
