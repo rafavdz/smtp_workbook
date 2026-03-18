@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>5&nbsp; Session 5: Logistic regression Part 2 – Statistical Methods for Transport Planning - Workbook</title>
+<title>4&nbsp; Session 4: Logistic regression Part 1 – Statistical Methods for Transport Planning - Workbook</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./session-6.html" rel="next">
-<link href="./session-4.html" rel="prev">
+<link href="./session-5.html" rel="next">
+<link href="./session-3.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -146,7 +146,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./session-5.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Session 5: Logistic regression Part 2</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./session-4.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Session 4: Logistic regression Part 1</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -200,13 +200,13 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session-4.html" class="sidebar-item-text sidebar-link">
+  <a href="./session-4.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Session 4: Logistic regression Part 1</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./session-5.html" class="sidebar-item-text sidebar-link active">
+  <a href="./session-5.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Session 5: Logistic regression Part 2</span></span></a>
   </div>
 </li>
@@ -232,19 +232,20 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link active" data-scroll-target="#preliminaries"><span class="header-section-number">5.1</span> Preliminaries</a></li>
-  <li><a href="#estimating-a-logistic-regression-model" id="toc-estimating-a-logistic-regression-model" class="nav-link" data-scroll-target="#estimating-a-logistic-regression-model"><span class="header-section-number">5.2</span> Estimating a logistic regression model</a></li>
-  <li><a href="#interpreting-exponentied-coefficients-odds-ratio" id="toc-interpreting-exponentied-coefficients-odds-ratio" class="nav-link" data-scroll-target="#interpreting-exponentied-coefficients-odds-ratio"><span class="header-section-number">5.3</span> Interpreting exponentied coefficients: Odds ratio</a>
+  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link active" data-scroll-target="#preliminaries"><span class="header-section-number">4.1</span> Preliminaries</a>
   <ul class="collapse">
-  <li><a href="#odds-ratio-in-our-example" id="toc-odds-ratio-in-our-example" class="nav-link" data-scroll-target="#odds-ratio-in-our-example"><span class="header-section-number">5.3.1</span> Odds ratio in our example</a></li>
+  <li><a href="#data-manipulation" id="toc-data-manipulation" class="nav-link" data-scroll-target="#data-manipulation"><span class="header-section-number">4.1.1</span> Data manipulation</a></li>
+  <li><a href="#summarising-data-at-the-appropriate-level" id="toc-summarising-data-at-the-appropriate-level" class="nav-link" data-scroll-target="#summarising-data-at-the-appropriate-level"><span class="header-section-number">4.1.2</span> Summarising data at the appropriate level</a></li>
+  <li><a href="#independent-variables" id="toc-independent-variables" class="nav-link" data-scroll-target="#independent-variables"><span class="header-section-number">4.1.3</span> Independent variables</a></li>
   </ul></li>
-  <li><a href="#model-checks" id="toc-model-checks" class="nav-link" data-scroll-target="#model-checks"><span class="header-section-number">5.4</span> Model checks</a>
+  <li><a href="#descriptive-statistics" id="toc-descriptive-statistics" class="nav-link" data-scroll-target="#descriptive-statistics"><span class="header-section-number">4.2</span> Descriptive statistics</a>
   <ul class="collapse">
-  <li><a href="#goodness-of-fit" id="toc-goodness-of-fit" class="nav-link" data-scroll-target="#goodness-of-fit"><span class="header-section-number">5.4.1</span> Goodness-of-fit</a></li>
-  <li><a href="#assumption-checks" id="toc-assumption-checks" class="nav-link" data-scroll-target="#assumption-checks"><span class="header-section-number">5.4.2</span> Assumption checks</a></li>
+  <li><a href="#write-the-data" id="toc-write-the-data" class="nav-link" data-scroll-target="#write-the-data"><span class="header-section-number">4.2.1</span> Write the data</a></li>
   </ul></li>
-  <li><a href="#individual-activities" id="toc-individual-activities" class="nav-link" data-scroll-target="#individual-activities"><span class="header-section-number">5.5</span> Individual activities</a></li>
-  <li><a href="#references-and-further-reading" id="toc-references-and-further-reading" class="nav-link" data-scroll-target="#references-and-further-reading"><span class="header-section-number">5.6</span> References and further reading</a></li>
+  <li><a href="#logistic-regression" id="toc-logistic-regression" class="nav-link" data-scroll-target="#logistic-regression"><span class="header-section-number">4.3</span> Logistic regression</a>
+  <ul class="collapse">
+  <li><a href="#final-thoughts" id="toc-final-thoughts" class="nav-link" data-scroll-target="#final-thoughts"><span class="header-section-number">4.3.1</span> Final thoughts</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -253,7 +254,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Session 5: Logistic regression Part 2</span></h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Session 4: Logistic regression Part 1</span></h1>
 </div>
 
 
@@ -270,100 +271,203 @@ window.Quarto = {
 </header>
 
 
-<!-- NOTES FOR FUTURE ACTIVITIES -->
-<!-- Outliers: include them from a modelling perspective. Potentially week 4 or 5.  -->
-<!-- - Next to the ORs in the table you have the CIs.  We will talk a little about how to interpret this in class, so you could ask a question about that below the table, perhaps? -->
-<!-- - In the lecture we will be emphasising the Chi Sq test as a way of assessing the quality of the model, so it might be worth emphasising that in the output of the performance_pcp function? -->
-<!--  talk briefly about comparing nested or non-nested model formulations using the LL test or by comparing BICs/AICs.  Might be worth suggesting they try a model with fewer IVs and assess which is ‘better’ (as extra homework for those who are willing)? -->
-<p>In today’s session we will continue learning about logistic regression. Last time, we learned more about suitable outcome variables for this type of model, i.e.&nbsp;binary ones (which only have two mutually exclusive categories). Also, we fitted a logistic regression model and were introduced to coefficient interpretation. We made interpretations in the log of the odds. Today, we will learn about coefficient interpretations in the odds ratio scale. Also, we will learn more about model goodness-of-fit and checking model assumptions.</p>
-<section id="preliminaries" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="preliminaries"><span class="header-section-number">5.1</span> Preliminaries</h2>
-<p>For today’s session we will need the following packages. You needed them for the previous lab.</p>
+<section id="preliminaries" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="preliminaries"><span class="header-section-number">4.1</span> Preliminaries</h2>
+<p>We will continue to work with the <a href="https://www.psrc.org/our-work/household-travel-survey-program">Puget Sound Household Travel Survey</a>. If you do not have the data or project set for this, please check the preliminary instructions for Week 1.</p>
+<section id="data-manipulation" class="level3" data-number="4.1.1">
+<h3 data-number="4.1.1" class="anchored" data-anchor-id="data-manipulation"><span class="header-section-number">4.1.1</span> Data manipulation</h3>
+<p>For today’s session we will need the following packages (Make sure that you have these packages installed in your machine, if not install them using the <code>install.packages()</code> function).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Packages </span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># For data manipulation</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtsummary) <span class="co"># Descriptive statistics</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance) <span class="co"># Model checks</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We will continue to work with the data subset that you created in the last session, which includes information about commuting to work trips at the individual level.</p>
+<p>You will also need to install a helper package: <code>install.packages("broom.helpers")</code>.</p>
+<p>Now, we will read the data in to the R session. You will need information from trips, persons, and households tables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>persons_main <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">'data/persons_main.RDS'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>households <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'data/Households.csv'</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>persons <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'data/Persons.csv'</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>trips <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'data/Trips.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Let’s take a quick look to refresh our understanding of the data’s contents and structure.</p>
+<p>Let’s work with data for the year 2023 only.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(persons_main)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 1,681
-Columns: 7
-$ active_binary    &lt;dbl&gt; 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,…
-$ free_parking     &lt;chr&gt; "No", "No", "No", "No", "No", "Yes", "No", "No", "No"…
-$ avg_distance     &lt;dbl&gt; 4.048544, 1.360803, 5.025774, 2.065438, 2.835317, 3.9…
-$ gender           &lt;chr&gt; "Girl/Woman (cisgender or transgender)", "Boy/Man (ci…
-$ higher_education &lt;chr&gt; "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes…
-$ children         &lt;chr&gt; "Yes", "No", "No", "No", "No", "No", "Yes", "Yes", "N…
-$ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000 or …</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter data for the year 2023 only</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>households <span class="ot">&lt;-</span> households <span class="sc">%&gt;%</span> <span class="fu">filter</span>(survey_year <span class="sc">==</span> <span class="dv">2023</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>trips <span class="ot">&lt;-</span> trips <span class="sc">%&gt;%</span> <span class="fu">filter</span>(survey_year <span class="sc">==</span> <span class="dv">2023</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>persons <span class="ot">&lt;-</span> persons <span class="sc">%&gt;%</span> <span class="fu">filter</span>(survey_year <span class="sc">==</span> <span class="dv">2023</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="estimating-a-logistic-regression-model" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="estimating-a-logistic-regression-model"><span class="header-section-number">5.2</span> Estimating a logistic regression model</h2>
-<p>We start by estimating the same logistic regression model that we discussed in Session 4. Here, we aim to identify the relationships between having free parking at work (key independent variable) and persons engaging in active travel to work (dependent variable), including control variables, such as average trip distance, gender, higher education, presence of children at household, and household income.</p>
-<p>To estimate the logistic regression we use the <code>glm()</code> function and specify the family ‘binomial’. The <code>glm()</code> function uses the first category as the reference group (the group without the outcome) and treats the second category as the outcome group. In this case, ‘1’ = <em>active travel</em>, and ‘0’ = <em>no active travel</em> (the reference group). This is critical to make correct coefficient interpretations.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>logit_model1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  active_binary <span class="sc">~</span> free_parking <span class="sc">+</span> avg_distance <span class="sc">+</span> gender <span class="sc">+</span> higher_education <span class="sc">+</span> children <span class="sc">+</span> hhincome_broad,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">"binomial"</span>, </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> persons_main</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="summarising-data-at-the-appropriate-level" class="level3" data-number="4.1.2">
+<h3 data-number="4.1.2" class="anchored" data-anchor-id="summarising-data-at-the-appropriate-level"><span class="header-section-number">4.1.2</span> Summarising data at the appropriate level</h3>
+<div class="callout callout-style-default callout-tip callout-titled" title="What is the unit of observation?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-</section>
-<section id="interpreting-exponentied-coefficients-odds-ratio" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="interpreting-exponentied-coefficients-odds-ratio"><span class="header-section-number">5.3</span> Interpreting exponentied coefficients: Odds ratio</h2>
-<p>In the previous session, we fitted a logistic regression model and interpreted the coefficients on the <strong>log-odds scale</strong>. However, the log of the odds is not very intuitive or it is hard to communicate for wider audiences. We can exponentiate the coefficients to obtain the odds ratio. If the logit model is:</p>
-<p><span class="math display">\[
-\log\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1 X
-\]</span></p>
-<p>then, exponentiating both sides gives:</p>
-<p><span class="math display">\[
-\frac{p}{1-p} = e^{\beta_0 + \beta_1 X} = e^{\beta_0} \cdot e^{\beta_1 X}
-\]</span></p>
-<p>The exponentiation reverses the logarithm, transforming coefficients from the log-odds scale back to the odds ratio scale. Specifically, <span class="math inline">\(e^{\beta_1}\)</span> represents the <strong>odds ratio (OR)</strong>:</p>
-<p><span class="math display">\[
-\text{OR} = e^{\beta_1}
-\]</span></p>
-<p>Thus, for a one-unit increase in <span class="math inline">\(X\)</span>, the odds of the outcome are multiplied by <span class="math inline">\(e^{\beta_1}\)</span>. Specifically:</p>
+<div class="callout-title-container flex-fill">
+What is the unit of observation?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Many transport datasets have a <strong>relational (hierarchical) structure</strong>. For example, repeated measurements may be nested within individuals, individuals within household, or households within places.</p>
+<p>Before analysing the data, you will need to <strong>summarise the relevant information at the appropriate level of this hierarchy</strong>—that is, for the <strong>unit of observation</strong> that matches your research question.</p>
+<p>Ask yourself:</p>
 <ul>
-<li>If <span class="math inline">\(\beta_1 &gt; 0\)</span>, then <span class="math inline">\(e^{\beta_1} &gt; 1\)</span>, meaning the odds <strong>increase</strong></li>
-<li>If <span class="math inline">\(\beta_1 &lt; 0\)</span>, then <span class="math inline">\(e^{\beta_1} &lt; 1\)</span>, meaning the odds <strong>decrease</strong></li>
-<li>If <span class="math inline">\(\beta_1 = 0\)</span>, then <span class="math inline">\(e^{\beta_1} = 1\)</span>, meaning the odds remain <strong>unchanged</strong></li>
+<li>What does one row of data represent at this stage of the analysis?</li>
+<li>Are there multiple observations per unit?</li>
+<li>Do I need to aggregate, average, or otherwise summarise the data to move to a higher-level unit?</li>
 </ul>
-<p>For example, if <span class="math inline">\(\beta_1 = 0.5\)</span>, then <span class="math inline">\(e^{0.5} \approx 1.65\)</span>, meaning the odds increase by 65% for each one-unit increase in <span class="math inline">\(X\)</span>.</p>
-<section id="odds-ratio-in-our-example" class="level3" data-number="5.3.1">
-<h3 data-number="5.3.1" class="anchored" data-anchor-id="odds-ratio-in-our-example"><span class="header-section-number">5.3.1</span> Odds ratio in our example</h3>
-<p>Let’s exponentiate the results of our logistic regression model!</p>
+<p>Take a moment to identify the unit of observation you are working with as you go through the following sections.</p>
+</div>
+</div>
+<p>In this activity, we focus on trips to work only.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>logit_model1 <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_regression</span>(<span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_significance_stars</span>(<span class="at">hide_ci =</span> <span class="cn">FALSE</span>, <span class="at">hide_p =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_glance_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div id="krzejldfkn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#krzejldfkn table {
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>trips_work <span class="ot">&lt;-</span> trips <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">'Work'</span> <span class="sc">==</span> dest_purpose_cat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The dependent variable we are interested in is <em>whether the travellers used an active transport mode or not to travel to work</em>. This is a binary variable. So, we will use logistic regression to identify the relationships with other variables.</p>
+<p>The criterion for constructing this variable is that the person has made at least one trip to work during the reported period. This information is obtained at the trip level and then summarised at the person level, as shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarise trip data at the person level</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>trips_summary <span class="ot">&lt;-</span> trips_work <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(person_id) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Count the number of work trips made using an active mode, e.g. bike or walk</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_active_trips =</span> <span class="fu">sum</span>(<span class="fu">grepl</span>(<span class="st">"Walk|Bike"</span>, mode_class)),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a binary variable, ie whether they made any active trips</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">active_binary =</span> <span class="fu">ifelse</span>(n_active_trips <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Total distance travelled across all work trips</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_miles =</span> <span class="fu">sum</span>(distance_miles, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Number of days with observed trips</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_days_trips =</span> <span class="fu">n_distinct</span>(daynum),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Average distance travelled per day</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_distance =</span> total_miles <span class="sc">/</span> num_days_trips</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Remember, persons can generate many trips a day and use different modes. This is why we need to summarise the trip data at the person level.</p>
+<p>We keep persons who reported trips to work only, and whose distance is less than 50 miles. This can be a reasonable threshold, as we are interested in active transport modes. In practice, it is always important to justify choices, e.g.&nbsp;literature, expert opinion, or empirical evidence.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>trips_summary <span class="ot">&lt;-</span> trips_summary <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(num_days_trips <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> avg_distance <span class="sc">&lt;</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Reflection">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Reflection
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>What share of respondents use an active travel mode when travelling to work?</p>
+</div>
+</div>
+</section>
+<section id="independent-variables" class="level3" data-number="4.1.3">
+<h3 data-number="4.1.3" class="anchored" data-anchor-id="independent-variables"><span class="header-section-number">4.1.3</span> Independent variables</h3>
+<p>In addition to the travel behaviour information, we want to know more about the demographics and characteristics of the household. Thus, we join the trip summary and household data at the person level.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>persons_main <span class="ot">&lt;-</span> persons <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(trips_summary, <span class="at">by =</span> <span class="st">'person_id'</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(households, <span class="at">by =</span> <span class="st">'household_id'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, we format the independent variables and simplify some of these.</p>
+<p>We will also create the key independent variable, namely: having free parking at work. We wish to examine if and how this is related to the use of active transport modes. We are also including further demographic control variables at the person and household level.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write the name and appropriate order of the levels for hhincome_broad</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>income_labs <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Under $25,000"</span>, </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$25,000-$49,999"</span>, </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$50,000-$74,999"</span>, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$75,000-$99,999"</span>, </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$100,000-$199,999"</span>, </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$200,000 or more"</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Categories for higher education (explicit definition)</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>he_levs <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Bachelor degree"</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Graduate/post-graduate degree"</span>,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Associates degree"</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Format and create appropriate variables</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>persons_main <span class="ot">&lt;-</span> persons_main <span class="sc">%&gt;%</span> </span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Whether person has free parking at work</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">free_parking =</span> <span class="fu">ifelse</span>(commute_subsidy_3 <span class="sc">==</span> <span class="st">'Selected'</span>, <span class="st">'Yes'</span>, <span class="st">'No'</span>),</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Simplify education, e.g. graduate and bachelor vs all other</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">higher_education =</span> <span class="fu">ifelse</span>(education <span class="sc">%in%</span> he_levs, <span class="st">'Yes'</span>, <span class="st">'No'</span>),</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">children =</span> <span class="fu">ifelse</span>(numchildren <span class="sc">==</span> <span class="st">'0 children'</span>, <span class="st">'No'</span>, <span class="st">'Yes'</span>),</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">hhincome_broad =</span> <span class="fu">factor</span>(hhincome_broad, <span class="at">levels =</span> income_labs)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Before moving to the analysis, we will keep only complete observations for the variables of interest. We will remove incomplete cases—that is, persons with missing values in any of the selected columns.</p>
+<div class="callout callout-style-default callout-caution callout-titled" title="Be careful: removing incomplete cases">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Be careful: removing incomplete cases
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This step requires caution, especially when working with <strong>supplementary variables</strong> where missing values may be expected.</p>
+<p>For example, the variable <em>age of children</em> will naturally be missing for persons without children. Treating these cases as incomplete would incorrectly remove valid observations and result in the loss of valuable information.</p>
+<p>Before dropping cases, always consider <strong>why</strong> values are missing and whether they are meaningful for the unit of observation and research question.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, select variables of interest</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>persons_main <span class="ot">&lt;-</span> persons_main <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    active_binary, </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    free_parking,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    avg_distance,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    gender,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    higher_education,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    children,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    hhincome_broad</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Then, removing incomplete observations</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>persons_main <span class="ot">&lt;-</span> persons_main <span class="sc">%&gt;%</span> </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="descriptive-statistics" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="descriptive-statistics"><span class="header-section-number">4.2</span> Descriptive statistics</h2>
+<p>Before moving on to the modelling stage, always check that the descriptive statistics are plausible and consistent, i.e.&nbsp;do values make sense?!. This step helps you catch data issues, unexpected patterns, or coding errors early—before they affect your models. Let’s do that now.</p>
+<p>Print a simple summary of the sample including all variables selected. We split the data according to the main dependent variable, whether respondents used active mode to travel to work.</p>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>persons_main <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_summary</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> active_binary,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">statistic =</span> <span class="fu">all_continuous</span>() <span class="sc">~</span> <span class="st">"{mean} ± {sd}"</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_overall</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="pfxmhflpby" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#pfxmhflpby table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#krzejldfkn thead, #krzejldfkn tbody, #krzejldfkn tfoot, #krzejldfkn tr, #krzejldfkn td, #krzejldfkn th {
+#pfxmhflpby thead, #pfxmhflpby tbody, #pfxmhflpby tfoot, #pfxmhflpby tr, #pfxmhflpby td, #pfxmhflpby th {
   border-style: none;
 }
 
-#krzejldfkn p {
+#pfxmhflpby p {
   margin: 0;
   padding: 0;
 }
 
-#krzejldfkn .gt_table {
+#pfxmhflpby .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -389,12 +493,12 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-left-color: #D3D3D3;
 }
 
-#krzejldfkn .gt_caption {
+#pfxmhflpby .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#krzejldfkn .gt_title {
+#pfxmhflpby .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -406,7 +510,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-bottom-width: 0;
 }
 
-#krzejldfkn .gt_subtitle {
+#pfxmhflpby .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -418,7 +522,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-top-width: 0;
 }
 
-#krzejldfkn .gt_heading {
+#pfxmhflpby .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -430,13 +534,13 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-right-color: #D3D3D3;
 }
 
-#krzejldfkn .gt_bottom_border {
+#pfxmhflpby .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#krzejldfkn .gt_col_headings {
+#pfxmhflpby .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -451,7 +555,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-right-color: #D3D3D3;
 }
 
-#krzejldfkn .gt_col_heading {
+#pfxmhflpby .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -471,7 +575,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   overflow-x: hidden;
 }
 
-#krzejldfkn .gt_column_spanner_outer {
+#pfxmhflpby .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -483,15 +587,15 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   padding-right: 4px;
 }
 
-#krzejldfkn .gt_column_spanner_outer:first-child {
+#pfxmhflpby .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#krzejldfkn .gt_column_spanner_outer:last-child {
+#pfxmhflpby .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#krzejldfkn .gt_column_spanner {
+#pfxmhflpby .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -503,11 +607,11 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   width: 100%;
 }
 
-#krzejldfkn .gt_spanner_row {
+#pfxmhflpby .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#krzejldfkn .gt_group_heading {
+#pfxmhflpby .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -533,7 +637,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   text-align: left;
 }
 
-#krzejldfkn .gt_empty_group_heading {
+#pfxmhflpby .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -548,15 +652,15 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   vertical-align: middle;
 }
 
-#krzejldfkn .gt_from_md > :first-child {
+#pfxmhflpby .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#krzejldfkn .gt_from_md > :last-child {
+#pfxmhflpby .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#krzejldfkn .gt_row {
+#pfxmhflpby .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -575,7 +679,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   overflow-x: hidden;
 }
 
-#krzejldfkn .gt_stub {
+#pfxmhflpby .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -588,7 +692,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   padding-right: 5px;
 }
 
-#krzejldfkn .gt_stub_row_group {
+#pfxmhflpby .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -602,15 +706,15 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   vertical-align: top;
 }
 
-#krzejldfkn .gt_row_group_first td {
+#pfxmhflpby .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#krzejldfkn .gt_row_group_first th {
+#pfxmhflpby .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#krzejldfkn .gt_summary_row {
+#pfxmhflpby .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -620,16 +724,16 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   padding-right: 5px;
 }
 
-#krzejldfkn .gt_first_summary_row {
+#pfxmhflpby .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#krzejldfkn .gt_first_summary_row.thick {
+#pfxmhflpby .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#krzejldfkn .gt_last_summary_row {
+#pfxmhflpby .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -639,7 +743,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-bottom-color: #D3D3D3;
 }
 
-#krzejldfkn .gt_grand_summary_row {
+#pfxmhflpby .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -649,7 +753,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   padding-right: 5px;
 }
 
-#krzejldfkn .gt_first_grand_summary_row {
+#pfxmhflpby .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -659,7 +763,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-top-color: #D3D3D3;
 }
 
-#krzejldfkn .gt_last_grand_summary_row_top {
+#pfxmhflpby .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -669,11 +773,11 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-bottom-color: #D3D3D3;
 }
 
-#krzejldfkn .gt_striped {
+#pfxmhflpby .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#krzejldfkn .gt_table_body {
+#pfxmhflpby .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -682,7 +786,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-bottom-color: #D3D3D3;
 }
 
-#krzejldfkn .gt_footnotes {
+#pfxmhflpby .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -696,7 +800,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-right-color: #D3D3D3;
 }
 
-#krzejldfkn .gt_footnote {
+#pfxmhflpby .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -705,7 +809,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   padding-right: 5px;
 }
 
-#krzejldfkn .gt_sourcenotes {
+#pfxmhflpby .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -719,7 +823,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   border-right-color: #D3D3D3;
 }
 
-#krzejldfkn .gt_sourcenote {
+#pfxmhflpby .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -727,72 +831,705 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   padding-right: 5px;
 }
 
-#krzejldfkn .gt_left {
+#pfxmhflpby .gt_left {
   text-align: left;
 }
 
-#krzejldfkn .gt_center {
+#pfxmhflpby .gt_center {
   text-align: center;
 }
 
-#krzejldfkn .gt_right {
+#pfxmhflpby .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#krzejldfkn .gt_font_normal {
+#pfxmhflpby .gt_font_normal {
   font-weight: normal;
 }
 
-#krzejldfkn .gt_font_bold {
+#pfxmhflpby .gt_font_bold {
   font-weight: bold;
 }
 
-#krzejldfkn .gt_font_italic {
+#pfxmhflpby .gt_font_italic {
   font-style: italic;
 }
 
-#krzejldfkn .gt_super {
+#pfxmhflpby .gt_super {
   font-size: 65%;
 }
 
-#krzejldfkn .gt_footnote_marks {
+#pfxmhflpby .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#krzejldfkn .gt_asterisk {
+#pfxmhflpby .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#krzejldfkn .gt_indent_1 {
+#pfxmhflpby .gt_indent_1 {
   text-indent: 5px;
 }
 
-#krzejldfkn .gt_indent_2 {
+#pfxmhflpby .gt_indent_2 {
   text-indent: 10px;
 }
 
-#krzejldfkn .gt_indent_3 {
+#pfxmhflpby .gt_indent_3 {
   text-indent: 15px;
 }
 
-#krzejldfkn .gt_indent_4 {
+#pfxmhflpby .gt_indent_4 {
   text-indent: 20px;
 }
 
-#krzejldfkn .gt_indent_5 {
+#pfxmhflpby .gt_indent_5 {
   text-indent: 25px;
 }
 
-#krzejldfkn .katex-display {
+#pfxmhflpby .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#krzejldfkn div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#pfxmhflpby div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="gt_col_headings header">
+<th id="label" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Characteristic</strong></th>
+<th id="stat_0" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>Overall</strong><br> N = 1,681<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_1" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>0</strong><br> N = 1,238<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_2" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>1</strong><br> N = 443<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">free_parking</td>
+<td class="gt_row gt_center" headers="stat_0">563 (33%)</td>
+<td class="gt_row gt_center" headers="stat_1">478 (39%)</td>
+<td class="gt_row gt_center" headers="stat_2">85 (19%)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">avg_distance</td>
+<td class="gt_row gt_center" headers="stat_0">8 ± 8</td>
+<td class="gt_row gt_center" headers="stat_1">9 ± 8</td>
+<td class="gt_row gt_center" headers="stat_2">4 ± 5</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">gender</td>
+<td class="gt_row gt_center" headers="stat_0"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_1"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_2"><br>
+</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Boy/Man (cisgender or transgender)</td>
+<td class="gt_row gt_center" headers="stat_0">787 (47%)</td>
+<td class="gt_row gt_center" headers="stat_1">562 (45%)</td>
+<td class="gt_row gt_center" headers="stat_2">225 (51%)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Girl/Woman (cisgender or transgender)</td>
+<td class="gt_row gt_center" headers="stat_0">772 (46%)</td>
+<td class="gt_row gt_center" headers="stat_1">583 (47%)</td>
+<td class="gt_row gt_center" headers="stat_2">189 (43%)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Non-binary/Something else fits better</td>
+<td class="gt_row gt_center" headers="stat_0">43 (2.6%)</td>
+<td class="gt_row gt_center" headers="stat_1">29 (2.3%)</td>
+<td class="gt_row gt_center" headers="stat_2">14 (3.2%)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Prefer not to answer</td>
+<td class="gt_row gt_center" headers="stat_0">79 (4.7%)</td>
+<td class="gt_row gt_center" headers="stat_1">64 (5.2%)</td>
+<td class="gt_row gt_center" headers="stat_2">15 (3.4%)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">higher_education</td>
+<td class="gt_row gt_center" headers="stat_0">1,326 (79%)</td>
+<td class="gt_row gt_center" headers="stat_1">949 (77%)</td>
+<td class="gt_row gt_center" headers="stat_2">377 (85%)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">children</td>
+<td class="gt_row gt_center" headers="stat_0">384 (23%)</td>
+<td class="gt_row gt_center" headers="stat_1">326 (26%)</td>
+<td class="gt_row gt_center" headers="stat_2">58 (13%)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">hhincome_broad</td>
+<td class="gt_row gt_center" headers="stat_0"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_1"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_2"><br>
+</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Under $25,000</td>
+<td class="gt_row gt_center" headers="stat_0">56 (3.3%)</td>
+<td class="gt_row gt_center" headers="stat_1">29 (2.3%)</td>
+<td class="gt_row gt_center" headers="stat_2">27 (6.1%)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;$25,000-$49,999</td>
+<td class="gt_row gt_center" headers="stat_0">191 (11%)</td>
+<td class="gt_row gt_center" headers="stat_1">132 (11%)</td>
+<td class="gt_row gt_center" headers="stat_2">59 (13%)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;$50,000-$74,999</td>
+<td class="gt_row gt_center" headers="stat_0">238 (14%)</td>
+<td class="gt_row gt_center" headers="stat_1">178 (14%)</td>
+<td class="gt_row gt_center" headers="stat_2">60 (14%)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;$75,000-$99,999</td>
+<td class="gt_row gt_center" headers="stat_0">203 (12%)</td>
+<td class="gt_row gt_center" headers="stat_1">143 (12%)</td>
+<td class="gt_row gt_center" headers="stat_2">60 (14%)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;$100,000-$199,999</td>
+<td class="gt_row gt_center" headers="stat_0">597 (36%)</td>
+<td class="gt_row gt_center" headers="stat_1">466 (38%)</td>
+<td class="gt_row gt_center" headers="stat_2">131 (30%)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;$200,000 or more</td>
+<td class="gt_row gt_center" headers="stat_0">396 (24%)</td>
+<td class="gt_row gt_center" headers="stat_1">290 (23%)</td>
+<td class="gt_row gt_center" headers="stat_2">106 (24%)</td>
+</tr>
+</tbody><tfoot class="gt_footnotes">
+<tr class="odd">
+<td colspan="4" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span> n (%); Mean ± SD</td>
+</tr>
+</tfoot>
+
+</table>
+
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Reflection">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Reflection
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Are there noticeable differences between respondent groups?</li>
+<li>Can you make conclusions from this?</li>
+</ul>
+</div>
+</div>
+<section id="write-the-data" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="write-the-data"><span class="header-section-number">4.2.1</span> Write the data</h3>
+<p>Before moving ahead, save the data subset with the variables that you have formatted and created. This will also be helpful for the next session.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(persons_main,<span class="st">'data/persons_main.rds'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="logistic-regression" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="logistic-regression"><span class="header-section-number">4.3</span> Logistic regression</h2>
+<p>We fit a logistic regression model to identify the relationships between the dependent variable (active travel) and key independent variable (having free parking at the workplace), including control variables, such as average trip distance, gender, higher education, presence of children at household, and household income.</p>
+<p>To fit the logistic regression we use the <code>glm()</code> function and specify the family ‘binomial’. This uses the first category as the reference group (the group without the outcome) and treats the second category as the outcome group. In this case, ‘0’ = <em>no active travel</em> (the reference group), and ‘1’ = <em>active travel</em>. This is critical to make correct coefficient interpretations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>logit_model1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  active_binary <span class="sc">~</span> free_parking <span class="sc">+</span> avg_distance <span class="sc">+</span> gender <span class="sc">+</span> higher_education <span class="sc">+</span> children <span class="sc">+</span> hhincome_broad,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">"binomial"</span>, </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> persons_main</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- The equation for this model is thus: -->
+<!-- $$ -->
+<!-- \log\left(\frac{p}{1-p}\right) = -->
+<!-- \beta_0  -->
+<!-- + \beta_1 \cdot \text{FreeParking}  -->
+<!-- + \beta_2 \cdot \text{AvgDistance}  -->
+<!-- + \beta_3 \cdot \text{Gender}  -->
+<!-- + \beta_4 \cdot \text{HigherEducation}  -->
+<!-- + \beta_5 \cdot \text{Children}  -->
+<!-- + \beta_6 \cdot \text{HHIncome\_Broad} -->
+<!-- $$ -->
+<!-- Where: -->
+<!-- * $p$ is the probability that a person uses an active transport mode -->
+<!-- * $\beta_0$ is the intercept. -->
+<p>Print the results of the model in the log odds ratio scale.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>logit_model1 <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_regression</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_significance_stars</span>(<span class="at">hide_ci =</span> <span class="cn">FALSE</span>, <span class="at">hide_p =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_glance_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="lvatftnudk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#lvatftnudk table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#lvatftnudk thead, #lvatftnudk tbody, #lvatftnudk tfoot, #lvatftnudk tr, #lvatftnudk td, #lvatftnudk th {
+  border-style: none;
+}
+
+#lvatftnudk p {
+  margin: 0;
+  padding: 0;
+}
+
+#lvatftnudk .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#lvatftnudk .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#lvatftnudk .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#lvatftnudk .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#lvatftnudk .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#lvatftnudk .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lvatftnudk .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#lvatftnudk .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#lvatftnudk .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#lvatftnudk .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#lvatftnudk .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#lvatftnudk .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#lvatftnudk .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#lvatftnudk .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#lvatftnudk .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#lvatftnudk .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#lvatftnudk .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#lvatftnudk .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#lvatftnudk .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lvatftnudk .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#lvatftnudk .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#lvatftnudk .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#lvatftnudk .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lvatftnudk .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#lvatftnudk .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#lvatftnudk .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lvatftnudk .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lvatftnudk .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#lvatftnudk .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lvatftnudk .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#lvatftnudk .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lvatftnudk .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#lvatftnudk .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lvatftnudk .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#lvatftnudk .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lvatftnudk .gt_left {
+  text-align: left;
+}
+
+#lvatftnudk .gt_center {
+  text-align: center;
+}
+
+#lvatftnudk .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#lvatftnudk .gt_font_normal {
+  font-weight: normal;
+}
+
+#lvatftnudk .gt_font_bold {
+  font-weight: bold;
+}
+
+#lvatftnudk .gt_font_italic {
+  font-style: italic;
+}
+
+#lvatftnudk .gt_super {
+  font-size: 65%;
+}
+
+#lvatftnudk .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#lvatftnudk .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#lvatftnudk .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#lvatftnudk .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#lvatftnudk .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#lvatftnudk .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#lvatftnudk .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#lvatftnudk .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#lvatftnudk div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -800,7 +1537,7 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
   <thead>
     <tr class="gt_col_headings">
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="label"><span data-qmd-base64="PHN0cm9uZz5DaGFyYWN0ZXJpc3RpYzwvc3Ryb25nPg=="><span class="gt_from_md"><strong>Characteristic</strong></span></span></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="estimate"><span data-qmd-base64="PHN0cm9uZz5PUjwvc3Ryb25nPg=="><span class="gt_from_md"><strong>OR</strong></span></span><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="estimate"><span data-qmd-base64="PHN0cm9uZz5sb2coT1IpPC9zdHJvbmc+"><span class="gt_from_md"><strong>log(OR)</strong></span></span><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
       <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="std.error"><span data-qmd-base64="PHN0cm9uZz5TRTwvc3Ryb25nPg=="><span class="gt_from_md"><strong>SE</strong></span></span></th>
       <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="conf.low"><span data-qmd-base64="PHN0cm9uZz45NSUgQ0k8L3N0cm9uZz4="><span class="gt_from_md"><strong>95% CI</strong></span></span></th>
       <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="p.value"><span data-qmd-base64="PHN0cm9uZz5wLXZhbHVlPC9zdHJvbmc+"><span class="gt_from_md"><strong>p-value</strong></span></span></th>
@@ -818,14 +1555,14 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
 <td headers="conf.low" class="gt_row gt_center">—</td>
 <td headers="p.value" class="gt_row gt_center"><br></td></tr>
     <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Yes</td>
-<td headers="estimate" class="gt_row gt_center">0.46***</td>
+<td headers="estimate" class="gt_row gt_center">-0.77***</td>
 <td headers="std.error" class="gt_row gt_center">0.146</td>
-<td headers="conf.low" class="gt_row gt_center">0.35, 0.62</td>
+<td headers="conf.low" class="gt_row gt_center">-1.1, -0.49</td>
 <td headers="p.value" class="gt_row gt_center">&lt;0.001</td></tr>
     <tr><td headers="label" class="gt_row gt_left">avg_distance</td>
-<td headers="estimate" class="gt_row gt_center">0.83***</td>
+<td headers="estimate" class="gt_row gt_center">-0.18***</td>
 <td headers="std.error" class="gt_row gt_center">0.015</td>
-<td headers="conf.low" class="gt_row gt_center">0.81, 0.86</td>
+<td headers="conf.low" class="gt_row gt_center">-0.21, -0.15</td>
 <td headers="p.value" class="gt_row gt_center">&lt;0.001</td></tr>
     <tr><td headers="label" class="gt_row gt_left">gender</td>
 <td headers="estimate" class="gt_row gt_center"><br></td>
@@ -838,19 +1575,19 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
 <td headers="conf.low" class="gt_row gt_center">—</td>
 <td headers="p.value" class="gt_row gt_center"><br></td></tr>
     <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Girl/Woman (cisgender or transgender)</td>
-<td headers="estimate" class="gt_row gt_center">0.61***</td>
+<td headers="estimate" class="gt_row gt_center">-0.49***</td>
 <td headers="std.error" class="gt_row gt_center">0.130</td>
-<td headers="conf.low" class="gt_row gt_center">0.47, 0.79</td>
+<td headers="conf.low" class="gt_row gt_center">-0.74, -0.23</td>
 <td headers="p.value" class="gt_row gt_center">&lt;0.001</td></tr>
     <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Non-binary/Something else fits better</td>
-<td headers="estimate" class="gt_row gt_center">0.78</td>
+<td headers="estimate" class="gt_row gt_center">-0.24</td>
 <td headers="std.error" class="gt_row gt_center">0.384</td>
-<td headers="conf.low" class="gt_row gt_center">0.36, 1.64</td>
+<td headers="conf.low" class="gt_row gt_center">-1.0, 0.50</td>
 <td headers="p.value" class="gt_row gt_center">0.5</td></tr>
     <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Prefer not to answer</td>
-<td headers="estimate" class="gt_row gt_center">0.51*</td>
+<td headers="estimate" class="gt_row gt_center">-0.66*</td>
 <td headers="std.error" class="gt_row gt_center">0.329</td>
-<td headers="conf.low" class="gt_row gt_center">0.26, 0.96</td>
+<td headers="conf.low" class="gt_row gt_center">-1.3, -0.04</td>
 <td headers="p.value" class="gt_row gt_center">0.044</td></tr>
     <tr><td headers="label" class="gt_row gt_left">higher_education</td>
 <td headers="estimate" class="gt_row gt_center"><br></td>
@@ -863,9 +1600,9 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
 <td headers="conf.low" class="gt_row gt_center">—</td>
 <td headers="p.value" class="gt_row gt_center"><br></td></tr>
     <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Yes</td>
-<td headers="estimate" class="gt_row gt_center">1.93***</td>
+<td headers="estimate" class="gt_row gt_center">0.66***</td>
 <td headers="std.error" class="gt_row gt_center">0.172</td>
-<td headers="conf.low" class="gt_row gt_center">1.38, 2.71</td>
+<td headers="conf.low" class="gt_row gt_center">0.32, 1.0</td>
 <td headers="p.value" class="gt_row gt_center">&lt;0.001</td></tr>
     <tr><td headers="label" class="gt_row gt_left">children</td>
 <td headers="estimate" class="gt_row gt_center"><br></td>
@@ -878,9 +1615,9 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
 <td headers="conf.low" class="gt_row gt_center">—</td>
 <td headers="p.value" class="gt_row gt_center"><br></td></tr>
     <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;Yes</td>
-<td headers="estimate" class="gt_row gt_center">0.51***</td>
+<td headers="estimate" class="gt_row gt_center">-0.68***</td>
 <td headers="std.error" class="gt_row gt_center">0.172</td>
-<td headers="conf.low" class="gt_row gt_center">0.36, 0.71</td>
+<td headers="conf.low" class="gt_row gt_center">-1.0, -0.35</td>
 <td headers="p.value" class="gt_row gt_center">&lt;0.001</td></tr>
     <tr><td headers="label" class="gt_row gt_left">hhincome_broad</td>
 <td headers="estimate" class="gt_row gt_center"><br></td>
@@ -893,29 +1630,29 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
 <td headers="conf.low" class="gt_row gt_center">—</td>
 <td headers="p.value" class="gt_row gt_center"><br></td></tr>
     <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;$25,000-$49,999</td>
-<td headers="estimate" class="gt_row gt_center">0.53</td>
+<td headers="estimate" class="gt_row gt_center">-0.64</td>
 <td headers="std.error" class="gt_row gt_center">0.343</td>
-<td headers="conf.low" class="gt_row gt_center">0.27, 1.03</td>
+<td headers="conf.low" class="gt_row gt_center">-1.3, 0.03</td>
 <td headers="p.value" class="gt_row gt_center">0.063</td></tr>
     <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;$50,000-$74,999</td>
-<td headers="estimate" class="gt_row gt_center">0.48*</td>
+<td headers="estimate" class="gt_row gt_center">-0.74*</td>
 <td headers="std.error" class="gt_row gt_center">0.346</td>
-<td headers="conf.low" class="gt_row gt_center">0.24, 0.94</td>
+<td headers="conf.low" class="gt_row gt_center">-1.4, -0.07</td>
 <td headers="p.value" class="gt_row gt_center">0.032</td></tr>
     <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;$75,000-$99,999</td>
-<td headers="estimate" class="gt_row gt_center">0.49*</td>
+<td headers="estimate" class="gt_row gt_center">-0.71*</td>
 <td headers="std.error" class="gt_row gt_center">0.347</td>
-<td headers="conf.low" class="gt_row gt_center">0.25, 0.97</td>
+<td headers="conf.low" class="gt_row gt_center">-1.4, -0.03</td>
 <td headers="p.value" class="gt_row gt_center">0.040</td></tr>
     <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;$100,000-$199,999</td>
-<td headers="estimate" class="gt_row gt_center">0.41**</td>
+<td headers="estimate" class="gt_row gt_center">-0.90**</td>
 <td headers="std.error" class="gt_row gt_center">0.326</td>
-<td headers="conf.low" class="gt_row gt_center">0.21, 0.77</td>
+<td headers="conf.low" class="gt_row gt_center">-1.5, -0.26</td>
 <td headers="p.value" class="gt_row gt_center">0.006</td></tr>
     <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;$200,000 or more</td>
-<td headers="estimate" class="gt_row gt_center">0.54</td>
+<td headers="estimate" class="gt_row gt_center">-0.62</td>
 <td headers="std.error" class="gt_row gt_center">0.338</td>
-<td headers="conf.low" class="gt_row gt_center">0.28, 1.04</td>
+<td headers="conf.low" class="gt_row gt_center">-1.3, 0.04</td>
 <td headers="p.value" class="gt_row gt_center">0.065</td></tr>
     <tr><td headers="label" class="gt_row gt_left" style="border-top-width: 2px; border-top-style: solid; border-top-color: #D3D3D3;">Null deviance</td>
 <td headers="estimate" class="gt_row gt_center" style="border-top-width: 2px; border-top-style: solid; border-top-color: #D3D3D3;">1,939</td>
@@ -972,17 +1709,12 @@ $ hhincome_broad   &lt;fct&gt; "$100,000-$199,999", "$25,000-$49,999", "$200,000
 </div>
 </div>
 </div>
-<p>Before anything, scan and determine which variables are significant. The confidence interval for an odds ratio reflects the range of plausible values for the true population effect. This is found in the ‘CI’ in the results table. If it the CI includes 1, it indicates that the estimated association is unlikely, connecting to statistical significance, e.g.&nbsp;p-value. Is there anything unexpected or looking unusual?</p>
-<p>When it comes to the the size of coefficients, the interpretations change compared to the log of the odds. For example,</p>
-<blockquote class="blockquote">
-<p>the odds ratio of using active transport modes are about 54% lower for people with free parking at work compared to those without free parking.</p>
-</blockquote>
-<p>Note that we make interpretations in relation to 1. Specifically, a value lower than one implies a decrease in the odds of using active transport modes. Generally we use the following formula to express the changes in percent terms <code>(1 - coefficient) * 100</code>.</p>
-<p>For continuous variables the interpretation is as follows:</p>
-<blockquote class="blockquote">
-<p>Every additional mile to work is associated with a 17% decrease in the odds ratio for using active transport modes.</p>
-</blockquote>
-<p>Note that we are talking either about the log of the odds or the odds ratio, not the probability.</p>
+<p>For now, the interpretation of the coefficients is on the <strong>log-odds scale</strong>. For example, the coefficient for <em>free parking at work</em> is -0.75 and statistically significant. This means that having free parking is associated with a decrease in the <strong>log-odds</strong> of using active transport modes compared to people without free parking:</p>
+<p><span class="math display">\[
+\log\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1 \cdot \text{FreeParking} + \dots
+\]</span></p>
+<p>where <span class="math inline">\(p\)</span> is the probability of using an active mode, and <span class="math inline">\(\beta_1 = -0.77\)</span>.</p>
+<p>For continuous variables: We expect the log-odds of using active transport modes to decrease by 0.18 for every additional mile to work. This is also a significant predictor.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Reflection">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -993,115 +1725,15 @@ Reflection
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Can you provide the interpretation for rest of the coefficients, including significance and size?</p>
+<p>Can you provide the interpretation for other coefficients?</p>
 </div>
 </div>
+<section id="final-thoughts" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="final-thoughts"><span class="header-section-number">4.3.1</span> Final thoughts</h3>
+<p>So far, the results of the logistic regression are interpreted in terms of the log of the odds. We can exponentiate the coefficient to interpret it as an <strong>odds ratio</strong>, which is often more intuitive. This is what we will do in the next hands-on session, including the discussion of model fit measures and model assumption checks.</p>
+
+
 </section>
-</section>
-<section id="model-checks" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="model-checks"><span class="header-section-number">5.4</span> Model checks</h2>
-<section id="goodness-of-fit" class="level3" data-number="5.4.1">
-<h3 data-number="5.4.1" class="anchored" data-anchor-id="goodness-of-fit"><span class="header-section-number">5.4.1</span> Goodness-of-fit</h3>
-<p>In logistic regression, the Chi-square test is used to determine whether the model with predictors fits significantly better than a model with no predictors (the null model).</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">performance_pcp</span>(logit_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># Percentage of Correct Predictions from Logistic Regression Model
-
-  Full model: 69.46% [67.25% - 71.66%]
-  Null model: 61.18% [58.85% - 63.51%]
-
-# Likelihood-Ratio-Test
-
-  Chi-squared: 360.156
-  df:  12.000
-  p-value:   0.000</code></pre>
-</div>
-</div>
-<p>If the p-value is lower than 0.05, the null hypothesis is therefore rejected in favour of the alternate hypothesis that the model is better than the baseline (or null) at active travel. What does the result tell?</p>
-<p>From the output, you can also check the percentage of correct predictions, which shows how often the model’s predicted outcomes match the actual outcomes.</p>
-<p>We can go further. The following function provides a the McFadden pseudo-R-squared measure.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">r2_mcfadden</span>(logit_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># R2 for Generalized Linear Regression
-       R2: 0.186
-  adj. R2: 0.185</code></pre>
-</div>
-</div>
-<p>This has an analogous interpretation to adjusted R-squared in linear regression (from 0 to 1). It gives a sense of model improvement or predictive power, but it does not represent the proportion of variance explained like the R-squared in linear regression. It should be taken with care, as it is just a relative improvement (in log-likelihood) compared to the null model.</p>
-</section>
-<section id="assumption-checks" class="level3" data-number="5.4.2">
-<h3 data-number="5.4.2" class="anchored" data-anchor-id="assumption-checks"><span class="header-section-number">5.4.2</span> Assumption checks</h3>
-<p>There are generally three assumptions for the logit model:</p>
-<ol type="1">
-<li>independence of observations;</li>
-<li>linearity; and</li>
-<li>no perfect multicollinearity.</li>
-</ol>
-<p>We can check for collinearity using the variance of inflation factor (VIF).</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_collinearity</span>(logit_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># Check for Multicollinearity
-
-Low Correlation
-
-             Term  VIF   VIF 95% CI Increased SE Tolerance Tolerance 95% CI
-     free_parking 1.02 [1.00, 1.28]         1.01      0.98     [0.78, 1.00]
-     avg_distance 1.03 [1.00, 1.17]         1.01      0.97     [0.86, 1.00]
-           gender 1.07 [1.03, 1.15]         1.03      0.94     [0.87, 0.97]
- higher_education 1.10 [1.06, 1.18]         1.05      0.91     [0.85, 0.94]
-         children 1.07 [1.03, 1.15]         1.03      0.94     [0.87, 0.97]
-   hhincome_broad 1.25 [1.18, 1.33]         1.12      0.80     [0.75, 0.84]</code></pre>
-</div>
-</div>
-<p>We can check linearity examining the relationship between each continuous predictor and log-odds of the predicted probabilities. In our model, we only have one continuous variable. We can check the linearity of our model as following:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Source Harrys J.K. (2019)</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute a variable of the log-odds of the predicted values</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>logit_pred <span class="ot">&lt;-</span> <span class="fu">log</span>(logit_model1<span class="sc">$</span>fitted.values <span class="sc">/</span> (<span class="dv">1</span><span class="sc">-</span> logit_model1<span class="sc">$</span>fitted.values))</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a small data frame with the log-odds and the distance predictor</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>linearity_data1 <span class="ot">&lt;-</span> </span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    logit_pred, </span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_distance =</span> logit_model1<span class="sc">$</span>model<span class="sc">$</span>avg_distance</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>linearity_data1 <span class="sc">%&gt;%</span> </span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(avg_distance, logit_pred)) <span class="sc">+</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'loess'</span>, <span class="fu">aes</span>(<span class="at">col =</span> <span class="st">'Loess curve'</span>), <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>, <span class="fu">aes</span>(<span class="at">col =</span> <span class="st">'Linear fit </span><span class="sc">\n</span><span class="st">(Ref.)'</span>), <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Avg. distance to work (in miles)"</span>,</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span> <span class="st">"Log-odds of active travel </span><span class="sc">\n</span><span class="st">predicted probability"</span></span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="session-5_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" style="width:95.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>You should check whether the predictions are equally accurate along the range of values of the predictor.</p>
-<p>Independence is related to the structure and collection methods of data. To what extent do your model and data meet the independence assumption?</p>
-</section>
-</section>
-<section id="individual-activities" class="level2" data-number="5.5">
-<h2 data-number="5.5" class="anchored" data-anchor-id="individual-activities"><span class="header-section-number">5.5</span> Individual activities</h2>
-<p>Re-run a similar analysis, but focus on public transport use (labelled as ‘transit’ in the data). Specifically, the dependent variable will be whether people used public transport in at least one of their trips for a purpose of your choice other than work.</p>
-<p>In this analysis, the key predictor will be employers’ subsidies for public transport, such as free passes or fares. Hint: this information is available in the ‘commute_subsidy_1’ variable of the ‘persons’ table. You can keep similar control variables and optionally check how parking regulations or policies are related to the use of public transport.</p>
-</section>
-<section id="references-and-further-reading" class="level2" data-number="5.6">
-<h2 data-number="5.6" class="anchored" data-anchor-id="references-and-further-reading"><span class="header-section-number">5.6</span> References and further reading</h2>
-<p>Harrys J.K. 2019, Statistics With R: Solving Problems Using Real-World Data. SAGE Publications (p.&nbsp;651).</p>
-
-
 </section>
 
 </main> <!-- /main -->
@@ -1668,13 +2300,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./session-4.html" class="pagination-link" aria-label="Session 4: Logistic regression Part 1">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Session 4: Logistic regression Part 1</span></span>
+      <a href="./session-3.html" class="pagination-link" aria-label="Session 3: Linear regression">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Session 3: Linear regression</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./session-6.html" class="pagination-link" aria-label="Session 6: Multinomial model">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Session 6: Multinomial model</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./session-5.html" class="pagination-link" aria-label="Session 5: Logistic regression Part 2">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Session 5: Logistic regression Part 2</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
